@@ -46,6 +46,7 @@ void GamePlayScene::Update() {
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
+	ImGui::Text("test");
 	imGui.End();
 }
 
