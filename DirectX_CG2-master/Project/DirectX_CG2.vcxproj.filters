@@ -211,6 +211,9 @@
     <ClCompile Include="Application\Scene\TitleScene.cpp">
       <Filter>GameEngine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Enemy\BossEnemy.cpp">
+      <Filter>Apprication\ソースファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\OBJPS.hlsl">
@@ -323,5 +326,8 @@
     </ClInclude>
     <ClInclude Include="Application\Scene\GamePlayScene.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
+    <ClInclude Include="Application\Enemy\BossEnemy.h">
+      <Filter>Apprication\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
