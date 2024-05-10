@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SceneManager.h"
+#include "BossEnemy.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -50,5 +51,6 @@ private:
 	//ビュープロジェクション
 	ViewProjection* viewProjection = nullptr;
 
+	std::unique_ptr<BossEnemy> bossEnemy_;
 };
 
