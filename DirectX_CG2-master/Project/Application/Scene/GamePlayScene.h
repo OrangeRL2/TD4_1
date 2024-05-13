@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SceneManager.h"
+#include "StageField.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -49,6 +50,9 @@ private:
 
 	//ビュープロジェクション
 	ViewProjection* viewProjection = nullptr;
+
+  //ステージフィールド
+  std::unique_ptr< StageField > stageField_;
 
 };
 
