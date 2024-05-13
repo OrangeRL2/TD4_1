@@ -4,6 +4,7 @@
 */
 
 #include "Framewark.h"
+#include "ObjectLoader.h"
 
 void Framewark::Initialize() {
 	//WindowsAPIの初期化
@@ -20,6 +21,10 @@ void Framewark::Initialize() {
 
 	//3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dxCommon_->GetDevice());
+
+  //モデルローダー内でモデルを生成
+  ObjectLoader::GetInstance()->CreateModelList();
+  ObjectLoader::GetInstance()->CreateObjectList();
 
 	//FBXローダーの初期化
 	FbxLoader::GetInstance()->Initialize(dxCommon_->GetDevice());
@@ -68,6 +73,7 @@ void Framewark::Finalize() {
 	//delete input;
 	//WindowsAPI解放
 	//delete winApp;
+
 }
 
 void Framewark::Update() {
