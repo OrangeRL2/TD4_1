@@ -23,6 +23,9 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
+
+	player = std::make_unique<Player>();
+	player->Initialize(spriteCommon, viewProjection);
 }
 
 void GamePlayScene::Finalize() {
@@ -41,6 +44,10 @@ void GamePlayScene::Update() {
 	}
 
 	bossEnemy_->Update();
+
+
+
+	player->Update();
 	
 	//ゲーム終了
 	if (input_->TriggerKey(DIK_ESCAPE)) {
@@ -60,6 +67,7 @@ void GamePlayScene::Draw() {
 	Object3d::PreDraw(dxCommon_->GetCommandList());
 
 	bossEnemy_->Draw();
+	player->Draw();
 	
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();

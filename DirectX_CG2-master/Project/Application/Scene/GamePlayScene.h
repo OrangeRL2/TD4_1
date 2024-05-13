@@ -7,6 +7,7 @@
 
 #include "SceneManager.h"
 #include "BossEnemy.h"
+#include "Player.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -52,5 +53,6 @@ private:
 	ViewProjection* viewProjection = nullptr;
 
 	std::unique_ptr<BossEnemy> bossEnemy_;
+	std::unique_ptr<Player> player;
 };
 
