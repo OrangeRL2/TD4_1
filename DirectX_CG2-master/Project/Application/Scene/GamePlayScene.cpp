@@ -29,8 +29,8 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 
 	//スプライト初期化
-	cursorSprite = std::make_unique<Sprite>();
-	cursorSprite->Initialize(spriteCommon_, 0);
+	/*cursorSprite = std::make_unique<Sprite>();
+	cursorSprite->Initialize(spriteCommon_, 0);*/
 }
 
 void GamePlayScene::Finalize() {
@@ -86,7 +86,7 @@ void GamePlayScene::Draw() {
 	//スプライト描画前処理
 	spriteCommon_->PreDraw();
 	spriteCommon_->Update();
-	cursorSprite->Draw();
+	//cursorSprite->Draw();
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
 
