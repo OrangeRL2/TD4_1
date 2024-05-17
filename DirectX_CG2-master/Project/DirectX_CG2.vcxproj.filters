@@ -214,6 +214,9 @@
     <ClCompile Include="Application\Enemy\BossEnemy.cpp">
       <Filter>Apprication\ソースファイル\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Enemy\BossEnemyBullet.cpp">
+      <Filter>Apprication\ソースファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\OBJPS.hlsl">
@@ -327,6 +330,9 @@
     <ClInclude Include="Application\Scene\GamePlayScene.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
     <ClInclude Include="Application\Enemy\BossEnemy.h">
+      <Filter>Apprication\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Enemy\BossEnemyBullet.h">
       <Filter>Apprication\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

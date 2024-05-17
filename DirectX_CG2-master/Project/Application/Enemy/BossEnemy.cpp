@@ -24,3 +24,7 @@ void BossEnemy::Draw()
 {
 	bossEnemyObj_->Draw();
 }
+
+void BossEnemy::Attack()
+{
+}

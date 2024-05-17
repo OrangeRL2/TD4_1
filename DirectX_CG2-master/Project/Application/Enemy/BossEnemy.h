@@ -7,6 +7,7 @@
 
 #include "Object3d.h"
 #include "Model.h"
+#include "BossEnemyBullet.h"
 
 class BossEnemy
 {
@@ -26,9 +27,16 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
+
 private:
 	Object3d* bossEnemyObj_ = nullptr;
 	Model* bossEnemyModel_ = nullptr;
+
+	std::list<std::unique_ptr<BossEnemyBullet>> bossEnemyBullet_;
 
 	// ボスの座標、スケール、回転
 	DirectX::XMFLOAT3 position_ = { 0,0,0 };
