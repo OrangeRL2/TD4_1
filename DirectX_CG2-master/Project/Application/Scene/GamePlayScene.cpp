@@ -26,6 +26,11 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
+
+
+	//スプライト初期化
+	cursorSprite = std::make_unique<Sprite>();
+	cursorSprite->Initialize(spriteCommon_, 0);
 }
 
 void GamePlayScene::Finalize() {
@@ -48,7 +53,13 @@ void GamePlayScene::Update() {
 
 
 	player->Update();
-	
+	viewProjection->SetTarget(player->GetPosition());
+	viewProjection->SetEye({
+		player->GetPosition().x + cameraPosition.x,
+		player->GetPosition().y,
+		player->GetPosition().z + cameraPosition.z
+		});
+	viewProjection->Update();
 	//ゲーム終了
 	if (input_->TriggerKey(DIK_ESCAPE)) {
 		SetEndRequest(true);
@@ -75,7 +86,7 @@ void GamePlayScene::Draw() {
 	//スプライト描画前処理
 	spriteCommon_->PreDraw();
 	spriteCommon_->Update();
-
+	cursorSprite->Draw();
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
 

@@ -39,6 +39,10 @@ public:
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// 接触時の処理
+	/// </summary>
+	void OnCollision(const int dmg);
 	//ゲッター
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
@@ -51,10 +55,29 @@ public:
 	Model* bulletModel = nullptr;
 	std::unique_ptr<Object3d> playerObject = nullptr;
 private:
-	DirectX::XMFLOAT3 position = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 position = { 10.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 move = { 10.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 scale = { 1.0f,1.0f,1.0f };
 	DirectX::XMFLOAT3 velocity = { 0,0,0 };
 	DirectX::XMFLOAT3 startPosition = { 0.0f,-1.0f,0.0f };
 	DirectX::XMFLOAT3 rot = { 0.0f,0.0f,0.0f };
+
+	float moveLim = 5.0f;
+	float speedLim = 2.0f;
+	float turnSpeed = 0.0f;
+	float speed = 0.0f;
+	float speedBoost = 0.0f;
+	float gravity = 0.2f;
+
+	//無敵時間
+	const float invincibleTimerMax = 60.0f;
+	float invincibleTimer = invincibleTimerMax;
+	bool isInvincible = false;
+	//ヒット判定
+	bool isHit = false;
+	//HP
+	int hpMax = 2;
+	int hp = hpMax;
+
 };
 
