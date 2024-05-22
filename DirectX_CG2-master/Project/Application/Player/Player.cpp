@@ -62,7 +62,7 @@ void Player::Update() {
 	//無敵時間を減らす
 	if (isInvincible) {
 		invincibleTimer -= 5.0f;
-		speed = 0.1f;
+		speed = speed/2.0f;
 	}
 	if (invincibleTimer <= 0) {
 		invincibleTimer = invincibleTimerMax;
