@@ -214,6 +214,8 @@
     <ClCompile Include="Application\Enemy\BossEnemy.cpp">
       <Filter>Apprication\ソースファイル\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Player\Player.cpp">
+      <Filter>Apprication\ソースファイル</Filter>
     <ClCompile Include="Application\Enemy\BossEnemyBullet.cpp">
       <Filter>Apprication\ソースファイル\Enemy</Filter>
     </ClCompile>
@@ -332,6 +334,8 @@
     <ClInclude Include="Application\Enemy\BossEnemy.h">
       <Filter>Apprication\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Player\Player.h">
+      <Filter>Apprication\ソースファイル</Filter>
     <ClInclude Include="Application\Enemy\BossEnemyBullet.h">
       <Filter>Apprication\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
