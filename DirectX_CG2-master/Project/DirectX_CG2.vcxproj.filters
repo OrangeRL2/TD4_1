@@ -216,6 +216,8 @@
     </ClCompile>
     <ClCompile Include="Application\Player\Player.cpp">
       <Filter>Apprication\ソースファイル</Filter>
+    <ClCompile Include="Application\Enemy\BossEnemyBullet.cpp">
+      <Filter>Apprication\ソースファイル\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +336,8 @@
     </ClInclude>
     <ClInclude Include="Application\Player\Player.h">
       <Filter>Apprication\ソースファイル</Filter>
+    <ClInclude Include="Application\Enemy\BossEnemyBullet.h">
+      <Filter>Apprication\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
