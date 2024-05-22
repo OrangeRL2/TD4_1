@@ -5,10 +5,13 @@
 
 #include "BossEnemy.h"
 
+#include "Input.h"
+
 void BossEnemy::Initialize()
 {
-	bossEnemyObj_ = Object3d::Create();
+	// ボスの生成
 	bossEnemyModel_ = Model::LoadFromOBJ("Box");
+	bossEnemyObj_ = Object3d::Create();
 	bossEnemyObj_->SetModel(bossEnemyModel_);
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetScale(scale_);
@@ -27,4 +30,14 @@ void BossEnemy::Draw()
 
 void BossEnemy::Attack()
 {
+	if (isAttack_ == true) {
+
+	}
+}
+
+void BossEnemy::Move()
+{
+	// ボスの移動
+	position_.x += move_.x;
+	bossEnemyObj_->SetPosition(position_);
 }
