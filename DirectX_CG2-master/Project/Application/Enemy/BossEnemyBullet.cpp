@@ -5,11 +5,14 @@
 
 #include "BossEnemyBullet.h"
 
-void BossEnemyBullet::Initialize()
+void BossEnemyBullet::Initialize(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& velocity)
 {
+	this->velocity_ = velocity;
+
 	bossEnemyBulletModel_ = Model::LoadFromOBJ("Box");
 	bossEnemyBulletObj_ = Object3d::Create();
 	bossEnemyBulletObj_->SetModel(bossEnemyBulletModel_);
+	position_ = position;
 	bossEnemyBulletObj_->SetPosition(position_);
 	bossEnemyBulletObj_->SetScale(scale_);
 	bossEnemyBulletObj_->SetRotation(rotation_);
