@@ -38,6 +38,10 @@ public:
 	/// 移動
 	/// </summary>
 	void Move();
+	/// <summary>
+	/// 回避
+	/// </summary>
+	void Dodge();
 
 	/// <summary>
 	/// 接触時の処理
@@ -58,9 +62,10 @@ private:
 	DirectX::XMFLOAT3 position = { 10.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 move = { 10.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 scale = { 1.0f,1.0f,1.0f };
-	DirectX::XMFLOAT3 velocity = { 0,0,0 };
+	DirectX::XMFLOAT3 velocity = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 startPosition = { 0.0f,-1.0f,0.0f };
 	DirectX::XMFLOAT3 rot = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 
 	float moveLim = 5.0f;
 	float speedLim = 2.0f;
@@ -69,12 +74,22 @@ private:
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
+
 	//無敵時間
 	const float invincibleTimerMax = 60.0f;
 	float invincibleTimer = invincibleTimerMax;
 	bool isInvincible = false;
+
 	//ヒット判定
 	bool isHit = false;
+
+	//回避関連
+	bool isDodge = false;
+	const float accelaration = 0.0025f;
+	float moveSpeed = 0;
+	const float maxSpeed = 0.5;
+	int isHitMap = false;
+
 	//HP
 	int hpMax = 2;
 	int hp = hpMax;

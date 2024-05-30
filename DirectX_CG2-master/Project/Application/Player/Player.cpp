@@ -24,6 +24,52 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 }
 
 void Player::Update() {
+	Move();
+	Dodge();
+
+#pragma region collision
+	//無敵時間を減らす
+	if (isInvincible) {
+		invincibleTimer -= 5.0f;
+		speed = speed / 2.0f;
+	}
+	if (invincibleTimer <= 0) {
+		invincibleTimer = invincibleTimerMax;
+		isInvincible = false;
+
+	}
+
+	if (input_->PushKey(DIK_P)) {
+		OnCollision(1);
+	}
+#pragma endregion
+
+	playerObject->SetRotation(rot);
+	playerObject->SetPosition(position);
+	playerObject->Update();
+}
+
+void Player::OnCollision(const int dmg) {
+
+	isHit = true;
+	//無敵時間以外ならダメージ
+	if (!isInvincible) {
+		//const float n = 512.0f;
+
+		hp -= dmg;
+		isInvincible = true;
+	}
+}
+
+void Player::Draw() {
+	//オブジェクト描画
+	if ((int)invincibleTimer % 2 == 0) {
+		playerObject->Draw();
+	}
+}
+
+void Player::Move() {
+
 	//速度を決まる
 	move.x = speed + speedBoost;
 	rot.z = turnSpeed;
@@ -57,46 +103,69 @@ void Player::Update() {
 	}
 	if (turnSpeed >= 0.0f) {
 		turnSpeed -= 0.5f;
-
-	}
-	//無敵時間を減らす
-	if (isInvincible) {
-		invincibleTimer -= 5.0f;
-		speed = speed/2.0f;
-	}
-	if (invincibleTimer <= 0) {
-		invincibleTimer = invincibleTimerMax;
-		isInvincible = false;
-		
-	}
-
-	if (input_->PushKey(DIK_P)) {
-		OnCollision(1);
 	}
 
 	position.x += move.x;
 	position.y += move.y;
 	position.z += move.z;
-	playerObject->SetRotation(rot);
-	playerObject->SetPosition(position);
-	playerObject->Update();
+
 }
 
-void Player::OnCollision(const int dmg) {
 
-	isHit = true;
-	//無敵時間以外ならダメージ
-	if (!isInvincible) {
-		//const float n = 512.0f;
+void Player::Dodge() {
+	if (input_->PushKey(DIK_A)) {
 
-		hp -= dmg;
-		isInvincible = true;
+#pragma region rotate
+		const float rotationSpeed = MyMath::Deg2Rad(-20.0f);
+
+		DirectX::XMFLOAT3 rotation = { 0 , 0 , 0 };
+
+		rotation.z = rotationSpeed;
+
+		rot.x += rotation.x;
+		rot.y += rotation.y;
+		rot.z += rotation.z;
+#pragma endregion
+
+		isHitMap = false;
+
+		angle = rot;
+
+		if (moveSpeed < maxSpeed) {
+			moveSpeed += accelaration;
+
+			if (maxSpeed <= moveSpeed) {
+				moveSpeed = maxSpeed;
+			}
+		}
 	}
-}
 
-void Player::Draw() {
-	//オブジェクト描画
-	if ((int)invincibleTimer % 2 == 0) {
-		playerObject->Draw();
+	/*else {
+		if (0 < moveSpeed) {
+			moveSpeed -= accelaration;
+
+			if (moveSpeed <= 0) {
+				moveSpeed = 0;
+			}
+		}
+
 	}
+	if (isHitMap == false) {
+		velocity = {
+			moveSpeed * cosf(angle.z) ,
+			moveSpeed * -sinf(angle.z) ,
+			0
+		};
+	}
+	else {
+		velocity = {
+			moveSpeed * -cosf(-angle.z) ,
+			moveSpeed * -sinf(-angle.z) ,
+			0
+		};
+	}
+
+	position.x += velocity.x;
+	position.y += velocity.y;
+	position.z += velocity.z;*/
 }

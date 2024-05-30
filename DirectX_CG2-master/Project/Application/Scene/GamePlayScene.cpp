@@ -46,8 +46,6 @@ void GamePlayScene::Update() {
 
 	bossEnemy_->Update();
 
-
-
 	player->Update();
 	viewProjection->SetTarget(player->GetPosition());
 	viewProjection->SetEye({
