@@ -10,10 +10,16 @@
 
 #include "ObjectLoader.h"
 
-#include <memory>
-#include <List>
+#include <map>
+//#include <memory>
+//include <List>
+
+struct LevelData;
 
 class StageField {
+public:
+  static const int cBlockCount_ = 1;
+
 public:
   void Initialize();
   void Update();
@@ -21,10 +27,12 @@ public:
   void Finalize();
 
 public:
-  static ObjectLoader* objectLoader_;
 
 private:
-  std::unique_ptr<Model> modelWoodBox_;
+  Model* modelWoodBox_;
+  std::vector<Object3d*> blockWoodBoxList_;
 
-  std::list< std::unique_ptr<Object3d> > blockWoodBoxList_;
+  std::map<std::string, Model*>  models_;
+
+  LevelData* levelData_;
 };
