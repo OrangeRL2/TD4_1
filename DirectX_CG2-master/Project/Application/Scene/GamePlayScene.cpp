@@ -51,8 +51,6 @@ void GamePlayScene::Update() {
 	}
 
 
-
-
 	player->Update();
 	bossEnemy_->Update(player->GetPosition());
 	viewProjection->SetTarget(player->GetPosition());
@@ -71,6 +69,7 @@ void GamePlayScene::Update() {
 	imGui.Begin();
 	ImGui::Text("GameScene");
 	ImGui::Text("test");
+	ImGui::Text("player pos y %f",player->GetPosition().y);
 	imGui.End();
 }
 
