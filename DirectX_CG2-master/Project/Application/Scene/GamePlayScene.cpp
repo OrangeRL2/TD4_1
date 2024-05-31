@@ -10,6 +10,7 @@
 void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManager, SpriteCommon* spriteCommon, ViewProjection* viewPro) {
 	
 	viewProjection = viewPro;
+
 	soundManager_ = soundManager;
 	spriteCommon_ = spriteCommon;
 	dxCommon_ = dxCommon;
@@ -26,7 +27,6 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
-
 }
 
 void GamePlayScene::Finalize() {
@@ -75,7 +75,6 @@ void GamePlayScene::Draw() {
 
 	bossEnemy_->Draw();
 	player->Draw();
-	
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
