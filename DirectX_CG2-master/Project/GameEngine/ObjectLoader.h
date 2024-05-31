@@ -22,6 +22,8 @@ public:
 
   void CreateObjectList();
 
+  void ResetObjectList();
+
   void Finalize();
 
   //モデル取得
