@@ -27,6 +27,9 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
+
+	item_ = std::make_unique<Item>();
+	item_->Initialize();
 }
 
 void GamePlayScene::Finalize() {
@@ -49,6 +52,7 @@ void GamePlayScene::Update() {
 
 	player->Update();
 	bossEnemy_->Update(player->GetPosition());
+	item_->Update(player->GetPosition());
 	viewProjection->SetTarget(player->GetPosition());
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,
@@ -75,6 +79,7 @@ void GamePlayScene::Draw() {
 
 	bossEnemy_->Draw();
 	player->Draw();
+	item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
