@@ -64,16 +64,23 @@ void GamePlayScene::Update() {
 		player->GetPosition().z + cameraPosition.z
 		});
 	viewProjection->Update();
+
+	Collision();
 	//ゲーム終了
 	if (input_->TriggerKey(DIK_ESCAPE)) {
 		SetEndRequest(true);
 	}
-
+	if (player->GetHP() == 0) {
+		BaseScene* scene = new TitleScene();
+		BaseScene::GetSceneManager()->SetNextScene(scene);
+	}
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
 	ImGui::Text("test");
 	ImGui::Text("player pos y %f",player->GetPosition().y);
+	ImGui::Text("enemy pos y %f",bossEnemy_->GetPosition().y);
+	ImGui::Text("hp %d",player->GetHP());
 	imGui.End();
 }
 
@@ -98,5 +105,19 @@ void GamePlayScene::Draw() {
 
 	//imGuiの描画
 	imGui.Draw();
+
+}
+
+void GamePlayScene::Collision() {
+		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+			if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
+				-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
+				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 2 &&
+					-2 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
+					player->OnCollision(1);
+				}
+			}
+		}
 
 }

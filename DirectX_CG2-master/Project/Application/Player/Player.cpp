@@ -32,11 +32,13 @@ void Player::Update() {
 	if (isInvincible) {
 		invincibleTimer -= 5.0f;
 		speed = speed / 2.0f;
+		if (hp >= 0) {
+			Dodge();
+		}
 	}
 	if (invincibleTimer <= 0) {
 		invincibleTimer = invincibleTimerMax;
 		isInvincible = false;
-
 	}
 
 	if (input_->PushKey(DIK_P)) {

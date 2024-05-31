@@ -47,6 +47,7 @@ public:
 	const DirectX::XMFLOAT3& GetPosition() const { return position_; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 
+	DirectX::XMFLOAT3 GetPosition() { return position_; }
 private:
 	Object3d* bossEnemyObj_ = nullptr;
 	Model* bossEnemyModel_ = nullptr;

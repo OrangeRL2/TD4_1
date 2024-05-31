@@ -35,6 +35,8 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void Collision();
+
 	
 private:
 

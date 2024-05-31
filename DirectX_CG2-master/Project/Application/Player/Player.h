@@ -50,6 +50,7 @@ public:
 	//ゲッター
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
+	int GetHP() { return hp; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -96,7 +97,7 @@ private:
 	int isHitMap = false;
 
 	//HP
-	int hpMax = 2;
+	int hpMax = 5;
 	int hp = hpMax;
 
 };
