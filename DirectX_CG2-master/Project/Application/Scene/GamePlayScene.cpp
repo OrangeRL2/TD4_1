@@ -10,6 +10,7 @@
 void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManager, SpriteCommon* spriteCommon, ViewProjection* viewPro) {
 	
 	viewProjection = viewPro;
+
 	soundManager_ = soundManager;
 	spriteCommon_ = spriteCommon;
 	dxCommon_ = dxCommon;
@@ -17,10 +18,6 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	winApp_ = WinApp::GetInstance();
 
 	imGui.Initialize(winApp_, dxCommon_);
-
-	SE = SEManager::GetInstance();
-	SE->Initialize(soundManager_);
-
 }
 
 void GamePlayScene::Finalize() {
@@ -37,7 +34,7 @@ void GamePlayScene::Update() {
 		BaseScene* scene = new TitleScene();
 		BaseScene::GetSceneManager()->SetNextScene(scene);
 	}
-	
+
 	//ゲーム終了
 	if (input_->TriggerKey(DIK_ESCAPE)) {
 		SetEndRequest(true);
@@ -55,7 +52,6 @@ void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
 
-	
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 

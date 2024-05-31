@@ -11,22 +11,19 @@ ParticleManager::~ParticleManager() {
 }
 
 void ParticleManager::Initialize(Model* model) {
-
 	model_ = model;
-
-
 }
 
-void ParticleManager::UpdateAlways(bool isActive, int inter) {
+void ParticleManager::UpdateAlways(int interval, bool isActive, bool isBubble) {
 	//寿命が尽きたパーティクルを全削除
 	particle.remove_if([](std::unique_ptr<Particle>& p) {
 		return p->GetIsDead();
 		});
 
 	if (isActive) {
-		interval--;
+		interval_--;
 
-		if (interval <= 0) {
+		if (interval_ <= 0) {
 
 			std::unique_ptr<Particle>p = std::make_unique<Particle>();
 
@@ -43,71 +40,157 @@ void ParticleManager::UpdateAlways(bool isActive, int inter) {
 			particle.push_back(std::move(p));
 
 			//発生間隔をリセット
-			interval = inter;
+			interval_ = interval;
 		}
 
 	}
 
-
 	for (std::unique_ptr<Particle>& p : particle) {
+		DirectX::XMFLOAT3 moveVal = { 0,0,0 };
 
-		p->Update(1.0f);
-
+		if (isBubble) {
+			moveVal = {
+				MyMath::RandomFloat(-bubbleMoveVal, bubbleMoveVal),
+				MyMath::RandomFloat(bubbleBuoyancy, bubbleBuoyancy * 1.25f),
+				MyMath::RandomFloat(-bubbleMoveVal, bubbleMoveVal),
+			};
+		}
+		p->Update(moveVal, 1.0f);
 	}
 }
 
-void ParticleManager::AddAlways(float life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color) {
+void ParticleManager::AddAlways(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, XMFLOAT4 color) {
 	oneGrain.num_frame = life;
 	oneGrain.position = position;
-	oneGrain.velocity = velocity;
+
+	//速度をランダム化
+	XMFLOAT3 vel{};
+	vel.x = MyMath::RandomFloat(-velocity.x, velocity.x);
+	vel.y = MyMath::RandomFloat(-velocity.y, velocity.y);
+	vel.z = MyMath::RandomFloat(-velocity.z, velocity.z);
+
+	oneGrain.velocity = vel;
 	oneGrain.accel = accel;
 	oneGrain.s_scale = start_scale;
-	oneGrain.e_scale = end_scale;
+	oneGrain.e_scale = 0;
 	oneGrain.color = color;
 }
 
-void ParticleManager::UpdateHit(float gamespeed) {
+void ParticleManager::UpdateHit(float gamespeed, bool isBubble) {
 	//寿命が尽きたパーティクルを全削除
 	particle.remove_if([](std::unique_ptr<Particle>& p) {
 		return p->GetIsDead();
 		});
 
 	for (std::unique_ptr<Particle>& p : particle) {
-		p->Update(gamespeed);
+		DirectX::XMFLOAT3 moveVal = { 0,0,0 };
+
+		if (isBubble) {
+			moveVal = {
+				MyMath::RandomFloat(-bubbleMoveVal,bubbleMoveVal),
+				MyMath::RandomFloat(bubbleBuoyancy,bubbleBuoyancy * 1.25f),
+				MyMath::RandomFloat(-bubbleMoveVal,bubbleMoveVal),
+			};
+		}
+	
+		p->Update(moveVal, gamespeed);
 	}
 
 }
 
-void ParticleManager::AddHit(Model* model, int amount, float life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color) {
-	//model_ = model;
+void ParticleManager::AddHit(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, int amount, XMFLOAT4 color) {
 
+	particleAmount = amount;
 	for (int i = 0; i <= amount; i++) {
 
 		std::unique_ptr<Particle>p = std::make_unique<Particle>();
 
 		//速度をランダム化
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * velocity.x - velocity.x / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * velocity.y / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * velocity.z - velocity.z / 2.0f;
-
-		//加速度
-		XMFLOAT3 acc{};
-		acc.x = accel.x * vel.x * MyMath::RandomFloat(0.0f, 1.0f);
-		acc.y = accel.y * vel.y * MyMath::RandomFloat(0.0f, 1.0f);
-		acc.z = accel.z * vel.z * MyMath::RandomFloat(0.0f, 1.0f);
+		XMFLOAT3 vel = {
+			MyMath::RandomFloat(-velocity.x, velocity.x),
+			MyMath::RandomFloat(-velocity.y, velocity.y),
+			MyMath::RandomFloat(-velocity.z, velocity.z),
+		};
 
 		//数値を登録
-		p->Initialize(model);
-		p->oneGrain.num_frame = MyMath::RandomFloat(life, life + 10.0f);
+		p->Initialize(model_);
+		p->oneGrain.num_frame = MyMath::RandomFloat(life, life * 2.0f);
 		p->oneGrain.position = position;
-		p->oneGrain.rotation = vel;
 		p->oneGrain.velocity = vel;
 		p->oneGrain.accel = accel;
 		p->oneGrain.s_scale = start_scale;
-		p->oneGrain.e_scale = end_scale;
+		p->oneGrain.e_scale = 0;
 		p->SetColor(color);
 
+		//パーティクルを登録する
+		particle.push_back(std::move(p));
+	}
+}
+
+void ParticleManager::UpdateSpin(float gamespeed) {
+
+	//寿命が尽きたパーティクルを全削除
+	particle.remove_if([](std::unique_ptr<Particle>& p) {
+		return p->GetIsDead();
+		});
+
+	//パーティクルを回転させる
+	if (rot < 2.0f) {
+		rot += rotVal;
+	}
+	else {
+		rot = 0.0f;
+	}
+
+	for (std::unique_ptr<Particle>& p : particle) {
+		DirectX::XMFLOAT3 moveVal = { 0,0,0 };
+
+		p->oneGrain.velocity = {
+				(float)cos((2.0f / (float)particleAmount * p->oneGrain.num + rot) * MyMath::PI) * circleRange,
+				(float)-sin((2.0f / (float)particleAmount * p->oneGrain.num + rot) * MyMath::PI) * circleRange,
+				0,
+		};
+
+		p->Update(moveVal, gamespeed);
+	}
+}
+
+void ParticleManager::AddSpin(XMFLOAT3 position, float start_scale, float life, float cRange, int amount, bool colorful) {
+
+	particleAmount = amount;
+	circleRange = cRange;
+
+	for (int i = 0; i <= amount; i++) {
+
+		//色をカラフルにする
+		if (colorful) {
+			randomColor = {
+				MyMath::RandomFloat(0.25f,0.75f),
+				MyMath::RandomFloat(0.25f,0.75f),
+				MyMath::RandomFloat(0.25f,0.75f),
+				1.0f
+			};
+		}
+		else {
+			randomColor = { 1,1,1,1 };
+		}
+
+		std::unique_ptr<Particle>p = std::make_unique<Particle>();
+
+		//数値を登録
+		p->Initialize(model_);
+		p->oneGrain.num = i;
+		p->oneGrain.num_frame = life;
+		p->oneGrain.position = position;
+		p->oneGrain.s_scale = start_scale;
+		p->oneGrain.e_scale = 0;
+		p->SetColor(randomColor);
+		p->oneGrain.velocity = {
+			(float)sin((2.0f / amount * i) * MyMath::PI),
+			(float)cos((2.0f / amount * i) * MyMath::PI),
+			0,
+		};
+		
 		//パーティクルを登録する
 		particle.push_back(std::move(p));
 	}

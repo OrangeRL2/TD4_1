@@ -39,6 +39,8 @@ public:
 		float s_scale = 1.0f;
 		//最終値
 		float e_scale = 0.0f;
+		//順番
+		int num = 0;
 
 	};
 
@@ -50,7 +52,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(float gamespeed);
+	void Update(DirectX::XMFLOAT3 moveVal, float gamespeed);
 
 	/// <summary>
 	/// 描画

@@ -211,6 +211,9 @@
     <ClCompile Include="Application\Scene\TitleScene.cpp">
       <Filter>GameEngine\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Application\ParticleAndEffect\DamageEffect.cpp">
+      <Filter>Apprication\ソースファイル\ParticleAndEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\OBJPS.hlsl">
@@ -323,5 +326,8 @@
     </ClInclude>
     <ClInclude Include="Application\Scene\GamePlayScene.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
+    <ClInclude Include="Application\ParticleAndEffect\DamageEffect.h">
+      <Filter>Apprication\ヘッダーファイル\ParticleAndEffect</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

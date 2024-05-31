@@ -49,6 +49,5 @@ private:
 
 	//ビュープロジェクション
 	ViewProjection* viewProjection = nullptr;
-
 };
 
