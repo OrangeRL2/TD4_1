@@ -59,7 +59,7 @@ void ParticleManager::UpdateAlways(int interval, bool isActive, bool isBubble) {
 	}
 }
 
-void ParticleManager::AddAlways(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, XMFLOAT4 color) {
+void ParticleManager::AddAlways(XMFLOAT3 position, float start_scale, float life, XMFLOAT4 color, XMFLOAT3 velocity, XMFLOAT3 accel) {
 	oneGrain.num_frame = life;
 	oneGrain.position = position;
 
@@ -98,7 +98,7 @@ void ParticleManager::UpdateHit(float gamespeed, bool isBubble) {
 
 }
 
-void ParticleManager::AddHit(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, int amount, XMFLOAT4 color) {
+void ParticleManager::AddHit(XMFLOAT3 position, float start_scale, float life, int amount, XMFLOAT4 color, XMFLOAT3 velocity, XMFLOAT3 accel) {
 
 	particleAmount = amount;
 	for (int i = 0; i <= amount; i++) {

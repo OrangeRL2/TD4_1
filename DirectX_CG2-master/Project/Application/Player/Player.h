@@ -12,6 +12,8 @@
 #include "Object3d.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
+#include "ParticleManager.h"
+#include "DamageEffect.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -46,6 +48,7 @@ public:
 	//ゲッター
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
+	int GetHP() { return hp; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -79,5 +82,7 @@ private:
 	int hpMax = 2;
 	int hp = hpMax;
 
+	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<DamageEffect> damageEffect;
 };
 

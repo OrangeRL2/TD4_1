@@ -13,7 +13,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
-	model_ = Model::LoadFromOBJ("WoodenBox");;
+	model_ = Model::LoadFromOBJ("WoodenBox");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
 	playerObject->SetModel(model_);
@@ -21,6 +21,11 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	playerObject->SetScale(scale);
 	playerObject->SetRotation(rot);
 	speed = 0.0f;
+
+	particle = std::make_unique<ParticleManager>();
+	particle->Initialize(Model::LoadFromOBJ("Particle"));
+	damageEffect = std::make_unique<DamageEffect>();
+	damageEffect->Initialize(spriteCommon_);
 }
 
 void Player::Update() {
@@ -70,8 +75,10 @@ void Player::Update() {
 		
 	}
 
-	if (input_->PushKey(DIK_P)) {
+	if (input_->TriggerKey(DIK_P)) {
 		OnCollision(1);
+		damageEffect->SetTimer();
+		particle->AddHit(position, 0.5f, 60.0f, 10,{1,1,1,0.51f},{0.5f,0.5f,0.5f});
 	}
 
 	position.x += move.x;
@@ -80,6 +87,9 @@ void Player::Update() {
 	playerObject->SetRotation(rot);
 	playerObject->SetPosition(position);
 	playerObject->Update();
+
+	particle->UpdateHit(1.0f,true);
+	damageEffect->Update();
 }
 
 void Player::OnCollision(const int dmg) {
@@ -99,4 +109,14 @@ void Player::Draw() {
 	if ((int)invincibleTimer % 2 == 0) {
 		playerObject->Draw();
 	}
+
+	particle->Draw();
+
+	//スプライト描画前処理
+	spriteCommon_->PreDraw();
+	spriteCommon_->Update();
+
+	damageEffect->Draw();
+	//スプライト描画後処理
+	spriteCommon_->PostDraw();
 }

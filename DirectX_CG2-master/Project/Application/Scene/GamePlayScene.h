@@ -60,5 +60,8 @@ private:
 
 	//スプライト
 	std::unique_ptr<Sprite> cursorSprite;
+
+	//ゲームオーバー画面
+	std::unique_ptr<Gameover> gameover;
 };
 

@@ -25,8 +25,14 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
 
+	spriteCommon->LoadTexture(0, "white1x1.png");
+	spriteCommon->LoadTexture(1, "GameOver.png");
+
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
+
+	gameover = std::make_unique<Gameover>();
+	gameover->Initialize(spriteCommon);
 }
 
 void GamePlayScene::Finalize() {
@@ -39,27 +45,43 @@ void GamePlayScene::Update() {
 	viewProjection->Update();
 	
 	//シーン遷移処理
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_TAB)) {
 		BaseScene* scene = new TitleScene();
 		BaseScene::GetSceneManager()->SetNextScene(scene);
 	}
 
 	bossEnemy_->Update();
 
-
-
 	player->Update();
-	viewProjection->SetTarget(player->GetPosition());
+	//HP0でゲームオーバー
+	if (player->GetHP() <= 0) {
+		gameover->OnFlag();
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+			BaseScene* scene = new GamePlayScene();
+			BaseScene::GetSceneManager()->SetNextScene(scene);
+		}
+	}
+
+	viewProjection->SetTarget({
+		player->GetPosition().x,
+		0,
+		player->GetPosition().z,
+		});
+
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,
-		player->GetPosition().y,
+		0,
 		player->GetPosition().z + cameraPosition.z
 		});
+
 	viewProjection->Update();
 	//ゲーム終了
 	if (input_->TriggerKey(DIK_ESCAPE)) {
 		SetEndRequest(true);
 	}
+
+	gameover->Update();
 
 	//imGuiの更新
 	imGui.Begin();
@@ -81,6 +103,9 @@ void GamePlayScene::Draw() {
 	//スプライト描画前処理
 	spriteCommon_->PreDraw();
 	spriteCommon_->Update();
+
+	gameover->Draw();
+
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
 
