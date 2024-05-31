@@ -44,11 +44,11 @@ void GamePlayScene::Update() {
 		BaseScene::GetSceneManager()->SetNextScene(scene);
 	}
 
-	bossEnemy_->Update();
 
 
 
 	player->Update();
+	bossEnemy_->Update(player->GetPosition());
 	viewProjection->SetTarget(player->GetPosition());
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,
