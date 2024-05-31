@@ -32,6 +32,7 @@ public:
 	/// </summary>
 	void Attack();
 
+	DirectX::XMFLOAT3 GetPosition() { return position_; }
 private:
 	Object3d* bossEnemyObj_ = nullptr;
 	Model* bossEnemyModel_ = nullptr;
