@@ -18,10 +18,10 @@ void BossEnemy::Initialize()
 	bossEnemyObj_->SetRotation(rotation_);
 }
 
-void BossEnemy::Update(const DirectX::XMFLOAT3& distance)
+void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 {
 	// ボスの攻撃
-	BossEnemy::Attack(distance);
+	BossEnemy::Attack(playerPosition);
 
 	// ボスの挙動
 	BossEnemy::Move();
@@ -36,23 +36,25 @@ void BossEnemy::Draw()
 	bossEnemyObj_->Draw();
 }
 
-void BossEnemy::Attack(const DirectX::XMFLOAT3& distance)
+void BossEnemy::Attack(const DirectX::XMFLOAT3& playerPosition)
 {
 	// ボスの攻撃の発動条件
-	if (++time_ >= 100) {
+	if (++time_ >= attackCoolTime_) {
 		isAttack_ = true;
 		time_ = 0;
 	}
 	if (isAttack_ == true) {
 		attackTimer_++;
 		speed_ += 0.1f;
+
+		if (attackTimer_ >= 10) {
+			isAttack_ = false;
+			attackTimer_ = 0;
+			speed_ = speedAddition_;
+		}
 	}
-	if (attackTimer_ >= 10) {
-		isAttack_ = false;
-		attackTimer_ = 0;
-		speed_ = speedAddition_;
-	}
-	if ((distance.x - 10) <= position_.x) {
+	// 攻撃を行った後元の位置に戻す
+	if ((playerPosition.x - playerDifference_) <= position_.x) {
 		position_.x -= 0.1f;
 	}
 }
