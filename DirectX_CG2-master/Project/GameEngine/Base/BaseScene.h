@@ -12,7 +12,9 @@
 #include "Object3d.h"
 #include "ViewProjection.h"
 #include "Button.h"
+#include "ParticleManager.h"
 #include "NumberUI.h"
+#include "DamageEffect.h"
 #include <random>
 
 //前方宣言

@@ -127,6 +127,5 @@ void Framewark::Run() {
 }
 
 void Framewark::LoadAllTexture() {
-	//spriteCommon_->LoadTexture(0, "numberA");
-
+	
 }
