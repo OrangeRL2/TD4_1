@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application\Enemy\BossEnemy.cpp" />
+    <ClCompile Include="Application\Item\Item.cpp" />
     <ClCompile Include="Application\Player\Player.cpp" />
     <ClCompile Include="Application\Enemy\BossEnemyBullet.cpp" />
     <ClCompile Include="Application\Scene\GamePlayScene.cpp" />
@@ -187,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Enemy\BossEnemy.h" />
+    <ClInclude Include="Application\Item\Item.h" />
     <ClInclude Include="Application\Player\Player.h" />
     <ClInclude Include="Application\Enemy\BossEnemyBullet.h" />
     <ClInclude Include="Application\Scene\GamePlayScene.h" />
