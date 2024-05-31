@@ -63,6 +63,7 @@ void GamePlayScene::Update() {
 	imGui.Begin();
 	ImGui::Text("GameScene");
 	ImGui::Text("test");
+	ImGui::Text("player pos y %f",player->GetPosition().y);
 	imGui.End();
 }
 

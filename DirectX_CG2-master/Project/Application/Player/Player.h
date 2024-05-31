@@ -65,9 +65,11 @@ private:
 	DirectX::XMFLOAT3 velocity = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 startPosition = { 0.0f,-1.0f,0.0f };
 	DirectX::XMFLOAT3 rot = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 finalRot = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 dodgeRot = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 
-	float moveLim = 5.0f;
+	float moveLim = 10.0f;
 	float speedLim = 2.0f;
 	float turnSpeed = 0.0f;
 	float speed = 0.0f;
@@ -75,19 +77,22 @@ private:
 	float gravity = 0.2f;
 
 
+	//ヒット判定
+	bool isHit = false;
 	//無敵時間
 	const float invincibleTimerMax = 60.0f;
 	float invincibleTimer = invincibleTimerMax;
 	bool isInvincible = false;
 
-	//ヒット判定
-	bool isHit = false;
-
+	
 	//回避関連
 	bool isDodge = false;
-	const float accelaration = 0.0025f;
+	bool isDodgeInvincible = false;
+	const float dodgeTimerMax = 60.0f;
+	float dodgeTimer = dodgeTimerMax;
+	const float accelaration = 0.2025f;
 	float moveSpeed = 0;
-	const float maxSpeed = 0.5;
+	const float maxSpeed = 2.5;
 	int isHitMap = false;
 
 	//HP
