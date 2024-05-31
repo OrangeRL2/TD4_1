@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SceneManager.h"
+#include "StageField.h"
 #include "BossEnemy.h"
 #include "Player.h"
 
@@ -52,6 +53,8 @@ private:
 	//ビュープロジェクション
 	ViewProjection* viewProjection = nullptr;
 
+  //ステージフィールド
+  std::unique_ptr< StageField > stageField_;
 	std::unique_ptr<BossEnemy> bossEnemy_;
 	std::unique_ptr<Player> player;
 

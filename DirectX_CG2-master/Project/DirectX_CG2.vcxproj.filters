@@ -125,6 +125,12 @@
     <Filter Include="Apprication\ヘッダーファイル\ParticleAndEffect">
       <UniqueIdentifier>{54858060-6e0e-4128-bdd2-b079c7f59cb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Apprication\ソースファイル\StageObject\StageField">
+      <UniqueIdentifier>{477e3a6a-25bd-4ed9-98eb-d698f3f2705a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Apprication\ヘッダーファイル\StageObject\StageField">
+      <UniqueIdentifier>{26f58ecc-33d3-4c98-b131-a4c9666fbd19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine\2d\Sprite.cpp">
@@ -205,10 +211,16 @@
     <ClCompile Include="Application\UI\NumberUI.cpp">
       <Filter>Apprication\ソースファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Scene\GamePlayScene.cpp">
-      <Filter>GameEngine\ソース ファイル</Filter>
+    <ClCompile Include="Application\StageObject\StageField\StageField.cpp">
+      <Filter>Apprication\ソースファイル\StageObject\StageField</Filter>
     </ClCompile>
     <ClCompile Include="Application\Scene\TitleScene.cpp">
+      <Filter>Apprication\ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Scene\GamePlayScene.cpp">
+      <Filter>Apprication\ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngine\ObjectLoader.cpp">
       <Filter>GameEngine\ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Application\ParticleAndEffect\DamageEffect.cpp">
@@ -331,6 +343,17 @@
     <ClInclude Include="Application\UI\NumberUI.h">
       <Filter>Apprication\ヘッダーファイル\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Application\StageObject\StageField\StageField.h">
+      <Filter>Apprication\ヘッダーファイル\StageObject\StageField</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\TitleScene.h">
+      <Filter>Apprication\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Scene\GamePlayScene.h">
+      <Filter>Apprication\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine\ObjectLoader.h">
+      <Filter>GameEngine\ヘッダーファイル</Filter>
     <ClInclude Include="Application\Scene\GamePlayScene.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
 
