@@ -24,17 +24,107 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 }
 
 void Player::Update() {
-	//速度を決まる
-	move.x = speed + speedBoost;
-	rot.z = turnSpeed;
-	//speedがspeedLimにならないように
-	if (speed > speedLim) {
-		speed = speedLim;
+	Move();
+	//Dodge();
+
+#pragma region collision
+	//無敵時間を減らす
+	if (isInvincible) {
+		invincibleTimer -= 5.0f;
+		speed = speed / 2.0f;
 	}
-	if (speed < speedLim)
-	{
-		speed += 0.001f;
+	if (invincibleTimer <= 0) {
+		invincibleTimer = invincibleTimerMax;
+		isInvincible = false;
+
 	}
+
+	if (input_->PushKey(DIK_P)) {
+		OnCollision(1);
+	}
+	if (input_->TriggerKey(DIK_A)) {
+		if (moveSpeed <= 0) {
+			Dodge();
+		}
+	}
+#pragma endregion
+
+#pragma region dodge
+	if (isDodgeInvincible == true) {
+		dodgeTimer -= 5.0f;
+		invincibleTimer -= 0.0f;
+
+#pragma region rotate
+
+		const float rotationSpeed = 50.0f;
+
+		DirectX::XMFLOAT3 rotation = { 0 , 0 , 0 };
+
+		rotation.z = rotationSpeed;
+
+		dodgeRot.x += rotation.x;
+		dodgeRot.y += rotation.y;
+		dodgeRot.z += rotation.z;
+#pragma endregion
+
+		isHitMap = false;
+
+		angle = dodgeRot;
+
+		if (moveSpeed < maxSpeed) {
+			moveSpeed += accelaration;
+
+			if (maxSpeed <= moveSpeed) {
+				moveSpeed = maxSpeed;
+			}
+		}
+	}
+
+	if (dodgeTimer <= 0) {
+		dodgeTimer = dodgeTimerMax;
+		invincibleTimer = invincibleTimerMax;
+		isDodgeInvincible = false;
+	}
+
+	else {
+		if (0 < moveSpeed) {
+			moveSpeed -= accelaration / 2;
+
+			if (moveSpeed <= 0) {
+				moveSpeed = 0;
+			}
+		}
+
+	}
+	if (isHitMap == false) {
+		velocity = {
+			moveSpeed * -cosf(angle.z) ,
+			moveSpeed * sinf(angle.z) ,
+			0
+		};
+	}
+	else {
+		velocity = {
+			moveSpeed * -cosf(-angle.z) ,
+			moveSpeed * -sinf(-angle.z) ,
+			0
+		};
+	}
+
+	position.x += velocity.x;
+	position.y += velocity.y;
+	position.z += velocity.z;
+
+#pragma endregion
+
+	if (moveSpeed <= 0) {
+	/*	if (dodgeRot.z != 0.0f) {
+			dodgeRot.z -= 1.0f;
+		}*/
+		
+		rot.z = turnSpeed;
+	}
+
 	//動き
 	if (input_->PushKey(DIK_D)) {
 		if (turnSpeed < 10.0f)
@@ -51,35 +141,49 @@ void Player::Update() {
 		}
 		position.y -= gravity;
 	}
+	if (position.y >= moveLim) {
+		position.y -= gravity;
+	}
+
 	//ローテーションを元に戻す
 	if (turnSpeed <= 0.00f) {
 		turnSpeed += 0.5f;
 	}
 	if (turnSpeed >= 0.0f) {
 		turnSpeed -= 0.5f;
-
-	}
-	//無敵時間を減らす
-	if (isInvincible) {
-		invincibleTimer -= 5.0f;
-		speed = speed/2.0f;
-	}
-	if (invincibleTimer <= 0) {
-		invincibleTimer = invincibleTimerMax;
-		isInvincible = false;
-		
 	}
 
-	if (input_->PushKey(DIK_P)) {
-		OnCollision(1);
+	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
+
+	playerObject->SetRotation(rot);
+	playerObject->SetPosition(position);
+	playerObject->Update();
+}
+
+void Player::Draw() {
+	//オブジェクト描画
+	if ((int)invincibleTimer % 2 == 0) {
+		playerObject->Draw();
+	}
+}
+
+void Player::Move() {
+
+	//速度を決まる
+	move.x = speed + speedBoost;
+	//speedがspeedLimにならないように
+	if (speed > speedLim) {
+		speed = speedLim;
+	}
+	if (speed < speedLim)
+	{
+		speed += 0.001f;
 	}
 
 	position.x += move.x;
 	position.y += move.y;
 	position.z += move.z;
-	playerObject->SetRotation(rot);
-	playerObject->SetPosition(position);
-	playerObject->Update();
+
 }
 
 void Player::OnCollision(const int dmg) {
@@ -94,9 +198,9 @@ void Player::OnCollision(const int dmg) {
 	}
 }
 
-void Player::Draw() {
-	//オブジェクト描画
-	if ((int)invincibleTimer % 2 == 0) {
-		playerObject->Draw();
+void Player::Dodge() {
+	if (!isDodgeInvincible) {
+		dodgeRot = { 0.0f,0.0f,0.0f };
+		isDodgeInvincible = true;
 	}
 }

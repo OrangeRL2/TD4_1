@@ -69,7 +69,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\Player;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\StageObject\StageField;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -91,7 +91,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\Player;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\StageObject\StageField;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -138,6 +138,8 @@
     <ClCompile Include="GameEngine\Camera\ViewProjection.cpp" />
     <ClCompile Include="GameEngine\Base\WinApp.cpp" />
     <ClCompile Include="Application\UI\NumberUI.cpp" />
+    <ClCompile Include="Application\StageObject\StageField\StageField.cpp" />
+    <ClCompile Include="GameEngine\ObjectLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitattributes" />
@@ -217,6 +219,8 @@
     <ClInclude Include="GameEngine\Camera\ViewProjection.h" />
     <ClInclude Include="GameEngine\Base\WinApp.h" />
     <ClInclude Include="Application\UI\NumberUI.h" />
+    <ClInclude Include="Application\StageObject\StageField\StageField.h" />
+    <ClInclude Include="GameEngine\ObjectLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

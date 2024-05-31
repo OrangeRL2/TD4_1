@@ -22,7 +22,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const DirectX::XMFLOAT3& distance);
+	void Update(const DirectX::XMFLOAT3& playerPosition);
 
 	/// <summary>
 	/// 描画
@@ -32,7 +32,7 @@ public:
 	/// <summary>
 	/// 攻撃
 	/// </summary>
-	void Attack(const DirectX::XMFLOAT3& distance);
+	void Attack(const DirectX::XMFLOAT3& playerPosition);
 
 	/// <summary>
 	/// 移動
@@ -72,4 +72,8 @@ private:
 	float speedLim_ = 2.0f;
 	float moveLim_ = 5.0f;
 	float gravity_ = 0.2f;
+
+	// 定数
+	const float playerDifference_ = 10.0f;
+	const int attackCoolTime_ = 100;
 };

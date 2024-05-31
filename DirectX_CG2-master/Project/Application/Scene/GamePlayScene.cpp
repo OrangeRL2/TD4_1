@@ -8,7 +8,7 @@
 #include "imgui.h"
 
 void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManager, SpriteCommon* spriteCommon, ViewProjection* viewPro) {
-	
+
 	viewProjection = viewPro;
 
 	soundManager_ = soundManager;
@@ -22,6 +22,10 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	SE = SEManager::GetInstance();
 	SE->Initialize(soundManager_);
 
+  stageField_ =
+    std::make_unique<StageField>();
+
+  stageField_->Initialize();
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
 
@@ -39,6 +43,8 @@ void GamePlayScene::Finalize() {
 
 void GamePlayScene::Update() {
 
+  stageField_->Update();
+
 	viewProjection->Update();
 	
 	//シーン遷移処理
@@ -46,8 +52,6 @@ void GamePlayScene::Update() {
 		BaseScene* scene = new TitleScene();
 		BaseScene::GetSceneManager()->SetNextScene(scene);
 	}
-
-
 
 
 	player->Update();
@@ -69,6 +73,7 @@ void GamePlayScene::Update() {
 	imGui.Begin();
 	ImGui::Text("GameScene");
 	ImGui::Text("test");
+	ImGui::Text("player pos y %f",player->GetPosition().y);
 	imGui.End();
 }
 
@@ -77,6 +82,8 @@ void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
 
+  stageField_->Draw();
+	
 	bossEnemy_->Draw();
 	player->Draw();
 	item_->Draw();

@@ -11,6 +11,12 @@
 
 class Framewark
 {
+public:
+  ////モデル名
+  //enum modelName {
+  //  modelWoodBox_
+  //};
+
 public://メンバ関数
 
 	/// <summary>
