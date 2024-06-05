@@ -97,8 +97,8 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Collision() {
-		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
-			-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 7 &&
+			-7 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
 			if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
 				-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
 				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 2 &&
