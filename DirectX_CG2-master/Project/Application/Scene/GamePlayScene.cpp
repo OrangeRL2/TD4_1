@@ -115,7 +115,7 @@ void GamePlayScene::Update() {
 		BaseScene* scene = new TitleScene();
 		BaseScene::GetSceneManager()->SetNextScene(scene);
 	}
-
+	
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
@@ -123,6 +123,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("player pos y %f",player->GetPosition().y);
 	ImGui::Text("enemy pos y %f",bossEnemy_->GetPosition().y);
 	ImGui::Text("hp %d",player->GetHP());
+	ImGui::Text("boss hp %d",bossEnemy_->GetHP());
 	imGui.End();
 }
 
@@ -166,4 +167,21 @@ void GamePlayScene::Collision() {
 			}
 		}
 
+		if (item_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < item_->GetPosition().x - player->GetPosition().x) {
+			if (item_->GetPosition().y - player->GetPosition().y < 5 &&
+				-5 < item_->GetPosition().y - player->GetPosition().y) {
+				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
+					-2 < item_->GetPosition().z - player->GetPosition().z) {
+					bossEnemy_->Damage();
+				}
+			}
+		}
+		if (player->GetDodge() == true) {
+			bossEnemy_->Damage();
+		}
+
+		if (bossEnemy_->GetHP() == 0) {
+			clear->OnFlag();
+		}
 }
