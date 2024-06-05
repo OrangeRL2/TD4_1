@@ -63,5 +63,6 @@ private:
 
 	//ゲームオーバー画面
 	std::unique_ptr<Gameover> gameover;
+	std::unique_ptr<Clear> clear;
 };
 

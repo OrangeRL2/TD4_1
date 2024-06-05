@@ -8,6 +8,13 @@ void Gameover::Initialize(SpriteCommon* spriteCommon) {
 
 void Gameover::Update() {
 
+	if (isDraw) {
+		//イージング用のフレームを進める
+		if (frame <= frameMax) {
+			frame++;
+		}
+	}
+
 	gameoverSP->SetPosition({
 		WinApp::window_width / 2,
 		WinApp::window_height / 2 + (position.y - position.y * MyMath::easeOutCubic(frame / frameMax)),
@@ -18,11 +25,6 @@ void Gameover::Update() {
 void Gameover::OnFlag() {	//ゲームオーバーになったら
 	//スプライトを表示
 	isDraw = true;
-
-	//イージング用のフレームを進める
-	if (frame <= frameMax) {
-		frame++;
-	}
 }
 
 void Gameover::Draw() {

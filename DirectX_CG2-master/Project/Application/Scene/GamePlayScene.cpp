@@ -27,12 +27,16 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	spriteCommon->LoadTexture(0, "white1x1.png");
 	spriteCommon->LoadTexture(1, "GameOver.png");
+	spriteCommon->LoadTexture(2, "Clear.png");
 
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
 
 	gameover = std::make_unique<Gameover>();
 	gameover->Initialize(spriteCommon);
+
+	clear = std::make_unique<Clear>();
+	clear->Initialize(spriteCommon);
 }
 
 void GamePlayScene::Finalize() {
@@ -46,8 +50,9 @@ void GamePlayScene::Update() {
 	
 	//シーン遷移処理
 	if (input_->TriggerKey(DIK_TAB)) {
-		BaseScene* scene = new TitleScene();
-		BaseScene::GetSceneManager()->SetNextScene(scene);
+		//BaseScene* scene = new TitleScene();
+		//BaseScene::GetSceneManager()->SetNextScene(scene);
+		clear->OnFlag();
 	}
 
 	bossEnemy_->Update();
@@ -82,6 +87,7 @@ void GamePlayScene::Update() {
 	}
 
 	gameover->Update();
+	clear->Update();
 
 	//imGuiの更新
 	imGui.Begin();
@@ -105,6 +111,7 @@ void GamePlayScene::Draw() {
 	spriteCommon_->Update();
 
 	gameover->Draw();
+	clear->Draw();
 
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();

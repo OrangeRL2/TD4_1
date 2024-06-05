@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application\Enemy\BossEnemy.cpp" />
+    <ClCompile Include="Application\ParticleAndEffect\Clear.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Gameover.cpp" />
     <ClCompile Include="Application\Player\Player.cpp" />
     <ClCompile Include="Application\Enemy\BossEnemyBullet.cpp" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Enemy\BossEnemy.h" />
+    <ClInclude Include="Application\ParticleAndEffect\Clear.h" />
     <ClInclude Include="Application\ParticleAndEffect\Gameover.h" />
     <ClInclude Include="Application\Player\Player.h" />
     <ClInclude Include="Application\Enemy\BossEnemyBullet.h" />
