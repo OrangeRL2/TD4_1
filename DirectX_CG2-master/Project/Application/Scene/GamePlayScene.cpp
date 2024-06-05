@@ -48,10 +48,8 @@ void GamePlayScene::Update() {
 
 	viewProjection->Update();
 	
-	//シーン遷移処理
+	//クリア処理
 	if (input_->TriggerKey(DIK_TAB)) {
-		//BaseScene* scene = new TitleScene();
-		//BaseScene::GetSceneManager()->SetNextScene(scene);
 		clear->OnFlag();
 	}
 

@@ -77,8 +77,7 @@ void Player::Update() {
 
 	if (input_->TriggerKey(DIK_P)) {
 		OnCollision(1);
-		damageEffect->SetTimer();
-		particle->AddHit(position, 0.5f, 60.0f, 10,{1,1,1,0.51f},{0.5f,0.5f,0.5f});
+		
 	}
 
 	position.x += move.x;
@@ -101,6 +100,9 @@ void Player::OnCollision(const int dmg) {
 
 		hp -= dmg;
 		isInvincible = true;
+
+		damageEffect->SetTimer();
+		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
 	}
 }
 
