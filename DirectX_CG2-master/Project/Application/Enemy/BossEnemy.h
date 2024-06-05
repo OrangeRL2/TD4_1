@@ -22,7 +22,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(const DirectX::XMFLOAT3& playerPosition);
 
 	/// <summary>
 	/// 描画
@@ -32,7 +32,7 @@ public:
 	/// <summary>
 	/// 攻撃
 	/// </summary>
-	void Attack();
+	void Attack(const DirectX::XMFLOAT3& playerPosition);
 
 	/// <summary>
 	/// 移動
@@ -47,6 +47,7 @@ public:
 	const DirectX::XMFLOAT3& GetPosition() const { return position_; }
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 
+	DirectX::XMFLOAT3 GetPosition() { return position_; }
 private:
 	Object3d* bossEnemyObj_ = nullptr;
 	Model* bossEnemyModel_ = nullptr;
@@ -54,24 +55,26 @@ private:
 	std::list<std::unique_ptr<BossEnemyBullet>> bossEnemyBullet_;
 
 	// ボスの座標、スケール、回転、移動量
-	DirectX::XMFLOAT3 position_ = { 0.0f,0.0f,0.0f };
+	DirectX::XMFLOAT3 position_ = { 0.0f,-10.0f,5.0f };
 	DirectX::XMFLOAT3 scale_ = { 2.0f,2.0f,2.0f };
 	DirectX::XMFLOAT3 rotation_ = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 move_ = { 10.0f,0.0f,0.0f };
 
 	// 攻撃フラグ
 	bool isAttack_ = false;
+	int attackTimer_ = 0;
+	int time_ = 0;
 
 	// スピード
+	float speedAddition_ = 0.0f;
+	float oldSpeed_ = 0.0f;
 	float speed_ = 0.0f;
 	float speedBoost_ = 0.0f;
 	float speedLim_ = 2.0f;
 	float moveLim_ = 5.0f;
-	float turnSpeed_ = 0.0f;
 	float gravity_ = 0.2f;
 
-	//無敵時間
-	const float invincibleTimerMax_ = 60.0f;
-	float invincibleTimer_ = invincibleTimerMax_;
-	bool isInvincible_ = false;
+	// 定数
+	const float playerDifference_ = 10.0f;
+	const int attackCoolTime_ = 100;
 };

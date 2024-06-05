@@ -49,3 +49,17 @@ int MyMath::RandomInt(int min, int max) {
 
 	return rate(rnd);
 }
+
+//度数法を弧度法に変換する関数
+float MyMath::Deg2Rad(float Deg) {
+
+	return Deg * 3.14f / 180.0f;
+
+}
+
+//弧度法を度数法に変換する関数
+float MyMath::Rad2Deg(float rad) {
+
+	return rad / 3.14f * 180.0f;
+
+}
