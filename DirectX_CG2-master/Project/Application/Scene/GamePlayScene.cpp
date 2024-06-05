@@ -64,7 +64,7 @@ void GamePlayScene::Update() {
 		clear->OnFlag();
 	}
 
-	bossEnemy_->Update();
+	bossEnemy_->Update(player->GetPosition());
 
 	player->Update();
 	//HP0でゲームオーバー
@@ -87,7 +87,11 @@ void GamePlayScene::Update() {
 	player->Update();
 	bossEnemy_->Update(player->GetPosition());
 	item_->Update(player->GetPosition());
-	viewProjection->SetTarget(player->GetPosition());
+	viewProjection->SetTarget({ 
+		player->GetPosition().x,
+		0,
+		player->GetPosition().x,
+		});
 
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,

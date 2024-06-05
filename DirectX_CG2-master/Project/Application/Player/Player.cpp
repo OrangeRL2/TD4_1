@@ -32,23 +32,13 @@ void Player::Update() {
 	Move();
 	//Dodge();
 
-	if (input_->TriggerKey(DIK_P)) {
-		OnCollision(1);
-#pragma region collision
-	//無敵時間を減らす
-	if (isInvincible) {
-		invincibleTimer -= 5.0f;
-		speed = speed / 2.0f;
-		if (hp >= 0) {
-			Dodge();
-		}
-	}
+	invincibleTimer--;
 	if (invincibleTimer <= 0) {
 		invincibleTimer = invincibleTimerMax;
 		isInvincible = false;
 	}
 
-	if (input_->PushKey(DIK_P)) {
+	if (input_->TriggerKey(DIK_P)) {
 		OnCollision(1);
 	}
 	if (input_->TriggerKey(DIK_A)) {
@@ -56,14 +46,14 @@ void Player::Update() {
 			Dodge();
 		}
 	}
-#pragma endregion
+//#pragma endregion
 
-#pragma region dodge
+//#pragma region dodge
 	if (isDodgeInvincible == true) {
 		dodgeTimer -= 5.0f;
 		invincibleTimer -= 0.0f;
 
-#pragma region rotate
+//#pragma region rotate
 
 		const float rotationSpeed = 50.0f;
 
@@ -74,7 +64,7 @@ void Player::Update() {
 		dodgeRot.x += rotation.x;
 		dodgeRot.y += rotation.y;
 		dodgeRot.z += rotation.z;
-#pragma endregion
+//#pragma endregion
 
 		isHitMap = false;
 
@@ -124,7 +114,7 @@ void Player::Update() {
 	position.y += velocity.y;
 	position.z += velocity.z;
 
-#pragma endregion
+//#pragma endregion
 
 	if (moveSpeed <= 0) {
 	/*	if (dodgeRot.z != 0.0f) {
@@ -211,10 +201,10 @@ void Player::OnCollision(const int dmg) {
 		//const float n = 512.0f;
 
 		hp -= dmg;
-		isInvincible = true;
-
 		damageEffect->SetTimer();
 		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
+		isInvincible = true;
+
 	}
 }
 
@@ -235,5 +225,4 @@ void Player::Dodge() {
 	spriteCommon_->PostDraw();
 }
 
-}
 
