@@ -53,6 +53,7 @@ public:
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
+	bool GetDodge() { return isDodgeInvincible; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;

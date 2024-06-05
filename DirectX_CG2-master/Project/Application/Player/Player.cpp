@@ -182,7 +182,6 @@ void Player::Move() {
 	if (speed < speedLim)
 	{
 		speed += 0.001f;
-
 	}
 
 	position.x += move.x;
@@ -203,8 +202,6 @@ void Player::OnCollision(const int dmg) {
 	isHit = true;
 	//無敵時間以外ならダメージ
 	if (!isInvincible) {
-		//const float n = 512.0f;
-
 		hp = dmg;
 		damageEffect->SetTimer();
 		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
