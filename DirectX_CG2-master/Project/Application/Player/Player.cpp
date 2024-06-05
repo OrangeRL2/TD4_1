@@ -13,7 +13,6 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
-	model_ = Model::LoadFromOBJ("fish");;
 	model_ = Model::LoadFromOBJ("WoodenBox");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
@@ -25,6 +24,8 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 
 	particle = std::make_unique<ParticleManager>();
 	particle->Initialize(Model::LoadFromOBJ("Particle"));
+	dodgeParticle = std::make_unique<ParticleManager>();
+	dodgeParticle->Initialize(Model::LoadFromOBJ("Particle"));
 	damageEffect = std::make_unique<DamageEffect>();
 	damageEffect->Initialize(spriteCommon_);
 }
@@ -155,6 +156,10 @@ void Player::Update() {
 
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
 
+	dodgeParticle->UpdateSpin(1.0f);
+	particle->UpdateHit(1.0f, true);
+	damageEffect->Update();
+
 	playerObject->SetRotation(rot);
 	playerObject->SetPosition(position);
 	playerObject->Update();
@@ -165,12 +170,19 @@ void Player::Draw() {
 	if ((int)invincibleTimer % 2 == 0) {
 		playerObject->Draw();
 	}
+
+	particle->Draw();
+	dodgeParticle->Draw();
+}
+
+void Player::Draw2D() {
+	damageEffect->Draw();
 }
 
 void Player::Move() {
 
 	//速度を決まる
-	move.x = -speed + speedBoost;
+	move.x = speed + speedBoost;
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
@@ -188,9 +200,6 @@ void Player::Move() {
 	playerObject->SetRotation(rot);
 	playerObject->SetPosition(position);
 	playerObject->Update();
-
-	particle->UpdateHit(1.0f,true);
-	damageEffect->Update();
 
 }
 
@@ -211,19 +220,11 @@ void Player::OnCollision(const int dmg) {
 
 void Player::Dodge() {
 	if (!isDodgeInvincible) {
+		dodgeParticle->AddSpin(position, 0.5f, 60.0f, 0.5f, 10, false);
+
 		dodgeRot = { 0.0f,0.0f,0.0f };
 		isDodgeInvincible = true;
 	}
-
-	particle->Draw();
-
-	//スプライト描画前処理
-	spriteCommon_->PreDraw();
-	spriteCommon_->Update();
-
-	damageEffect->Draw();
-	//スプライト描画後処理
-	spriteCommon_->PostDraw();
 }
 
 

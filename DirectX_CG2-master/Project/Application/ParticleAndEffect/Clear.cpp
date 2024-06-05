@@ -30,12 +30,7 @@ void Clear::Update() {
 
 void Clear::OnFlag() {	//クリアしたら
 	//スプライトを表示
-	if (isClear) {
-		isClear = false;
-	}
-	else {
-		isClear = true;
-	}
+	isClear = true;
 }
 
 void Clear::Draw() {

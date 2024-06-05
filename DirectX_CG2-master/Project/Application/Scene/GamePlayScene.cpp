@@ -36,7 +36,6 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
 
-
 	gameover = std::make_unique<Gameover>();
 	gameover->Initialize(spriteCommon);
 
@@ -110,12 +109,6 @@ void GamePlayScene::Update() {
 	gameover->Update();
 	clear->Update();
 
-
-	if (player->GetHP() == 0) {
-		BaseScene* scene = new TitleScene();
-		BaseScene::GetSceneManager()->SetNextScene(scene);
-	}
-
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
@@ -145,6 +138,7 @@ void GamePlayScene::Draw() {
 
 	gameover->Draw();
 	clear->Draw();
+	player->Draw2D();
 
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();

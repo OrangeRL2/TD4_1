@@ -37,6 +37,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 描画(2D)
+	/// </summary>
+	void Draw2D();
+
+	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move();
@@ -75,7 +80,7 @@ private:
 	float moveLim = 10.0f;
 	float speedLim = 2.0f;
 	float turnSpeed = 0.0f;
-	float speed = 0.0f;
+	float speed = 0.01f;
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
@@ -103,6 +108,7 @@ private:
 	int hp = hpMax;
 
 	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
 };
 
