@@ -55,7 +55,7 @@ private:
 	std::list<std::unique_ptr<BossEnemyBullet>> bossEnemyBullet_;
 
 	// ボスの座標、スケール、回転、移動量
-	DirectX::XMFLOAT3 position_ = { 0.0f,0.0f,5.0f };
+	DirectX::XMFLOAT3 position_ = { 0.0f,-10.0f,5.0f };
 	DirectX::XMFLOAT3 scale_ = { 2.0f,2.0f,2.0f };
 	DirectX::XMFLOAT3 rotation_ = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 move_ = { 10.0f,0.0f,0.0f };
