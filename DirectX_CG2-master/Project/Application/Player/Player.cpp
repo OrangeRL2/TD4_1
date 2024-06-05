@@ -125,12 +125,20 @@ void Player::Update() {
 	}
 
 	//動き
-	if (input_->PushKey(DIK_D)) {
+	if (input_->PushKey(DIK_W)) {
 		if (turnSpeed < 10.0f)
 		{
 			turnSpeed += 1.0f;
 		}
 		position.y += gravity;
+	}
+
+	if (input_->PushKey(DIK_S)) {
+		if (turnSpeed > -10.0f)
+		{
+			turnSpeed -= 1.0f;
+		}
+		position.y -= gravity;
 	}
 	//上に泳いでない時に下に動く
 	else if (position.y >= -moveLim) {
@@ -138,10 +146,7 @@ void Player::Update() {
 		{
 			turnSpeed -= 1.0f;
 		}
-		position.y -= gravity;
-	}
-	if (position.y >= moveLim) {
-		position.y -= gravity;
+
 	}
 
 	//ローテーションを元に戻す
@@ -169,7 +174,7 @@ void Player::Draw() {
 void Player::Move() {
 
 	//速度を決まる
-	move.x = -speed + speedBoost;
+	move.x = speed + speedBoost;
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
