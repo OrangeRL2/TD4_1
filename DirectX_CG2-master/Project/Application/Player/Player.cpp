@@ -13,7 +13,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
-	model_ = Model::LoadFromOBJ("WoodenBox");;
+	model_ = Model::LoadFromOBJ("WoodenBox");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
 	playerObject->SetModel(model_);
@@ -21,12 +21,19 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	playerObject->SetScale(scale);
 	playerObject->SetRotation(rot);
 	speed = 0.0f;
+
+	particle = std::make_unique<ParticleManager>();
+	particle->Initialize(Model::LoadFromOBJ("Particle"));
+	damageEffect = std::make_unique<DamageEffect>();
+	damageEffect->Initialize(spriteCommon_);
 }
 
 void Player::Update() {
 	Move();
 	//Dodge();
 
+	if (input_->TriggerKey(DIK_P)) {
+		OnCollision(1);
 #pragma region collision
 	//無敵時間を減らす
 	if (isInvincible) {
@@ -180,11 +187,19 @@ void Player::Move() {
 	if (speed < speedLim)
 	{
 		speed += 0.001f;
+
 	}
 
 	position.x += move.x;
 	position.y += move.y;
 	position.z += move.z;
+
+	playerObject->SetRotation(rot);
+	playerObject->SetPosition(position);
+	playerObject->Update();
+
+	particle->UpdateHit(1.0f,true);
+	damageEffect->Update();
 
 }
 
@@ -197,6 +212,9 @@ void Player::OnCollision(const int dmg) {
 
 		hp -= dmg;
 		isInvincible = true;
+
+		damageEffect->SetTimer();
+		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
 	}
 }
 
@@ -205,4 +223,17 @@ void Player::Dodge() {
 		dodgeRot = { 0.0f,0.0f,0.0f };
 		isDodgeInvincible = true;
 	}
+
+	particle->Draw();
+
+	//スプライト描画前処理
+	spriteCommon_->PreDraw();
+	spriteCommon_->Update();
+
+	damageEffect->Draw();
+	//スプライト描画後処理
+	spriteCommon_->PostDraw();
 }
+
+}
+
