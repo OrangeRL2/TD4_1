@@ -77,11 +77,6 @@ void BossEnemy::Move()
 	if (speedAddition_ < speedLim_) {
 		speedAddition_ += 0.001f;
 	}
-	if (OogamiEngine::Input::GetInstance()->PushKey(DIK_D)) {
-		position_.y += gravity_;
-	} else if (position_.y >= -moveLim_) {
-		position_.y -= gravity_;
-	}
 	
 	position_.x += move_.x;
 	position_.y += move_.y;
