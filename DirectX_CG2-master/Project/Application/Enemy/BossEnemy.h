@@ -39,6 +39,11 @@ public:
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// ダメージ
+	/// </summary>
+	void Damage();
+
 public:
 	/// <summary>
 	/// 座標の取得
@@ -77,4 +82,9 @@ private:
 	// 定数
 	const float playerDifference_ = 10.0f;
 	const int attackCoolTime_ = 100;
+
+	// ボスのHP
+	int hp_ = 100;
+	int deathHp_ = 0;
+	int damage_ = 10;
 };
