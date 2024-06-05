@@ -37,6 +37,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 描画(2D)
+	/// </summary>
+	void Draw2D();
+
+	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move();
@@ -104,6 +109,7 @@ private:
 	int hp = hpMax;
 
 	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
 };
 

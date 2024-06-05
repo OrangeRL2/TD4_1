@@ -13,7 +13,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
-	model_ = Model::LoadFromOBJ("fish");;
+	model_ = Model::LoadFromOBJ("Fish");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
 	playerObject->SetModel(model_);
@@ -24,6 +24,8 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 
 	particle = std::make_unique<ParticleManager>();
 	particle->Initialize(Model::LoadFromOBJ("Particle"));
+	dodgeParticle = std::make_unique<ParticleManager>();
+	dodgeParticle->Initialize(Model::LoadFromOBJ("Particle"));
 	damageEffect = std::make_unique<DamageEffect>();
 	damageEffect->Initialize(spriteCommon_);
 }
@@ -38,7 +40,7 @@ void Player::Update() {
 		isInvincible = false;
 	}
 
-	if (input_->TriggerKey(DIK_P)) {
+	if (input_->TriggerKey(DIK_D)) {
 		OnCollision(1);
 	}
 	if (input_->TriggerKey(DIK_A)) {
@@ -159,6 +161,10 @@ void Player::Update() {
 
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
 
+	particle->UpdateHit(1.0f, true);
+	dodgeParticle->UpdateSpin(1.0f);
+	damageEffect->Update();
+
 	playerObject->SetRotation(rot);
 	playerObject->SetPosition(position);
 	playerObject->Update();
@@ -169,6 +175,13 @@ void Player::Draw() {
 	if ((int)invincibleTimer % 2 == 0) {
 		playerObject->Draw();
 	}
+
+	particle->Draw();
+	dodgeParticle->Draw();
+}
+
+void Player::Draw2D() {
+	damageEffect->Draw();
 }
 
 void Player::Move() {
@@ -192,9 +205,6 @@ void Player::Move() {
 	playerObject->SetPosition(position);
 	playerObject->Update();
 
-	particle->UpdateHit(1.0f,true);
-	damageEffect->Update();
-
 }
 
 void Player::OnCollision(const int dmg) {
@@ -202,7 +212,7 @@ void Player::OnCollision(const int dmg) {
 	isHit = true;
 	//無敵時間以外ならダメージ
 	if (!isInvincible) {
-		hp = dmg;
+		hp -= dmg;
 		damageEffect->SetTimer();
 		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
 		isInvincible = true;
@@ -212,19 +222,11 @@ void Player::OnCollision(const int dmg) {
 
 void Player::Dodge() {
 	if (!isDodgeInvincible) {
+		dodgeParticle->AddSpin(position, 0.25f, 60.0f, 0.5f, 10, false);
 		dodgeRot = { 0.0f,0.0f,0.0f };
 		isDodgeInvincible = true;
 	}
 
-	particle->Draw();
-
-	//スプライト描画前処理
-	spriteCommon_->PreDraw();
-	spriteCommon_->Update();
-
-	damageEffect->Draw();
-	//スプライト描画後処理
-	spriteCommon_->PostDraw();
 }
 
 

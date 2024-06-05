@@ -60,8 +60,13 @@ void GamePlayScene::Update() {
 	viewProjection->Update();
 	
 	//クリア処理
-	if (input_->TriggerKey(DIK_TAB)) {
+	if (bossEnemy_->GetHP() <= 0) {
 		clear->OnFlag();
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+			BaseScene* scene = new TitleScene();
+			BaseScene::GetSceneManager()->SetNextScene(scene);
+		}
 	}
 
 	bossEnemy_->Update(player->GetPosition());
@@ -72,7 +77,7 @@ void GamePlayScene::Update() {
 		gameover->OnFlag();
 
 		if (input_->TriggerKey(DIK_SPACE)) {
-			BaseScene* scene = new GamePlayScene();
+			BaseScene* scene = new TitleScene();
 			BaseScene::GetSceneManager()->SetNextScene(scene);
 		}
 	}
@@ -110,11 +115,6 @@ void GamePlayScene::Update() {
 	gameover->Update();
 	clear->Update();
 
-
-	if (player->GetHP() == 0) {
-		BaseScene* scene = new TitleScene();
-		BaseScene::GetSceneManager()->SetNextScene(scene);
-	}
 	
 	//imGuiの更新
 	imGui.Begin();
@@ -136,7 +136,7 @@ void GamePlayScene::Draw() {
 	
 	bossEnemy_->Draw();
 	player->Draw();
-	item_->Draw();
+	//item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
@@ -146,6 +146,7 @@ void GamePlayScene::Draw() {
 
 	gameover->Draw();
 	clear->Draw();
+	player->Draw2D();
 
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
@@ -173,15 +174,13 @@ void GamePlayScene::Collision() {
 				-5 < item_->GetPosition().y - player->GetPosition().y) {
 				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
 					-2 < item_->GetPosition().z - player->GetPosition().z) {
-					bossEnemy_->Damage();
+					//bossEnemy_->Damage();
 				}
 			}
 		}
-		if (player->GetDodge() == true) {
+		if (input_->TriggerKey(DIK_A)) {
 			bossEnemy_->Damage();
 		}
 
-		if (bossEnemy_->GetHP() == 0) {
-			clear->OnFlag();
-		}
+		
 }
