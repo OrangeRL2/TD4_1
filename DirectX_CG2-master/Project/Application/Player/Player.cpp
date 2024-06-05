@@ -14,7 +14,6 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
 	model_ = Model::LoadFromOBJ("fish");;
-	model_ = Model::LoadFromOBJ("WoodenBox");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
 	playerObject->SetModel(model_);
@@ -201,7 +200,7 @@ void Player::OnCollision(const int dmg) {
 	if (!isInvincible) {
 		//const float n = 512.0f;
 
-		hp -= dmg;
+		hp = dmg;
 		damageEffect->SetTimer();
 		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
 		isInvincible = true;
