@@ -13,6 +13,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
+	model_ = Model::LoadFromOBJ("fish");;
 	model_ = Model::LoadFromOBJ("WoodenBox");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
@@ -169,7 +170,7 @@ void Player::Draw() {
 void Player::Move() {
 
 	//速度を決まる
-	move.x = speed + speedBoost;
+	move.x = -speed + speedBoost;
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
