@@ -32,7 +32,7 @@ void TitleScene::Update() {
 
 	//ビュープロジェクション
 	viewProjection->SetEye(cameraPos);
-	viewProjection->SetTarget({ 0,cameraPos.y - 10,0 });
+	viewProjection->SetTarget({ 0,0,0 });
 	viewProjection->Update();
 
 	//シーン遷移処理
@@ -49,7 +49,7 @@ void TitleScene::Update() {
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("TitleScene");
-	ImGui::Text("MousePos : (%f,%f)", mousePos.x, mousePos.y);
+	//ImGui::Text("MousePos : (%f,%f)", mousePos.x, mousePos.y);
 	imGui.End();
 }
 

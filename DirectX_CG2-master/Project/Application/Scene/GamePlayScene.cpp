@@ -8,8 +8,9 @@
 #include "imgui.h"
 
 void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManager, SpriteCommon* spriteCommon, ViewProjection* viewPro) {
-	
+
 	viewProjection = viewPro;
+
 	soundManager_ = soundManager;
 	spriteCommon_ = spriteCommon;
 	dxCommon_ = dxCommon;
@@ -21,11 +22,29 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	SE = SEManager::GetInstance();
 	SE->Initialize(soundManager_);
 
+  stageField_ =
+    std::make_unique<StageField>();
+
+  stageField_->Initialize();
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
 
+	spriteCommon->LoadTexture(0, "white1x1.png");
+	spriteCommon->LoadTexture(1, "GameOver.png");
+	spriteCommon->LoadTexture(2, "Clear.png");
+
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
+
+
+	gameover = std::make_unique<Gameover>();
+	gameover->Initialize(spriteCommon);
+
+	clear = std::make_unique<Clear>();
+	clear->Initialize(spriteCommon);
+
+	item_ = std::make_unique<Item>();
+	item_->Initialize();
 
 }
 
@@ -36,23 +55,50 @@ void GamePlayScene::Finalize() {
 
 void GamePlayScene::Update() {
 
+  stageField_->Update();
+
 	viewProjection->Update();
 	
-	//シーン遷移処理
-	if (input_->TriggerKey(DIK_SPACE)) {
-		BaseScene* scene = new TitleScene();
-		BaseScene::GetSceneManager()->SetNextScene(scene);
+	//クリア処理
+	if (input_->TriggerKey(DIK_TAB)) {
+		clear->OnFlag();
 	}
 
-	bossEnemy_->Update();
+	bossEnemy_->Update(player->GetPosition());
 
 	player->Update();
-	viewProjection->SetTarget(player->GetPosition());
+	//HP0でゲームオーバー
+	if (player->GetHP() <= 0) {
+		gameover->OnFlag();
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+			BaseScene* scene = new GamePlayScene();
+			BaseScene::GetSceneManager()->SetNextScene(scene);
+		}
+	}
+
+	viewProjection->SetTarget({
+		player->GetPosition().x,
+		0,
+		player->GetPosition().z,
+		});
+
+
+	player->Update();
+	bossEnemy_->Update(player->GetPosition());
+	item_->Update(player->GetPosition());
+	viewProjection->SetTarget({ 
+		player->GetPosition().x,
+		0,
+		player->GetPosition().x,
+		});
+
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,
-		player->GetPosition().y,
+		0,
 		player->GetPosition().z + cameraPosition.z
 		});
+
 	viewProjection->Update();
 
 	Collision();
@@ -60,10 +106,16 @@ void GamePlayScene::Update() {
 	if (input_->TriggerKey(DIK_ESCAPE)) {
 		SetEndRequest(true);
 	}
+
+	gameover->Update();
+	clear->Update();
+
+
 	if (player->GetHP() == 0) {
 		BaseScene* scene = new TitleScene();
 		BaseScene::GetSceneManager()->SetNextScene(scene);
 	}
+
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
@@ -79,15 +131,21 @@ void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
 
+  stageField_->Draw();
+	
 	bossEnemy_->Draw();
 	player->Draw();
-	
+	item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
 	//スプライト描画前処理
 	spriteCommon_->PreDraw();
 	spriteCommon_->Update();
+
+	gameover->Draw();
+	clear->Draw();
+
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
 

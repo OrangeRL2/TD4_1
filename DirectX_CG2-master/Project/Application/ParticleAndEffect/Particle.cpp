@@ -17,7 +17,7 @@ void Particle::Initialize(Model* model) {
 	object->SetModel(model);
 }
 
-void Particle::Update(float gamespeed) {
+void Particle::Update(DirectX::XMFLOAT3 moveVal, float gamespeed) {
 
 	if (oneGrain.frame >= oneGrain.num_frame) {
 		isDead = true;
@@ -26,13 +26,10 @@ void Particle::Update(float gamespeed) {
 	oneGrain.frame += gamespeed;
 
 	//速度による移動
-	oneGrain.position.x += oneGrain.velocity.x * speed.x * gamespeed;
-	oneGrain.position.y += oneGrain.velocity.y * speed.y * gamespeed;
-	oneGrain.position.z += oneGrain.velocity.z * speed.z * gamespeed;
-	//回転
-	oneGrain.rotation.x += oneGrain.velocity.x * 30.0f * gamespeed;
-	oneGrain.rotation.y += oneGrain.velocity.y * 30.0f * gamespeed;
-	oneGrain.rotation.z += oneGrain.velocity.z * 30.0f * gamespeed;
+	oneGrain.position.x += oneGrain.velocity.x * speed.x * gamespeed + moveVal.x;
+	oneGrain.position.y += oneGrain.velocity.y * speed.y * gamespeed + moveVal.y;
+	oneGrain.position.z += oneGrain.velocity.z * speed.z * gamespeed + moveVal.z;
+	
 	//進行度を0～1の範囲に換算
 	float f = oneGrain.frame / oneGrain.num_frame;
 	//スケールの線形補間
@@ -40,18 +37,26 @@ void Particle::Update(float gamespeed) {
 	oneGrain.scale += oneGrain.s_scale;
 
 	object->SetPosition(oneGrain.position);
-	object->SetRotation(oneGrain.rotation);
 	object->SetScale({ oneGrain.scale, oneGrain.scale, oneGrain.scale });
 	object->Update();
 
 	if (speed.x > 0) {
 		speed.x += oneGrain.accel.x * gamespeed;
 	}
+	else {
+		speed.x = 0;
+	}
 	if (speed.y > 0) {
 		speed.y += oneGrain.accel.y * gamespeed;
 	}
+	else {
+		speed.y = 0;
+	}
 	if (speed.z > 0) {
 		speed.z += oneGrain.accel.z * gamespeed;
+	}
+	else {
+		speed.z = 0;
 	}
 }
 

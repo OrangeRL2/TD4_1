@@ -14,7 +14,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& velocity);
 
 	/// <summary>
 	/// 更新
@@ -35,5 +35,9 @@ private:
 	DirectX::XMFLOAT3 position_ = { 0,0,0 };
 	DirectX::XMFLOAT3 scale_ = { 1,1,1 };
 	DirectX::XMFLOAT3 rotation_ = { 0,0,0 };
-};
 
+	DirectX::XMFLOAT3 velocity_ = { 0,0,0 };
+	
+	// デスフラグ
+	bool isDead_ = false;
+};
