@@ -45,9 +45,9 @@ private:
 
 
 	//カメラ位置
-	XMFLOAT3 cameraPos = { 20,0,-35 };
+	XMFLOAT3 cameraPos = { 0,0,-50 };
 	//マウスポインター
-	XMFLOAT2 mousePos;
+	//XMFLOAT2 mousePos;
 
 };
 

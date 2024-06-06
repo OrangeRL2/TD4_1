@@ -24,20 +24,30 @@ public:
 	/// <summary>
 	/// 更新(恒常パーティクル)
 	/// </summary>
-	void UpdateAlways(bool isActive, int interval);
+	void UpdateAlways(int interval, bool isActive, bool isBubble);
+
 	/// <summary>
 	/// 更新(ヒットパーティクル)
 	/// </summary>
-	void UpdateHit(float gamespeed);
+	void UpdateHit(float gamespeed, bool isBubble);
+	
+	/// <summary>
+	/// 回転パーティクル更新
+	/// </summary>
+	void UpdateSpin(float gamespeed);
 
 	/// <summary>
 	/// 恒常パーティクル一粒を発生
 	/// </summary>
-	void AddAlways(float life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color = {1,1,1,1});
+	void AddAlways(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, XMFLOAT4 color = {1,1,1,1});
 	/// <summary>
 	/// ヒットパーティクル発生
 	/// </summary>
-	void AddHit(Model* model, int amount, float life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color = {1,1,1,1});
+	void AddHit(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, int amount, XMFLOAT4 color = {1,1,1,1});
+	/// <summary>
+	/// 回転パーティクル発生
+	/// </summary>
+	void AddSpin(XMFLOAT3 position, float start_scale, float life, float cRange, int amount, bool colorful);
 
 	/// <summary>
 	/// 描画
@@ -53,7 +63,24 @@ private:
 	//パーティクル一粒
 	Particle::OneGrain oneGrain;
 	//発生間隔
-	int interval;
+	int interval_;
+
+	//泡パーティクルのランダム移動量
+	float bubbleMoveVal = 0.1f;
+	//泡パーティクルの浮力
+	float bubbleBuoyancy = 0.4f;
+
+	//回転量
+	float rotVal = 0.025f;
+	float rot = 0.0f;
+
+	//回転の大きさ
+	float circleRange = 1.0f;
+
+	//パーティクル量
+	int particleAmount = 0;
+
+	XMFLOAT4 randomColor = { 1,1,1,1 };
 
 };
 

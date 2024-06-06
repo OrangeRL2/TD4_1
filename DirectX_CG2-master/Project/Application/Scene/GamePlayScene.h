@@ -7,6 +7,8 @@
 
 #include "SceneManager.h"
 #include "StageField.h"
+#include "BossEnemy.h"
+#include "Player.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -52,7 +54,14 @@ private:
 
   //ステージフィールド
   std::unique_ptr< StageField > stageField_;
+	std::unique_ptr<BossEnemy> bossEnemy_;
+	std::unique_ptr<Player> player;
 
+	//カメラ位置
+	const XMFLOAT3 cameraPosition = { 0.0f,25.0f,-12.0f };
+
+	//スプライト
+	std::unique_ptr<Sprite> cursorSprite;
   //オブジェクトリスト
   std::vector<Object3d*> blockWoodBoxList_;
 
