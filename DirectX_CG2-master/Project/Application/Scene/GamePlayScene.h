@@ -9,6 +9,7 @@
 #include "StageField.h"
 #include "BossEnemy.h"
 #include "Player.h"
+#include "Item.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -34,6 +35,8 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void Collision();
+
 private:
 
 	//ポインタ
@@ -56,14 +59,19 @@ private:
   std::unique_ptr< StageField > stageField_;
 	std::unique_ptr<BossEnemy> bossEnemy_;
 	std::unique_ptr<Player> player;
+	std::unique_ptr<Item> item_;
 
 	//カメラ位置
 	const XMFLOAT3 cameraPosition = { 0.0f,25.0f,-12.0f };
 
 	//スプライト
 	std::unique_ptr<Sprite> cursorSprite;
+
   //オブジェクトリスト
   std::vector<Object3d*> blockWoodBoxList_;
 
+	//ゲームオーバー画面
+	std::unique_ptr<Gameover> gameover;
+	std::unique_ptr<Clear> clear;
 };
 

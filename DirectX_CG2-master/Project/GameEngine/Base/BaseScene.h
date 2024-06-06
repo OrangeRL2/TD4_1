@@ -15,6 +15,8 @@
 #include "ParticleManager.h"
 #include "NumberUI.h"
 #include "DamageEffect.h"
+#include "Gameover.h"
+#include "Clear.h"
 #include <random>
 
 //前方宣言

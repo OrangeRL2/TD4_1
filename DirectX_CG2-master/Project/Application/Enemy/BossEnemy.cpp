@@ -53,8 +53,10 @@ void BossEnemy::Attack(const DirectX::XMFLOAT3& playerPosition)
 			speed_ = speedAddition_;
 		}
 	}
+
 	// 攻撃を行った後元の位置に戻す
-	if ((playerPosition.x - playerDifference_) <= position_.x) {
+	float distance_ = playerPosition.x - playerDifference_;
+	if (distance_ <= position_.x) {
 		position_.x -= 0.1f;
 	}
 }
@@ -65,16 +67,15 @@ void BossEnemy::Move()
 	move_.x = speed_ + speedBoost_;
 	if (speed_ > speedLim_) {
 		speed_ = speedLim_;
+	}
+	if (speedAddition_ > speedLim_) {
 		speedAddition_ = speedLim_;
 	}
 	if (speed_ < speedLim_) {
 		speed_ += 0.001f;
-		speedAddition_ += 0.001f;
 	}
-	if (OogamiEngine::Input::GetInstance()->PushKey(DIK_D)) {
-		position_.y += gravity_;
-	} else if (position_.y >= -moveLim_) {
-		position_.y -= gravity_;
+	if (speedAddition_ < speedLim_) {
+		speedAddition_ += 0.001f;
 	}
 	
 	position_.x += move_.x;
@@ -82,4 +83,12 @@ void BossEnemy::Move()
 	position_.z += move_.z;
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetRotation(rotation_);
+}
+
+void BossEnemy::Damage()
+{
+	// ボスのダメージ
+	if (hp_ > deathHp_) {
+		hp_ -= damage_;
+	}
 }

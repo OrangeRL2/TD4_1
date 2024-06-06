@@ -20,7 +20,10 @@ void DamageEffect::Update() {
 	whiteSP->Update();
 }
 
+void DamageEffect::SetTimer() {
+	transTimer = transTimerMax;
+}
+
 void DamageEffect::Draw() {
 	whiteSP->Draw();
-
 }
