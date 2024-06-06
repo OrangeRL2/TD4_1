@@ -25,6 +25,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
     std::make_unique<StageField>();
 
   stageField_->Initialize();
+  stageField_->SetViewProjection(*viewProjection);
 }
 
 void GamePlayScene::Finalize() {
@@ -33,11 +34,11 @@ void GamePlayScene::Finalize() {
 }
 
 void GamePlayScene::Update() {
+  viewProjection->CameraMoveVector({ 0,0,0.0f });
+	viewProjection->Update();
 
   stageField_->Update();
 
-	viewProjection->Update();
-	
 	//シーン遷移処理
 	if (input_->TriggerKey(DIK_SPACE)) {
 		BaseScene* scene = new TitleScene();
@@ -60,6 +61,10 @@ void GamePlayScene::Update() {
 void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
+
+    //for(auto& block : stageField_->GetList()) {
+    //  block->Draw();
+    //}
 
   stageField_->Draw();
 	

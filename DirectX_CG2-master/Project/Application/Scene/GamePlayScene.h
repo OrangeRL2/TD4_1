@@ -32,7 +32,6 @@ public:
 	/// </summary>
 	void Draw() override;
 
-	
 private:
 
 	//ポインタ
@@ -53,6 +52,9 @@ private:
 
   //ステージフィールド
   std::unique_ptr< StageField > stageField_;
+
+  //オブジェクトリスト
+  std::vector<Object3d*> blockWoodBoxList_;
 
 };
 
