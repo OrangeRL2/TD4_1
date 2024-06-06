@@ -36,6 +36,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
 
+  stageField_->SetViewProjection(*viewProjection);
 
 	gameover = std::make_unique<Gameover>();
 	gameover->Initialize(spriteCommon);
@@ -54,11 +55,9 @@ void GamePlayScene::Finalize() {
 }
 
 void GamePlayScene::Update() {
-
-  stageField_->Update();
-
+  viewProjection->CameraMoveVector({ 0,0,0.0f });
 	viewProjection->Update();
-	
+
 	//クリア処理
 	if (bossEnemy_->GetHP() <= 0) {
 		clear->OnFlag();
@@ -67,6 +66,8 @@ void GamePlayScene::Update() {
 			BaseScene* scene = new TitleScene();
 			BaseScene::GetSceneManager()->SetNextScene(scene);
 		}
+
+    stageField_->Update();
 	}
 
 	bossEnemy_->Update(player->GetPosition());
@@ -131,6 +132,10 @@ void GamePlayScene::Update() {
 void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
+
+    //for(auto& block : stageField_->GetList()) {
+    //  block->Draw();
+    //}
 
   stageField_->Draw();
 	

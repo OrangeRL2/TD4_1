@@ -45,7 +45,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -66,7 +66,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.001",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -87,7 +87,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.002",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -108,7 +108,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.003",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -129,7 +129,7 @@
         },
         {
             "type": "LIGHT",
-            "name": "Light.001",
+            "name": "Light",
             "transform": {
                 "translation": [
                     4.076245307922363,
@@ -150,7 +150,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.004",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -171,7 +171,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.005",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -192,7 +192,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.006",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -213,7 +213,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.007",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -234,7 +234,7 @@
         },
         {
             "type": "LIGHT",
-            "name": "Light.002",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     4.076245307922363,
@@ -255,7 +255,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.008",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -276,7 +276,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.009",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -297,7 +297,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.010",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -318,7 +318,7 @@
         },
         {
             "type": "MESH",
-            "name": "WoddenBox.011",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
@@ -339,7 +339,7 @@
         },
         {
             "type": "MESH",
-            "name": "box.001_Cube.009",
+            "name": "WoodenBox",
             "transform": {
                 "translation": [
                     0.0,
