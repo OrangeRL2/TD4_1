@@ -157,12 +157,12 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Collision() {
-		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 7 &&
-			-7 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
 			if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
 				-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
-				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 2 &&
-					-2 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
+				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 20 &&
+					-20 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
 					player->OnCollision(1);
 				}
 			}
@@ -179,7 +179,10 @@ void GamePlayScene::Collision() {
 			}
 		}
 		if (input_->TriggerKey(DIK_A)) {
-			bossEnemy_->Damage();
+			for (int i = 0; i < 3; i++) {
+				bossEnemy_->Damage();
+			}
+			
 		}
 
 		

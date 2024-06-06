@@ -113,8 +113,8 @@ void Player::Update() {
 	}
 
 	position.x += velocity.x;
-	position.y += velocity.y;
-	position.z += velocity.z;
+	//position.y += velocity.y;
+	//position.z += velocity.z;
 
 //#pragma endregion
 
@@ -208,7 +208,7 @@ void Player::Move() {
 }
 
 void Player::OnCollision(const int dmg) {
-
+	speed -= 0.02f;
 	isHit = true;
 	//無敵時間以外ならダメージ
 	if (!isInvincible) {
