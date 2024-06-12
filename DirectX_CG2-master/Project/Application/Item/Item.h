@@ -44,6 +44,9 @@ public:
 	/// 効果切り替え
 	/// </summary>
 	void ChangMode();
+
+	
+	void Ability(int playerHp,int bossHp, const DirectX::XMFLOAT3& distance);
 private:
 	Object3d* ItemObj_ = nullptr;
 	Model* ItemModel_ = nullptr;

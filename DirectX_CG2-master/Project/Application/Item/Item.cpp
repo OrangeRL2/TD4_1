@@ -92,3 +92,20 @@ void Item::ChangMode()
 	// 
 	//Heel();
 }
+
+void Item::Ability(int playerHp,int bossHp, const DirectX::XMFLOAT3& distance)
+{
+	if (isDamageBoost == true) {
+		bossHp -= 1;
+	}
+	else if (isHeel == true) {
+		int maxHp = 3;
+		if (maxHp > playerHp) {
+			playerHp += 1;
+		}
+	}
+	else if (isSlow == true) {
+
+	}
+	Move(distance);
+}
