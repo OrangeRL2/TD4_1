@@ -12,6 +12,8 @@
 #include "Object3d.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
+#include "ParticleManager.h"
+#include "DamageEffect.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -100,5 +102,7 @@ private:
 	int hpMax = 5;
 	int hp = hpMax;
 
+	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<DamageEffect> damageEffect;
 };
 
