@@ -44,6 +44,9 @@ public:
 	/// 効果切り替え
 	/// </summary>
 	void ChangMode();
+
+	DirectX::XMFLOAT3 GetPosition() { return position_; }
+
 private:
 	Object3d* ItemObj_ = nullptr;
 	Model* ItemModel_ = nullptr;

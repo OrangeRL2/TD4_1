@@ -36,6 +36,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
 
+  stageField_->SetViewProjection(*viewProjection);
 
 	gameover = std::make_unique<Gameover>();
 	gameover->Initialize(spriteCommon);
@@ -54,14 +55,19 @@ void GamePlayScene::Finalize() {
 }
 
 void GamePlayScene::Update() {
-
-  stageField_->Update();
-
+  viewProjection->CameraMoveVector({ 0,0,0.0f });
 	viewProjection->Update();
-	
+
 	//クリア処理
-	if (input_->TriggerKey(DIK_TAB)) {
+	if (bossEnemy_->GetHP() <= 0) {
 		clear->OnFlag();
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+			BaseScene* scene = new TitleScene();
+			BaseScene::GetSceneManager()->SetNextScene(scene);
+		}
+
+    stageField_->Update();
 	}
 
 	bossEnemy_->Update(player->GetPosition());
@@ -72,7 +78,7 @@ void GamePlayScene::Update() {
 		gameover->OnFlag();
 
 		if (input_->TriggerKey(DIK_SPACE)) {
-			BaseScene* scene = new GamePlayScene();
+			BaseScene* scene = new TitleScene();
 			BaseScene::GetSceneManager()->SetNextScene(scene);
 		}
 	}
@@ -110,12 +116,7 @@ void GamePlayScene::Update() {
 	gameover->Update();
 	clear->Update();
 
-
-	if (player->GetHP() == 0) {
-		BaseScene* scene = new TitleScene();
-		BaseScene::GetSceneManager()->SetNextScene(scene);
-	}
-
+	
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
@@ -123,6 +124,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("player pos y %f",player->GetPosition().y);
 	ImGui::Text("enemy pos y %f",bossEnemy_->GetPosition().y);
 	ImGui::Text("hp %d",player->GetHP());
+	ImGui::Text("boss hp %d",bossEnemy_->GetHP());
 	imGui.End();
 }
 
@@ -131,11 +133,15 @@ void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
 
+    //for(auto& block : stageField_->GetList()) {
+    //  block->Draw();
+    //}
+
   stageField_->Draw();
 	
 	bossEnemy_->Draw();
 	player->Draw();
-	item_->Draw();
+	//item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
@@ -145,6 +151,7 @@ void GamePlayScene::Draw() {
 
 	gameover->Draw();
 	clear->Draw();
+	player->Draw2D();
 
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
@@ -155,15 +162,33 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Collision() {
-		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 7 &&
-			-7 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
 			if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
 				-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
-				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 2 &&
-					-2 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
+				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 20 &&
+					-20 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
 					player->OnCollision(1);
 				}
 			}
 		}
 
+		if (item_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < item_->GetPosition().x - player->GetPosition().x) {
+			if (item_->GetPosition().y - player->GetPosition().y < 5 &&
+				-5 < item_->GetPosition().y - player->GetPosition().y) {
+				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
+					-2 < item_->GetPosition().z - player->GetPosition().z) {
+					//bossEnemy_->Damage();
+				}
+			}
+		}
+		if (input_->TriggerKey(DIK_A)) {
+			for (int i = 0; i < 3; i++) {
+				bossEnemy_->Damage();
+			}
+			
+		}
+
+		
 }

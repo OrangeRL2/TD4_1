@@ -37,6 +37,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 描画(2D)
+	/// </summary>
+	void Draw2D();
+
+	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move();
@@ -53,6 +58,7 @@ public:
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
+	bool GetDodge() { return isDodgeInvincible; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -103,6 +109,7 @@ private:
 	int hp = hpMax;
 
 	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
 };
 

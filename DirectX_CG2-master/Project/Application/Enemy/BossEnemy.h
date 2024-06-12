@@ -39,6 +39,11 @@ public:
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// ダメージ
+	/// </summary>
+	void Damage();
+
 public:
 	/// <summary>
 	/// 座標の取得
@@ -48,6 +53,7 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 
 	DirectX::XMFLOAT3 GetPosition() { return position_; }
+	int GetHP() { return hp_; }
 private:
 	Object3d* bossEnemyObj_ = nullptr;
 	Model* bossEnemyModel_ = nullptr;
@@ -77,4 +83,9 @@ private:
 	// 定数
 	const float playerDifference_ = 10.0f;
 	const int attackCoolTime_ = 100;
+
+	// ボスのHP
+	int hp_ = 100;
+	int deathHp_ = 0;
+	int damage_ = 10;
 };

@@ -13,8 +13,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
 	scale = { 1.0f,1.0f,1.0f };
-	model_ = Model::LoadFromOBJ("fish");;
-	model_ = Model::LoadFromOBJ("WoodenBox");
+	model_ = Model::LoadFromOBJ("Fish");
 	playerObject = std::make_unique<Object3d>();
 	playerObject->Initialize();
 	playerObject->SetModel(model_);
@@ -25,6 +24,8 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 
 	particle = std::make_unique<ParticleManager>();
 	particle->Initialize(Model::LoadFromOBJ("Particle"));
+	dodgeParticle = std::make_unique<ParticleManager>();
+	dodgeParticle->Initialize(Model::LoadFromOBJ("Particle"));
 	damageEffect = std::make_unique<DamageEffect>();
 	damageEffect->Initialize(spriteCommon_);
 }
@@ -39,7 +40,7 @@ void Player::Update() {
 		isInvincible = false;
 	}
 
-	if (input_->TriggerKey(DIK_P)) {
+	if (input_->TriggerKey(DIK_D)) {
 		OnCollision(1);
 	}
 	if (input_->TriggerKey(DIK_A)) {
@@ -112,8 +113,8 @@ void Player::Update() {
 	}
 
 	position.x += velocity.x;
-	position.y += velocity.y;
-	position.z += velocity.z;
+	//position.y += velocity.y;
+	//position.z += velocity.z;
 
 //#pragma endregion
 
@@ -126,12 +127,20 @@ void Player::Update() {
 	}
 
 	//動き
-	if (input_->PushKey(DIK_D)) {
+	if (input_->PushKey(DIK_W)) {
 		if (turnSpeed < 10.0f)
 		{
 			turnSpeed += 1.0f;
 		}
 		position.y += gravity;
+	}
+
+	if (input_->PushKey(DIK_S)) {
+		if (turnSpeed > -10.0f)
+		{
+			turnSpeed -= 1.0f;
+		}
+		position.y -= gravity;
 	}
 	//上に泳いでない時に下に動く
 	else if (position.y >= -moveLim) {
@@ -139,10 +148,7 @@ void Player::Update() {
 		{
 			turnSpeed -= 1.0f;
 		}
-		position.y -= gravity;
-	}
-	if (position.y >= moveLim) {
-		position.y -= gravity;
+
 	}
 
 	//ローテーションを元に戻す
@@ -155,6 +161,10 @@ void Player::Update() {
 
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
 
+	particle->UpdateHit(1.0f, true);
+	dodgeParticle->UpdateSpin(1.0f);
+	damageEffect->Update();
+
 	playerObject->SetRotation(rot);
 	playerObject->SetPosition(position);
 	playerObject->Update();
@@ -165,12 +175,19 @@ void Player::Draw() {
 	if ((int)invincibleTimer % 2 == 0) {
 		playerObject->Draw();
 	}
+
+	particle->Draw();
+	dodgeParticle->Draw();
+}
+
+void Player::Draw2D() {
+	damageEffect->Draw();
 }
 
 void Player::Move() {
 
 	//速度を決まる
-	move.x = -speed + speedBoost;
+	move.x = speed + speedBoost;
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
@@ -178,7 +195,6 @@ void Player::Move() {
 	if (speed < speedLim)
 	{
 		speed += 0.001f;
-
 	}
 
 	position.x += move.x;
@@ -189,18 +205,13 @@ void Player::Move() {
 	playerObject->SetPosition(position);
 	playerObject->Update();
 
-	particle->UpdateHit(1.0f,true);
-	damageEffect->Update();
-
 }
 
 void Player::OnCollision(const int dmg) {
-
+	speed -= 0.02f;
 	isHit = true;
 	//無敵時間以外ならダメージ
 	if (!isInvincible) {
-		//const float n = 512.0f;
-
 		hp -= dmg;
 		damageEffect->SetTimer();
 		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
@@ -211,19 +222,11 @@ void Player::OnCollision(const int dmg) {
 
 void Player::Dodge() {
 	if (!isDodgeInvincible) {
+		dodgeParticle->AddSpin(position, 0.25f, 60.0f, 0.5f, 10, false);
 		dodgeRot = { 0.0f,0.0f,0.0f };
 		isDodgeInvincible = true;
 	}
 
-	particle->Draw();
-
-	//スプライト描画前処理
-	spriteCommon_->PreDraw();
-	spriteCommon_->Update();
-
-	damageEffect->Draw();
-	//スプライト描画後処理
-	spriteCommon_->PostDraw();
 }
 
 

@@ -84,3 +84,11 @@ void BossEnemy::Move()
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetRotation(rotation_);
 }
+
+void BossEnemy::Damage()
+{
+	// ボスのダメージ
+	if (hp_ > deathHp_) {
+		hp_ -= damage_;
+	}
+}

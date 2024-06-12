@@ -37,7 +37,6 @@ public:
 
 	void Collision();
 
-	
 private:
 
 	//ポインタ
@@ -67,6 +66,9 @@ private:
 
 	//スプライト
 	std::unique_ptr<Sprite> cursorSprite;
+
+  //オブジェクトリスト
+  std::vector<Object3d*> blockWoodBoxList_;
 
 	//ゲームオーバー画面
 	std::unique_ptr<Gameover> gameover;
