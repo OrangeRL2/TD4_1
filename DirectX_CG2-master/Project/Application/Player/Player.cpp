@@ -34,6 +34,8 @@ void Player::Update() {
 	Move();
 	//Dodge();
 
+	
+
 	invincibleTimer--;
 	if (invincibleTimer <= 0) {
 		invincibleTimer = invincibleTimerMax;
@@ -48,14 +50,18 @@ void Player::Update() {
 			Dodge();
 		}
 	}
-//#pragma endregion
+	//#pragma endregion
 
-//#pragma region dodge
+	//#pragma region dodge
 	if (isDodgeInvincible == true) {
 		dodgeTimer -= 5.0f;
 		invincibleTimer -= 0.0f;
+		std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 
-//#pragma region rotate
+		newAfterimage->Initialize(spriteCommon_, viewProjection, position);
+
+		afterimage_.push_back(std::move(newAfterimage));
+		//#pragma region rotate
 
 		const float rotationSpeed = 50.0f;
 
@@ -66,7 +72,7 @@ void Player::Update() {
 		dodgeRot.x += rotation.x;
 		dodgeRot.y += rotation.y;
 		dodgeRot.z += rotation.z;
-//#pragma endregion
+		//#pragma endregion
 
 		isHitMap = false;
 
@@ -119,10 +125,10 @@ void Player::Update() {
 //#pragma endregion
 
 	if (moveSpeed <= 0) {
-	/*	if (dodgeRot.z != 0.0f) {
-			dodgeRot.z -= 1.0f;
-		}*/
-		
+		/*	if (dodgeRot.z != 0.0f) {
+				dodgeRot.z -= 1.0f;
+			}*/
+
 		rot.z = turnSpeed;
 	}
 
@@ -168,6 +174,14 @@ void Player::Update() {
 	playerObject->SetRotation(rot);
 	playerObject->SetPosition(position);
 	playerObject->Update();
+
+	for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+	{
+		object0->Update();
+	}
+	afterimage_.remove_if([](std::unique_ptr<Afterimage>& object0) {
+		return object0->GetActive();
+		});
 }
 
 void Player::Draw() {
@@ -178,6 +192,10 @@ void Player::Draw() {
 
 	particle->Draw();
 	dodgeParticle->Draw();
+	for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+	{
+		object0->Draw();
+	}
 }
 
 void Player::Draw2D() {
@@ -225,8 +243,10 @@ void Player::Dodge() {
 		dodgeParticle->AddSpin(position, 0.25f, 60.0f, 0.5f, 10, false);
 		dodgeRot = { 0.0f,0.0f,0.0f };
 		isDodgeInvincible = true;
+		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+		{
+			object0->Delete();
+		}
 	}
 
 }
-
-

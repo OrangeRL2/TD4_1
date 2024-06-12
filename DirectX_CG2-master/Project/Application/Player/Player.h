@@ -14,6 +14,7 @@
 #include "ViewProjection.h"
 #include "ParticleManager.h"
 #include "DamageEffect.h"
+#include "Afterimage.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -93,7 +94,7 @@ private:
 	float invincibleTimer = invincibleTimerMax;
 	bool isInvincible = false;
 
-	
+
 	//回避関連
 	bool isDodge = false;
 	bool isDodgeInvincible = false;
@@ -111,5 +112,5 @@ private:
 	std::unique_ptr<ParticleManager> particle;
 	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
+	std::list<std::unique_ptr<Afterimage>> afterimage_;
 };
-
