@@ -44,6 +44,14 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	clear = std::make_unique<Clear>();
 	clear->Initialize(spriteCommon);
 
+	ground = std::make_unique<Ground>();
+	ground->Initialize(Model::LoadFromOBJ("Ground"));
+
+	coral = std::make_unique<BackObject>();
+	coral->Initialize(Model::LoadFromOBJ("Coral"), 30, 200, -20.0f);
+	box = std::make_unique<BackObject>();
+	box->Initialize(Model::LoadFromOBJ("WoodenBox"), 10, 100, -15.0f);
+
 	item_ = std::make_unique<Item>();
 	item_->Initialize();
 
@@ -105,6 +113,9 @@ void GamePlayScene::Update() {
 		player->GetPosition().z + cameraPosition.z
 		});
 
+	//viewProjection->SetEye({0,0,-20});
+	//viewProjection->SetTarget({0,0,0});
+
 	viewProjection->Update();
 
 	Collision();
@@ -116,6 +127,9 @@ void GamePlayScene::Update() {
 	gameover->Update();
 	clear->Update();
 
+	ground->Update(player->GetPosition());
+	coral->Update(player->GetPosition());
+	box->Update(player->GetPosition());
 	
 	//imGuiの更新
 	imGui.Begin();
@@ -137,10 +151,15 @@ void GamePlayScene::Draw() {
     //  block->Draw();
     //}
 
-  stageField_->Draw();
+  //stageField_->Draw();
 	
 	bossEnemy_->Draw();
 	player->Draw();
+
+	ground->Draw();
+	coral->Draw();
+	box->Draw();
+	
 	//item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();

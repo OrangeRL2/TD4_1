@@ -44,7 +44,7 @@ private:
 	BaseScene* scene_ = nullptr;
 	//次のシーン
 	BaseScene* nextScene_ = nullptr;
-
+	
 	bool endRequest_ = false;
 };
 

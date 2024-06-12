@@ -127,8 +127,8 @@ void ParticleManager::AddHit(XMFLOAT3 position, float start_scale, float life, i
 	}
 }
 
-void ParticleManager::UpdateSpin(float gamespeed) {
-
+void ParticleManager::UpdateSpin(XMFLOAT3 position, float gamespeed) {
+	position;
 	//寿命が尽きたパーティクルを全削除
 	particle.remove_if([](std::unique_ptr<Particle>& p) {
 		return p->GetIsDead();
@@ -144,10 +144,12 @@ void ParticleManager::UpdateSpin(float gamespeed) {
 
 	for (std::unique_ptr<Particle>& p : particle) {
 		DirectX::XMFLOAT3 moveVal = { 0,0,0 };
+		//進行度を0～1の範囲に換算
+		float f = p->oneGrain.frame / p->oneGrain.num_frame;
 
-		p->oneGrain.velocity = {
-				(float)cos((2.0f / (float)particleAmount * p->oneGrain.num + rot) * MyMath::PI) * circleRange,
-				(float)-sin((2.0f / (float)particleAmount * p->oneGrain.num + rot) * MyMath::PI) * circleRange,
+		p->oneGrain.position = {
+				position.x + (float)cos((2.0f / particleAmount * p->oneGrain.num + rot) * MyMath::PI) * MyMath::easeOutCubic(f) * circleRange,
+				position.y + (float)-sin((2.0f / particleAmount * p->oneGrain.num + rot) * MyMath::PI) * MyMath::easeOutCubic(f) * circleRange,
 				0,
 		};
 
@@ -185,12 +187,12 @@ void ParticleManager::AddSpin(XMFLOAT3 position, float start_scale, float life, 
 		p->oneGrain.s_scale = start_scale;
 		p->oneGrain.e_scale = 0;
 		p->SetColor(randomColor);
-		p->oneGrain.velocity = {
+	/*	p->oneGrain.velocity = {
 			(float)sin((2.0f / amount * i) * MyMath::PI),
 			(float)cos((2.0f / amount * i) * MyMath::PI),
 			0,
 		};
-		
+		*/
 		//パーティクルを登録する
 		particle.push_back(std::move(p));
 	}

@@ -34,7 +34,7 @@ public:
 	/// <summary>
 	/// 回転パーティクル更新
 	/// </summary>
-	void UpdateSpin(float gamespeed);
+	void UpdateSpin(XMFLOAT3 position, float gamespeed);
 
 	/// <summary>
 	/// 恒常パーティクル一粒を発生

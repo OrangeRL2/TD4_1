@@ -79,7 +79,7 @@ private:
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 
 	float moveLim = 10.0f;
-	float speedLim = 2.0f;
+	float speedLim = 1.0f;
 	float turnSpeed = 0.0f;
 	float speed = 0.0f;
 	float speedBoost = 0.0f;
