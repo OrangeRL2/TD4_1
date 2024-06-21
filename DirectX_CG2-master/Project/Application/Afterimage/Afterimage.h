@@ -11,6 +11,7 @@
 #include "Model.h"
 #include "Object3d.h"
 #include "WinApp.h"
+#include "MyMath.h"
 #include "ViewProjection.h"
 #include "ParticleManager.h"
 #include "DamageEffect.h"
@@ -56,5 +57,7 @@ private:
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 
 	bool isInactive = false;
+	int time = 0;
+	std::random_device rnd;
 };
 
