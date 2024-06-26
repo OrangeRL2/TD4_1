@@ -14,6 +14,8 @@
 #include "ViewProjection.h"
 #include "ParticleManager.h"
 #include "DamageEffect.h"
+#include "Afterimage.h"
+#include "DodgeEffect.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -49,7 +51,9 @@ public:
 	/// 回避
 	/// </summary>
 	void Dodge();
-
+	void DodgeActive();
+	void Dodge2();
+	void DodgeOnHit();
 	/// <summary>
 	/// 接触時の処理
 	/// </summary>
@@ -85,7 +89,16 @@ private:
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
-
+	//dodge2
+	int spaceTimer = 0;
+	float frame = 0.0f;
+	int easingFlag = 0;
+	float endFrame = 7.0f;
+	float startX = 20.0f;
+	float endX = 500.0f;
+	float x = 0.0f;
+	int afterFlag[200] = {};
+	float easingPos = 0.0f;
 	//ヒット判定
 	bool isHit = false;
 	//無敵時間
@@ -93,7 +106,7 @@ private:
 	float invincibleTimer = invincibleTimerMax;
 	bool isInvincible = false;
 
-	
+
 	//回避関連
 	bool isDodge = false;
 	bool isDodgeInvincible = false;
@@ -111,5 +124,8 @@ private:
 	std::unique_ptr<ParticleManager> particle;
 	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
-};
+	std::list<std::unique_ptr<Afterimage>> afterimage_;
+	std::list<std::unique_ptr<DodgeEffect>> dodgeEffect_;
 
+	std::random_device rnd;
+};
