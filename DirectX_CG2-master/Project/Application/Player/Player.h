@@ -15,6 +15,7 @@
 #include "ParticleManager.h"
 #include "DamageEffect.h"
 #include "Afterimage.h"
+#include "DodgeEffect.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -52,6 +53,7 @@ public:
 	void Dodge();
 	void DodgeActive();
 	void Dodge2();
+	void DodgeOnHit();
 	/// <summary>
 	/// 接触時の処理
 	/// </summary>
@@ -91,7 +93,7 @@ private:
 	int spaceTimer = 0;
 	float frame = 0.0f;
 	int easingFlag = 0;
-	float endFrame = 10.0f;
+	float endFrame = 7.0f;
 	float startX = 20.0f;
 	float endX = 500.0f;
 	float x = 0.0f;
@@ -123,6 +125,7 @@ private:
 	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
 	std::list<std::unique_ptr<Afterimage>> afterimage_;
+	std::list<std::unique_ptr<DodgeEffect>> dodgeEffect_;
 
 	std::random_device rnd;
 };

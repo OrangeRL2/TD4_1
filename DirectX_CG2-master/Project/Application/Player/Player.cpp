@@ -104,6 +104,11 @@ void Player::Update() {
 	{
 		object0->Update();
 	}
+
+	for (std::unique_ptr<DodgeEffect>& object1 : dodgeEffect_)
+	{
+		object1->Update();
+	}
 	afterimage_.remove_if([](std::unique_ptr<Afterimage>& object0) {
 		return object0->GetActive();
 		});
@@ -120,6 +125,11 @@ void Player::Draw() {
 	for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 	{
 		object0->Draw();
+	}
+
+	for (std::unique_ptr<DodgeEffect>& object1 : dodgeEffect_)
+	{
+		object1->Draw();
 	}
 }
 
@@ -139,8 +149,16 @@ void Player::Move() {
 	{
 		speed += 0.001f;
 	}
-	if (speed == speedLim) {
-
+	if (speed >= speedLim/3) {
+		std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
+		newAfterimage->Initialize(spriteCommon_, viewProjection, position);
+		afterimage_.push_back(std::move(newAfterimage));
+	}
+	else{
+		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+		{
+			object0->Delete();
+		}
 	}
 	position.x += move.x + easingPos;
 	position.y += move.y;
@@ -153,7 +171,7 @@ void Player::Move() {
 }
 
 void Player::OnCollision(const int dmg) {
-	speed -= 0.02f;
+	speed -= 0.05f;
 	isHit = true;
 	//無敵時間以外ならダメージ
 	if (!isInvincible) {
@@ -164,7 +182,6 @@ void Player::OnCollision(const int dmg) {
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 		{
 			object0->Delete();
-
 		}
 	}
 }
@@ -263,6 +280,11 @@ void Player::Dodge2() {
 				{
 					object0->Delete();
 				}
+
+				for (std::unique_ptr<DodgeEffect>& object1 : dodgeEffect_)
+				{
+					object1->Delete();
+				}
 			}
 		}
 	}
@@ -278,24 +300,44 @@ void Player::Dodge2() {
 				std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 				newAfterimage->Initialize(spriteCommon_, viewProjection, position);
 				afterimage_.push_back(std::move(newAfterimage));
+
+				
 				afterFlag[i] = 1;
 				break;
 			}
 		}
 		frame++;
 		if (frame <= endFrame / 4) {
-			easingPos += 0.4f;
+			easingPos += 0.55f;
 		}
 		if (frame >= endFrame / 4) {
-		easingPos += 0.001f;
+		easingPos += 0.0f;
 		}
 		if (frame >= endFrame / 2) {
-			easingPos += 0.0001f;
+			easingPos += 0.0f;
 		}
+		std::unique_ptr<DodgeEffect>newDodgeEffect = std::make_unique<DodgeEffect>();
+		newDodgeEffect->Initialize(spriteCommon_, viewProjection, position);
+		dodgeEffect_.push_back(std::move(newDodgeEffect));
 	}
 	if (frame == endFrame) {
 		easingFlag = 0;
 		easingPos += 0.0f;
+
 	}
 	
+}
+void Player::DodgeOnHit() {
+	if (spaceTimer == 0) {
+			spaceTimer = 50;
+
+			easingFlag = 1;
+			frame = 0;
+			for (int i = 0; i < 200; i++) {
+				for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+				{
+					object0->Delete();
+				}
+			}
+		}
 }

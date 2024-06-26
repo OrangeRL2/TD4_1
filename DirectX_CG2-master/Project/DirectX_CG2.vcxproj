@@ -106,6 +106,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application\Afterimage\Afterimage.cpp" />
+    <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
     <ClCompile Include="Application\Enemy\BossEnemy.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Clear.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Gameover.cpp" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Afterimage\Afterimage.h" />
+    <ClInclude Include="Application\Afterimage\DodgeEffect.h" />
     <ClInclude Include="Application\Enemy\BossEnemy.h" />
     <ClInclude Include="Application\ParticleAndEffect\Clear.h" />
     <ClInclude Include="Application\ParticleAndEffect\Gameover.h" />
