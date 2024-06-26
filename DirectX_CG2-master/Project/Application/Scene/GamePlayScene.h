@@ -79,5 +79,10 @@ private:
 	//背景オブジェクト
 	std::unique_ptr<BackObject> coral;
 	std::unique_ptr<BackObject> box;
+	//泡パーティクル
+	std::unique_ptr<ParticleManager> bubble;
+
+	//天球
+	std::unique_ptr<Skydome> skydome;
 };
 

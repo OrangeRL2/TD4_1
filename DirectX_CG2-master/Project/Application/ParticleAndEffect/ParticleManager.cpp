@@ -51,7 +51,7 @@ void ParticleManager::UpdateAlways(int interval, bool isActive, bool isBubble) {
 		if (isBubble) {
 			moveVal = {
 				MyMath::RandomFloat(-bubbleMoveVal, bubbleMoveVal),
-				MyMath::RandomFloat(bubbleBuoyancy, bubbleBuoyancy * 1.25f),
+				bubbleBuoyancy,
 				MyMath::RandomFloat(-bubbleMoveVal, bubbleMoveVal),
 			};
 		}
@@ -88,7 +88,7 @@ void ParticleManager::UpdateHit(float gamespeed, bool isBubble) {
 		if (isBubble) {
 			moveVal = {
 				MyMath::RandomFloat(-bubbleMoveVal,bubbleMoveVal),
-				MyMath::RandomFloat(bubbleBuoyancy,bubbleBuoyancy * 1.25f),
+				MyMath::RandomFloat(bubbleBuoyancy / 2,bubbleBuoyancy),
 				MyMath::RandomFloat(-bubbleMoveVal,bubbleMoveVal),
 			};
 		}

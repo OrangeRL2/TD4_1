@@ -66,9 +66,9 @@ private:
 	int interval_;
 
 	//泡パーティクルのランダム移動量
-	float bubbleMoveVal = 0.1f;
+	float bubbleMoveVal = 0.5f;
 	//泡パーティクルの浮力
-	float bubbleBuoyancy = 0.2f;
+	float bubbleBuoyancy = 0.5f;
 
 	//回転量
 	float rotVal = 0.025f;

@@ -52,8 +52,14 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	box = std::make_unique<BackObject>();
 	box->Initialize(Model::LoadFromOBJ("WoodenBox"), 10, 100, -15.0f);
 
+	skydome = std::make_unique<Skydome>();
+	skydome->Initialize(Model::LoadFromOBJ("Skydome"));
+
 	item_ = std::make_unique<Item>();
 	item_->Initialize();
+
+	bubble = std::make_unique<ParticleManager>();
+	bubble->Initialize(Model::LoadFromOBJ("Particle"));
 
 }
 
@@ -127,9 +133,19 @@ void GamePlayScene::Update() {
 	gameover->Update();
 	clear->Update();
 
+	//景観オブジェクト
 	ground->Update(player->GetPosition());
 	coral->Update(player->GetPosition());
 	box->Update(player->GetPosition());
+	skydome->Update(player->GetPosition());
+
+	DirectX::XMFLOAT3 bubblePos = {
+		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
+		MyMath::RandomFloat(player->GetPosition().y - 20.0f,player->GetPosition().y),
+		MyMath::RandomFloat(player->GetPosition().z,player->GetPosition().z + 100.0f),
+	};
+	bubble->AddAlways(bubblePos, 2.0f, 300.0f,{1,1,1,0.51f});
+	bubble->UpdateAlways(10, true, true);
 	
 	//imGuiの更新
 	imGui.Begin();
@@ -159,6 +175,8 @@ void GamePlayScene::Draw() {
 	ground->Draw();
 	coral->Draw();
 	box->Draw();
+	skydome->Draw();
+	bubble->Draw();
 	
 	//item_->Draw();
 	//3Dオブジェクト描画後処理
