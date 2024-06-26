@@ -69,7 +69,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\StageObject\StageField;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)Application\Afterimage;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\StageObject\StageField;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -91,7 +91,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\StageObject\StageField;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameEngine;$(ProjectDir)Application;$(ProjectDir)Application\Afterimage;$(ProjectDir)GameEngine\2d;$(ProjectDir)GameEngine\3d;$(ProjectDir)GameEngine\Audio;$(ProjectDir)GameEngine\Base;$(ProjectDir)GameEngine\Camera;$(ProjectDir)GameEngine\ImGui;$(ProjectDir)GameEngine\Input;$(ProjectDir)GameEngine\PostEffect;$(ProjectDir)Application\Collision;$(ProjectDir)Application\Enemy;$(ProjectDir)Application\Item;$(ProjectDir)Application\LevelLoader;$(ProjectDir)Application\ParticleAndEffect;$(ProjectDir)Application\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Application\StageObject;$(ProjectDir)Application\UI;$(ProjectDir)Application\StageObject\StageField;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -105,6 +105,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\Afterimage\Afterimage.cpp" />
+    <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
     <ClCompile Include="Application\Enemy\BossEnemy.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Clear.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Gameover.cpp" />
@@ -192,6 +194,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application\Afterimage\Afterimage.h" />
+    <ClInclude Include="Application\Afterimage\DodgeEffect.h" />
     <ClInclude Include="Application\Enemy\BossEnemy.h" />
     <ClInclude Include="Application\ParticleAndEffect\Clear.h" />
     <ClInclude Include="Application\ParticleAndEffect\Gameover.h" />

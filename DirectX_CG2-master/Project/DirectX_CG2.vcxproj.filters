@@ -9,6 +9,7 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application\Afterimage\Afterimage.cpp" />
     <ClCompile Include="Application\Enemy\BossEnemy.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Clear.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\Gameover.cpp" />
@@ -51,6 +52,10 @@
     <ClCompile Include="Application\StageObject\StageField\Skydome.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application\Afterimage\Afterimage.h" />
     <ClInclude Include="Application\Enemy\BossEnemy.h" />
     <ClInclude Include="Application\ParticleAndEffect\Clear.h" />
     <ClInclude Include="Application\ParticleAndEffect\Gameover.h" />
@@ -90,6 +95,7 @@
     <ClInclude Include="GameEngine\ObjectLoader.h" />
     <ClInclude Include="Application\StageObject\BackObject.h" />
     <ClInclude Include="Application\StageObject\StageField\Skydome.h" />
+    <ClInclude Include="Application\Afterimage\DodgeEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitattributes" />

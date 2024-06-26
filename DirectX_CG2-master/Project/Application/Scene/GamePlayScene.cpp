@@ -203,9 +203,10 @@ void GamePlayScene::Collision() {
 			-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
 			if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
 				-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
-				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 20 &&
-					-20 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
+				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 15 &&
+					-15 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
 					player->OnCollision(1);
+					player->DodgeOnHit();
 				}
 			}
 		}
