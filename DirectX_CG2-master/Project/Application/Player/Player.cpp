@@ -93,7 +93,7 @@ void Player::Update() {
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
 
 	particle->UpdateHit(1.0f, true);
-	dodgeParticle->UpdateSpin(1.0f);
+	dodgeParticle->UpdateSpin(position, 1.0f);
 	damageEffect->Update();
 
 	playerObject->SetRotation(rot);
@@ -149,10 +149,10 @@ void Player::Move() {
 	{
 		speed += 0.001f;
 	}
-	if (speed >= speedLim/3) {
-		std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
+	if (speed >= speedLim/2) {
+		/*std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 		newAfterimage->Initialize(spriteCommon_, viewProjection, position);
-		afterimage_.push_back(std::move(newAfterimage));
+		afterimage_.push_back(std::move(newAfterimage));*/
 	}
 	else{
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
@@ -177,7 +177,7 @@ void Player::OnCollision(const int dmg) {
 	if (!isInvincible) {
 		hp -= dmg;
 		damageEffect->SetTimer();
-		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
+		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
 		isInvincible = true;
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 		{
@@ -296,12 +296,12 @@ void Player::Dodge2() {
 	if (easingFlag == 1) {
 		for (int i = 0; i < 200; i++) {
 			if (afterFlag[i] == 0) {
-				
+
 				std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 				newAfterimage->Initialize(spriteCommon_, viewProjection, position);
 				afterimage_.push_back(std::move(newAfterimage));
 
-				
+
 				afterFlag[i] = 1;
 				break;
 			}
@@ -311,7 +311,7 @@ void Player::Dodge2() {
 			easingPos += 0.55f;
 		}
 		if (frame >= endFrame / 4) {
-		easingPos += 0.0f;
+			easingPos += 0.0f;
 		}
 		if (frame >= endFrame / 2) {
 			easingPos += 0.0f;
@@ -325,8 +325,9 @@ void Player::Dodge2() {
 		easingPos += 0.0f;
 
 	}
-	
+
 }
+
 void Player::DodgeOnHit() {
 	if (spaceTimer == 0) {
 			spaceTimer = 50;

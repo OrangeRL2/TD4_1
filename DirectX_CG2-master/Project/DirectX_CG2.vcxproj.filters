@@ -18,6 +18,7 @@
     <ClCompile Include="Application\Enemy\BossEnemyBullet.cpp" />
     <ClCompile Include="Application\Scene\GamePlayScene.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
+    <ClCompile Include="Application\StageObject\Ground.cpp" />
     <ClCompile Include="Application\UI\Button.cpp" />
     <ClCompile Include="Application\SEManager.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\DamageEffect.cpp" />
@@ -47,6 +48,10 @@
     <ClCompile Include="Application\UI\NumberUI.cpp" />
     <ClCompile Include="Application\StageObject\StageField\StageField.cpp" />
     <ClCompile Include="GameEngine\ObjectLoader.cpp" />
+    <ClCompile Include="Application\StageObject\BackObject.cpp" />
+    <ClCompile Include="Application\StageObject\StageField\Skydome.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +64,7 @@
     <ClInclude Include="Application\Enemy\BossEnemyBullet.h" />
     <ClInclude Include="Application\Scene\GamePlayScene.h" />
     <ClInclude Include="Application\Scene\TitleScene.h" />
+    <ClInclude Include="Application\StageObject\Ground.h" />
     <ClInclude Include="Application\UI\Button.h" />
     <ClInclude Include="Application\SEManager.h" />
     <ClInclude Include="Application\ParticleAndEffect\DamageEffect.h" />
@@ -87,6 +93,8 @@
     <ClInclude Include="Application\UI\NumberUI.h" />
     <ClInclude Include="Application\StageObject\StageField\StageField.h" />
     <ClInclude Include="GameEngine\ObjectLoader.h" />
+    <ClInclude Include="Application\StageObject\BackObject.h" />
+    <ClInclude Include="Application\StageObject\StageField\Skydome.h" />
     <ClInclude Include="Application\Afterimage\DodgeEffect.h" />
   </ItemGroup>
   <ItemGroup>

@@ -62,7 +62,7 @@ private:
 	std::unique_ptr<Item> item_;
 
 	//カメラ位置
-	const XMFLOAT3 cameraPosition = { 0.0f,25.0f,-12.0f };
+	const XMFLOAT3 cameraPosition = { 0.0f,25.0f,-30.0f };
 
 	//スプライト
 	std::unique_ptr<Sprite> cursorSprite;
@@ -73,5 +73,16 @@ private:
 	//ゲームオーバー画面
 	std::unique_ptr<Gameover> gameover;
 	std::unique_ptr<Clear> clear;
+
+	//地面
+	std::unique_ptr<Ground> ground;
+	//背景オブジェクト
+	std::unique_ptr<BackObject> coral;
+	std::unique_ptr<BackObject> box;
+	//泡パーティクル
+	std::unique_ptr<ParticleManager> bubble;
+
+	//天球
+	std::unique_ptr<Skydome> skydome;
 };
 
