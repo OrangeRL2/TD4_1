@@ -292,48 +292,8 @@ void Player::Dodge2() {
 	if (spaceTimer <= 0) {
 		spaceTimer = 0;
 	}
-
-
-void Player::Dodge() {
-	if (!isDodgeInvincible) {
-		dodgeParticle->AddSpin(position, 0.5f, 60.0f, 10.0f, 10, true);
-		dodgeRot = { 0.0f,0.0f,0.0f };
-		isDodgeInvincible = true;
-
-	if (easingFlag == 1) {
-		for (int i = 0; i < 200; i++) {
-			if (afterFlag[i] == 0) {
-				
-				std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
-				newAfterimage->Initialize(spriteCommon_, viewProjection, position);
-				afterimage_.push_back(std::move(newAfterimage));
-
-				
-				afterFlag[i] = 1;
-				break;
-			}
-		}
-		frame++;
-		if (frame <= endFrame / 4) {
-			easingPos += 0.55f;
-		}
-		if (frame >= endFrame / 4) {
-		easingPos += 0.0f;
-		}
-		if (frame >= endFrame / 2) {
-			easingPos += 0.0f;
-		}
-		std::unique_ptr<DodgeEffect>newDodgeEffect = std::make_unique<DodgeEffect>();
-		newDodgeEffect->Initialize(spriteCommon_, viewProjection, position);
-		dodgeEffect_.push_back(std::move(newDodgeEffect));
-	}
-	if (frame == endFrame) {
-		easingFlag = 0;
-		easingPos += 0.0f;
-
-	}
-	
 }
+
 void Player::DodgeOnHit() {
 	if (spaceTimer == 0) {
 			spaceTimer = 50;
