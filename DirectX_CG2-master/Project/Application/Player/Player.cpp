@@ -93,7 +93,7 @@ void Player::Update() {
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
 
 	particle->UpdateHit(1.0f, true);
-	dodgeParticle->UpdateSpin(1.0f);
+	dodgeParticle->UpdateSpin(position, 1.0f);
 	damageEffect->Update();
 
 	playerObject->SetRotation(rot);
@@ -177,7 +177,7 @@ void Player::OnCollision(const int dmg) {
 	if (!isInvincible) {
 		hp -= dmg;
 		damageEffect->SetTimer();
-		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f,0.5f,0.5f });
+		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
 		isInvincible = true;
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 		{
@@ -292,6 +292,13 @@ void Player::Dodge2() {
 	if (spaceTimer <= 0) {
 		spaceTimer = 0;
 	}
+
+
+void Player::Dodge() {
+	if (!isDodgeInvincible) {
+		dodgeParticle->AddSpin(position, 0.5f, 60.0f, 10.0f, 10, true);
+		dodgeRot = { 0.0f,0.0f,0.0f };
+		isDodgeInvincible = true;
 
 	if (easingFlag == 1) {
 		for (int i = 0; i < 200; i++) {

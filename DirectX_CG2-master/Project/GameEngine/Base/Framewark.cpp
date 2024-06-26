@@ -31,7 +31,6 @@ void Framewark::Initialize() {
 
 	spriteCommon_ = new SpriteCommon();
 	spriteCommon_->Initialize(dxCommon_);
-	LoadAllTexture();
 
 	//サウンドマネージャー初期化
 	soundManager_ = new SoundManager();
@@ -58,6 +57,9 @@ void Framewark::Finalize() {
 
 	//シーンマネージャの解放
 	delete sceneManager_;
+	delete viewProjection;
+	delete soundManager_;
+	delete spriteCommon_;
 
 	//WindowsAPIの終了処理
 	winApp->Finalize();
@@ -69,10 +71,6 @@ void Framewark::Finalize() {
 	FbxLoader::GetInstance()->Finalize();
 	//DirectX解放
 	delete dxCommon_;
-	//入力解放
-	//delete input;
-	//WindowsAPI解放
-	//delete winApp;
 
 }
 
@@ -124,8 +122,4 @@ void Framewark::Run() {
 
 	//ゲームの終了
 	Finalize();
-}
-
-void Framewark::LoadAllTexture() {
-	
 }

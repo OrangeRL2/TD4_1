@@ -17,6 +17,9 @@
 #include "DamageEffect.h"
 #include "Gameover.h"
 #include "Clear.h"
+#include "Ground.h"
+#include "BackObject.h"
+#include "Skydome.h"
 #include <random>
 
 //前方宣言
