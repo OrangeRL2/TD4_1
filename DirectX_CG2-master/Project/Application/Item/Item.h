@@ -13,7 +13,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const DirectX::XMFLOAT3& distance);
+	void Update(const int playerHp, const DirectX::XMFLOAT3& distance);
 
 	/// <summary>
 	/// 描画
@@ -38,15 +38,18 @@ public:
 	/// <summary>
 	/// 右から左に流れる動き
 	/// </summary>
-	void Move(const DirectX::XMFLOAT3& distance);
+	void Move(const int playerHp, const DirectX::XMFLOAT3& distance);
 
 	/// <summary>
 	/// 効果切り替え
 	/// </summary>
-	void ChangMode();
+	void ChangMode(const int playerHp);
 
 	
 	void Ability(int playerHp,int bossHp, const DirectX::XMFLOAT3& distance);
+
+	DirectX::XMFLOAT3 GetPosition() { return position_; }
+
 private:
 	Object3d* ItemObj_ = nullptr;
 	Model* ItemModel_ = nullptr;
@@ -62,5 +65,18 @@ private:
 	bool isHeel = false;
 	bool isSlow = false;
 	bool isDamageBoost = false;
+
+	
+	//移動処理関連
+	float moveLim = 10.0f;
+	float speed = 0.5f;
+	
+	//モードチェンジ関連
+	int heelPercent = 80;
+	int slowPercent = 50;
+
+	//定数
+	const int popCoolTime = 1000;
+
 };
 
