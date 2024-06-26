@@ -149,10 +149,10 @@ void Player::Move() {
 	{
 		speed += 0.001f;
 	}
-	if (speed >= speedLim/3) {
-		std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
+	if (speed >= speedLim/2) {
+		/*std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 		newAfterimage->Initialize(spriteCommon_, viewProjection, position);
-		afterimage_.push_back(std::move(newAfterimage));
+		afterimage_.push_back(std::move(newAfterimage));*/
 	}
 	else{
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
@@ -292,6 +292,40 @@ void Player::Dodge2() {
 	if (spaceTimer <= 0) {
 		spaceTimer = 0;
 	}
+
+	if (easingFlag == 1) {
+		for (int i = 0; i < 200; i++) {
+			if (afterFlag[i] == 0) {
+
+				std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
+				newAfterimage->Initialize(spriteCommon_, viewProjection, position);
+				afterimage_.push_back(std::move(newAfterimage));
+
+
+				afterFlag[i] = 1;
+				break;
+			}
+		}
+		frame++;
+		if (frame <= endFrame / 4) {
+			easingPos += 0.55f;
+		}
+		if (frame >= endFrame / 4) {
+			easingPos += 0.0f;
+		}
+		if (frame >= endFrame / 2) {
+			easingPos += 0.0f;
+		}
+		std::unique_ptr<DodgeEffect>newDodgeEffect = std::make_unique<DodgeEffect>();
+		newDodgeEffect->Initialize(spriteCommon_, viewProjection, position);
+		dodgeEffect_.push_back(std::move(newDodgeEffect));
+	}
+	if (frame == endFrame) {
+		easingFlag = 0;
+		easingPos += 0.0f;
+
+	}
+
 }
 
 void Player::DodgeOnHit() {
