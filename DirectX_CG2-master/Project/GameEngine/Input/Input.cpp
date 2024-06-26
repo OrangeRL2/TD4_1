@@ -22,9 +22,6 @@ void Input::Initialize(WinApp* winApp)
 	winApp_ = winApp;
 
 	//DirectInputの初期化
-	/*DirectInput・・・マイクロソフトによって開発されたソフトウェアコンポーネント「Microsoft DirectX」のうちのひとつ
-	マウス、キーボード、ジョイスティック、ゲームコントローラ等を介してユーザーからの入力情報を収集するためのAPI*/
-
 	HRESULT result;
 
 	result = DirectInput8Create(

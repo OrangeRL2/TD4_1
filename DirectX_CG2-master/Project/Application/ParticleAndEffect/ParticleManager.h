@@ -34,16 +34,16 @@ public:
 	/// <summary>
 	/// 回転パーティクル更新
 	/// </summary>
-	void UpdateSpin(float gamespeed);
+	void UpdateSpin(XMFLOAT3 position, float gamespeed);
 
 	/// <summary>
 	/// 恒常パーティクル一粒を発生
 	/// </summary>
-	void AddAlways(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, XMFLOAT4 color = {1,1,1,1});
+	void AddAlways(XMFLOAT3 position,float start_scale, float life, XMFLOAT4 color = { 1,1,1,1 }, XMFLOAT3 velocity = {1,1,1}, XMFLOAT3 accel = {-0.05f,-0.05f,-0.05f});
 	/// <summary>
 	/// ヒットパーティクル発生
 	/// </summary>
-	void AddHit(XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, float start_scale, float life, int amount, XMFLOAT4 color = {1,1,1,1});
+	void AddHit(XMFLOAT3 position, float start_scale, float life, int amount, XMFLOAT4 color = { 1,1,1,1 }, XMFLOAT3 velocity = { 1,1,1 }, XMFLOAT3 accel = { -0.05f,-0.05f,-0.05f });
 	/// <summary>
 	/// 回転パーティクル発生
 	/// </summary>
@@ -66,9 +66,9 @@ private:
 	int interval_;
 
 	//泡パーティクルのランダム移動量
-	float bubbleMoveVal = 0.1f;
+	float bubbleMoveVal = 0.5f;
 	//泡パーティクルの浮力
-	float bubbleBuoyancy = 0.4f;
+	float bubbleBuoyancy = 0.5f;
 
 	//回転量
 	float rotVal = 0.025f;

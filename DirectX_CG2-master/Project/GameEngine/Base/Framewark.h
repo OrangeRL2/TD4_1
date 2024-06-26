@@ -54,11 +54,6 @@ public://メンバ関数
 	/// </summary>
 	void Run();
 
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	void LoadAllTexture();
-
 	//ゲッター
 	WinApp* GetWinApp() { return winApp; }
 	DirectXCommon* GetDxCommon() { return dxCommon_; }

@@ -43,10 +43,12 @@ public:
 	/// <summary>
 	/// 効果切り替え
 	/// </summary>
+
 	void ChangMode(const int playerHp);
 
 	
 	void Ability(int playerHp,int bossHp, const DirectX::XMFLOAT3& distance);
+
 
 	DirectX::XMFLOAT3 GetPosition() { return position_; }
 

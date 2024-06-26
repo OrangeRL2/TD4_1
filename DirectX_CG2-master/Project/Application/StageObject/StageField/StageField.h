@@ -18,7 +18,7 @@ struct LevelData;
 
 class StageField {
 public:
-  static const int cBlockCount_ = 1;
+  static const int cBlockCount_ = 100;
 
 public:
   void Initialize();
@@ -27,12 +27,26 @@ public:
   void Finalize();
 
 public:
+  void SetViewProjection(ViewProjection& vp) {
+    viewProjection_ = &vp;
+  }
+
+  std::vector<Object3d*> GetList() {
+    return blockWoodBoxList_;
+  }
 
 private:
   Model* modelWoodBox_;
+  Object3d* sampleBlock_;
+
+  Object3d* blocks_[100];
+
   std::vector<Object3d*> blockWoodBoxList_;
 
   std::map<std::string, Model*>  models_;
 
   LevelData* levelData_;
+
+  //ビュープロジェクション
+  ViewProjection* viewProjection_ = nullptr;
 };

@@ -12,6 +12,10 @@
 #include "Object3d.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
+#include "ParticleManager.h"
+#include "DamageEffect.h"
+#include "Afterimage.h"
+#include "DodgeEffect.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -35,6 +39,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 描画(2D)
+	/// </summary>
+	void Draw2D();
+
+	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move();
@@ -42,7 +51,9 @@ public:
 	/// 回避
 	/// </summary>
 	void Dodge();
-
+	void DodgeActive();
+	void Dodge2();
+	void DodgeOnHit();
 	/// <summary>
 	/// 接触時の処理
 	/// </summary>
@@ -50,6 +61,8 @@ public:
 	//ゲッター
 	DirectX::XMFLOAT3 GetPosition() { return position; }
 	DirectX::XMFLOAT3 GetScale() { return scale; }
+	int GetHP() { return hp; }
+	bool GetDodge() { return isDodgeInvincible; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -70,13 +83,22 @@ private:
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 
 	float moveLim = 10.0f;
-	float speedLim = 2.0f;
+	float speedLim = 1.0f;
 	float turnSpeed = 0.0f;
 	float speed = 0.0f;
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
-
+	//dodge2
+	int spaceTimer = 0;
+	float frame = 0.0f;
+	int easingFlag = 0;
+	float endFrame = 7.0f;
+	float startX = 20.0f;
+	float endX = 500.0f;
+	float x = 0.0f;
+	int afterFlag[200] = {};
+	float easingPos = 0.0f;
 	//ヒット判定
 	bool isHit = false;
 	//無敵時間
@@ -84,7 +106,7 @@ private:
 	float invincibleTimer = invincibleTimerMax;
 	bool isInvincible = false;
 
-	
+
 	//回避関連
 	bool isDodge = false;
 	bool isDodgeInvincible = false;
@@ -96,8 +118,14 @@ private:
 	int isHitMap = false;
 
 	//HP
-	int hpMax = 2;
+	int hpMax = 5;
 	int hp = hpMax;
 
-};
+	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<ParticleManager> dodgeParticle;
+	std::unique_ptr<DamageEffect> damageEffect;
+	std::list<std::unique_ptr<Afterimage>> afterimage_;
+	std::list<std::unique_ptr<DodgeEffect>> dodgeEffect_;
 
+	std::random_device rnd;
+};

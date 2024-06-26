@@ -12,7 +12,7 @@ public:
 
 	void Draw();
 
-	void SetTimer(float timer) { transTimer = timer; }
+	void SetTimer();
 
 private:
 
@@ -20,6 +20,7 @@ private:
 	std::unique_ptr<Sprite> whiteSP;
 
 	//経過時間＆透明度
+	const float transTimerMax = 1.0f;
 	const float transTimerVal = 0.05f;
 	float transTimer = 0.0f;
 
