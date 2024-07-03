@@ -152,6 +152,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("enemy pos y %f",bossEnemy_->GetPosition().y);
 	ImGui::Text("hp %d",player->GetHP());
 	ImGui::Text("boss hp %d",bossEnemy_->GetHP());
+	ImGui::Text("move %d",player->GetMove());
 	imGui.End();
 }
 

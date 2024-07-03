@@ -22,7 +22,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
 	playerObject->SetScale(scale);
 	playerObject->SetRotation(rot);
 	speed = 0.0f;
-	
+
 	particle = std::make_unique<ParticleManager>();
 	particle->Initialize(Model::LoadFromOBJ("Particle"));
 	dodgeParticle = std::make_unique<ParticleManager>();
@@ -56,38 +56,69 @@ void Player::Update() {
 
 		rot.z = turnSpeed;
 	}
-
+	moveFlag = false;
 	//動き
 	if (input_->PushKey(DIK_W)) {
-		if (turnSpeed < 10.0f)
+		moveFlag = true;
+		if (turnSpeed < 20.0f)
 		{
-			turnSpeed += 1.0f;
+			turnSpeed += 0.5f;
 		}
-		position.y += gravity;
+		if (MoveSpeedUp < MaxSpeedUp) {
+			MoveSpeedUp += acceleration;
+		}
+		position.y += MoveSpeedUp;
+		MoveSpeedDown = 0.0f;
 	}
 
 	if (input_->PushKey(DIK_S)) {
-		if (turnSpeed > -10.0f)
+		moveFlag = true;
+		if (turnSpeed > -20.0f)
 		{
-			turnSpeed -= 1.0f;
+			turnSpeed -= 0.5f;
 		}
-		position.y -= gravity;
+		if (MoveSpeedDown < MaxSpeedDown) {
+			MoveSpeedDown += acceleration;
+		}
+		position.y -= MoveSpeedDown;
+		MoveSpeedUp = 0.0f;
 	}
+	else if(moveFlag==false)
+	{
+		if (MoveSpeedUp > 0.0f) {
+			MoveSpeedUp -= acceleration;
+		}
+		// Ensure upward speed doesn't go negative
+		if (MoveSpeedUp < 0.0f) {
+			MoveSpeedUp = 0.0f;
+		}
+
+		// Decelerate downward movement when no keys are pressed
+		if (MoveSpeedDown > 0.0f) {
+			MoveSpeedDown -= acceleration;
+		}
+		// Ensure downward speed doesn't go negative
+		if (MoveSpeedDown < 0.0f) {
+			MoveSpeedDown = 0.0f;
+		}
+	}
+	
+
 	//上に泳いでない時に下に動く
-	else if (position.y >= -moveLim) {
+	/*else if (position.y >= -moveLim) {
 		if (turnSpeed > -10.0f)
 		{
 			turnSpeed -= 1.0f;
 		}
 
-	}
+	}*/
 
 	//ローテーションを元に戻す
 	if (turnSpeed <= 0.00f) {
-		turnSpeed += 0.5f;
+		turnSpeed += 0.2f;
 	}
 	if (turnSpeed >= 0.0f) {
-		turnSpeed -= 0.5f;
+		turnSpeed -= 0.2f;
 	}
 
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
@@ -149,12 +180,12 @@ void Player::Move() {
 	{
 		speed += 0.001f;
 	}
-	if (speed >= speedLim/2) {
+	if (speed >= speedLim / 2) {
 		/*std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 		newAfterimage->Initialize(spriteCommon_, viewProjection, position);
 		afterimage_.push_back(std::move(newAfterimage));*/
 	}
-	else{
+	else {
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 		{
 			object0->Delete();
@@ -330,15 +361,15 @@ void Player::Dodge2() {
 
 void Player::DodgeOnHit() {
 	if (spaceTimer == 0) {
-			spaceTimer = 50;
+		spaceTimer = 50;
 
-			easingFlag = 1;
-			frame = 0;
-			for (int i = 0; i < 200; i++) {
-				for (std::unique_ptr<Afterimage>& object0 : afterimage_)
-				{
-					object0->Delete();
-				}
+		easingFlag = 1;
+		frame = 0;
+		for (int i = 0; i < 200; i++) {
+			for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+			{
+				object0->Delete();
 			}
 		}
+	}
 }

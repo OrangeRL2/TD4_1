@@ -63,6 +63,7 @@ public:
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
+	bool GetMove() { return moveFlag; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -89,6 +90,13 @@ private:
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
+	float MoveSpeedUp = 0.0f;
+	float MaxSpeedUp = 20.0f;
+	float acceleration = 0.001f;
+	float MoveSpeedDown = 0.0f;
+	float MaxSpeedDown = 20.0f;
+	float accelerationDown = 0.001f;
+	bool moveFlag = false;
 	//dodge2
 	int spaceTimer = 0;
 	float frame = 0.0f;
