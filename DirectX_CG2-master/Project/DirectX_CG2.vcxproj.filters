@@ -50,6 +50,8 @@
     <ClCompile Include="GameEngine\ObjectLoader.cpp" />
     <ClCompile Include="Application\StageObject\BackObject.cpp" />
     <ClCompile Include="Application\StageObject\StageField\Skydome.cpp" />
+    <ClCompile Include="Application\Player\PlayerHP.cpp" />
+    <ClCompile Include="Application\Player\PlayerStamina.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
@@ -96,6 +98,8 @@
     <ClInclude Include="Application\StageObject\BackObject.h" />
     <ClInclude Include="Application\StageObject\StageField\Skydome.h" />
     <ClInclude Include="Application\Afterimage\DodgeEffect.h" />
+    <ClInclude Include="Application\Player\PlayerHP.h" />
+    <ClInclude Include="Application\Player\PlayerStamina.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitattributes" />

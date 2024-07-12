@@ -16,6 +16,8 @@
 #include "DamageEffect.h"
 #include "Afterimage.h"
 #include "DodgeEffect.h"
+#include "PlayerHP.h"
+#include "PlayerStamina.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
@@ -98,10 +100,11 @@ private:
 	float accelerationDown = 0.001f;
 	bool moveFlag = false;
 	//dodge2
-	int spaceTimer = 0;
+	float staminaTimer = 600.0f;
+	float spaceTimer = 0.0f;
 	float frame = 0.0f;
 	int easingFlag = 0;
-	float endFrame = 7.0f;
+	float endFrame = 20.0f;
 	float startX = 20.0f;
 	float endX = 500.0f;
 	float x = 0.0f;
@@ -126,12 +129,14 @@ private:
 	int isHitMap = false;
 
 	//HP
-	int hpMax = 5;
+	int hpMax = 6;
 	int hp = hpMax;
 
 	std::unique_ptr<ParticleManager> particle;
 	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
+	std::unique_ptr<PlayerHP> HP;
+	std::unique_ptr<PlayerStamina> stamina;
 	std::list<std::unique_ptr<Afterimage>> afterimage_;
 	std::list<std::unique_ptr<DodgeEffect>> dodgeEffect_;
 

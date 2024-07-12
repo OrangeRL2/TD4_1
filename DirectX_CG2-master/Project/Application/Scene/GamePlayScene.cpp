@@ -32,6 +32,10 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	spriteCommon->LoadTexture(0, "white1x1.png");
 	spriteCommon->LoadTexture(1, "GameOver.png");
 	spriteCommon->LoadTexture(2, "Clear.png");
+	spriteCommon->LoadTexture(3, "HP.png");
+	spriteCommon->LoadTexture(4, "stamina.png");
+	spriteCommon->LoadTexture(5, "stamina2.png");
+	spriteCommon->LoadTexture(6, "HUD.png");
 
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
@@ -185,7 +189,7 @@ void GamePlayScene::Draw() {
 	spriteCommon_->Update();
 
 	gameover->Draw();
-	clear->Draw();
+	//clear->Draw();
 	player->Draw2D();
 
 	//スプライト描画後処理
