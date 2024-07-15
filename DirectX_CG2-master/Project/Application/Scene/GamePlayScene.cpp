@@ -107,7 +107,7 @@ void GamePlayScene::Update() {
 	player->Update();
 	bossEnemy_->Update(player->GetPosition());
 
-	item_->Update(1,player->GetPosition());
+	item_->Update(player->GetHP(), player->GetPosition());
 	viewProjection->SetTarget(player->GetPosition());
 
 	viewProjection->SetEye({
@@ -175,7 +175,7 @@ void GamePlayScene::Draw() {
 	skydome->Draw();
 	bubble->Draw();
 	
-	//item_->Draw();
+	item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
@@ -214,7 +214,16 @@ void GamePlayScene::Collision() {
 				-5 < item_->GetPosition().y - player->GetPosition().y) {
 				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
 					-2 < item_->GetPosition().z - player->GetPosition().z) {
-					//bossEnemy_->Damage();
+					if (item_->GetIsDamage() == true) {
+						bossEnemy_->Damage();
+					}
+					else if (item_->GetIsHeel() == true) {
+						player->OnCollision(-1);
+					}
+					else if(item_->GetIsSlow()==true){
+						//player->DodgeOnHit();
+					}
+					item_->Ability(player->GetHP(), 1, player->GetPosition());
 				}
 			}
 		}
