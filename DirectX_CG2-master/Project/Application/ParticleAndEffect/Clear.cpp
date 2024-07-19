@@ -3,8 +3,8 @@
 void Clear::Initialize(SpriteCommon* spriteCommon) {
 
 	clearSP = std::make_unique<Sprite>();
-	clearSP->Initialize(spriteCommon, 2);
-	clearSP->SetSize({ clearSP->GetSize().x * 2,  clearSP->GetSize().y * 2 });
+	clearSP->Initialize(spriteCommon, SpriteManager::Clear);
+	clearSP->SetSize({ clearSP->GetSize().x,  clearSP->GetSize().y});
 }
 
 void Clear::Update() {
