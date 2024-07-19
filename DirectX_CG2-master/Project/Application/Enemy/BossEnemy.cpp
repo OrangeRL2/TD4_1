@@ -10,7 +10,7 @@
 void BossEnemy::Initialize()
 {
 	// ===== ボスの生成 ===== //
-	bossEnemyModel_ = Model::LoadFromOBJ("Boss");
+	bossEnemyModel_ = Model::LoadFromOBJ("Fish");
 	bossEnemyObj_ = Object3d::Create();
 	bossEnemyObj_->SetModel(bossEnemyModel_);
 	bossEnemyObj_->SetPosition(position_);
