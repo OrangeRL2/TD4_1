@@ -1,12 +1,17 @@
 #include "PlayerHP.h"
 
 void PlayerHP::Initialize(SpriteCommon* spriteCommon) {
-
+	/*spriteCommon->LoadTexture(3, "HP.png");
+	spriteCommon->LoadTexture(4, "stamina.png");
+	spriteCommon->LoadTexture(5, "stamina2v2.png");
+	spriteCommon->LoadTexture(6, "HUD.png");
+	spriteCommon->LoadTexture(7, "HUD2.png");
+	spriteCommon->LoadTexture(8, "HUD3.png");*/
 	whiteSP = std::make_unique<Sprite>();
-	whiteSP->Initialize(spriteCommon, 3);
+	whiteSP->Initialize(spriteCommon, SpriteManager::HP);
 	whiteSP->SetAnchorpoint({ 0.0f, 0.0f });
 	whiteSP2 = std::make_unique<Sprite>();
-	whiteSP2->Initialize(spriteCommon, 6);
+	whiteSP2->Initialize(spriteCommon, SpriteManager::HPHUD);
 	whiteSP2->SetAnchorpoint({ 0.0f, 0.0f });
 }
 

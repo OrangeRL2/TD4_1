@@ -15,6 +15,12 @@ public:
 		numbersB,
 		space,
 		title,
+		HP,
+		stamina,
+		staminaBars,
+		HPHUD,
+		HPHUDDecal1,
+		HPHUDDecal2,
 	};
 
 private:

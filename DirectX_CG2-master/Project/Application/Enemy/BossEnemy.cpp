@@ -10,7 +10,7 @@
 void BossEnemy::Initialize()
 {
 	// ===== ボスの生成 ===== //
-	bossEnemyModel_ = Model::LoadFromOBJ("Box");
+	bossEnemyModel_ = Model::LoadFromOBJ("Fish");
 	bossEnemyObj_ = Object3d::Create();
 	bossEnemyObj_->SetModel(bossEnemyModel_);
 	bossEnemyObj_->SetPosition(position_);
@@ -25,6 +25,9 @@ void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 
 	// ボスの挙動
 	BossEnemy::Move();
+
+	// ボスの攻撃
+	BossEnemy::SpinAttack();
 	
 	// ===== ボスの更新 ===== //
 	bossEnemyObj_->Update();
@@ -85,10 +88,18 @@ void BossEnemy::Move()
 	bossEnemyObj_->SetRotation(rotation_);
 }
 
-void BossEnemy::Damage()
+void BossEnemy::Damage(int damage_)
 {
-	// ボスのダメージ
-	if (hp_ > deathHp_) {
-		hp_ -= damage_;
+	// ボスのdethダメージ
+	const int deathHp_ = 0;
+
+	if (bossStatus.hp > deathHp_) {
+		bossStatus.hp -= damage_;
 	}
+}
+
+void BossEnemy::SpinAttack()
+{
+	rotation_.x += 1.0f;
+	bossEnemyObj_->SetRotation(rotation_);
 }

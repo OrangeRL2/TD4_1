@@ -28,18 +28,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
   stageField_->Initialize();
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
-
-
-	spriteCommon->LoadTexture(0, "white1x1.png");
-	spriteCommon->LoadTexture(1, "GameOver.png");
-	spriteCommon->LoadTexture(2, "Clear.png");
-	spriteCommon->LoadTexture(3, "HP.png");
-	spriteCommon->LoadTexture(4, "stamina.png");
-	spriteCommon->LoadTexture(5, "stamina2v2.png");
-	spriteCommon->LoadTexture(6, "HUD.png");
-	spriteCommon->LoadTexture(7, "HUD2.png");
-	spriteCommon->LoadTexture(8, "HUD3.png");
-
+	
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
 
@@ -249,7 +238,7 @@ void GamePlayScene::Collision() {
 				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
 					-2 < item_->GetPosition().z - player->GetPosition().z) {
 					if (item_->GetIsDamage() == true) {
-						bossEnemy_->Damage();
+						bossEnemy_->Damage(1);
 					}
 					else if (item_->GetIsHeel() == true) {
 						player->OnCollision(-1);
@@ -263,7 +252,7 @@ void GamePlayScene::Collision() {
 		}
 		if (input_->TriggerKey(DIK_A)) {
 			for (int i = 0; i < 3; i++) {
-				bossEnemy_->Damage();
+				bossEnemy_->Damage(1);
 			}
 			
 		}

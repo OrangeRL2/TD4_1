@@ -1,21 +1,21 @@
 #include "PlayerStamina.h"
 
 void PlayerStamina::Initialize(SpriteCommon* spriteCommon) {
-
+	
 	whiteSP = std::make_unique<Sprite>();
-	whiteSP->Initialize(spriteCommon, 4);
+	whiteSP->Initialize(spriteCommon, SpriteManager::stamina);
 	whiteSP->SetAnchorpoint({ 0.0f, 0.0f });
 
 	whiteSP2 = std::make_unique<Sprite>();
-	whiteSP2->Initialize(spriteCommon, 5);
+	whiteSP2->Initialize(spriteCommon, SpriteManager::staminaBars);
 	whiteSP2->SetAnchorpoint({ 0.0f, 0.0f });
 
 	HPDecor = std::make_unique<Sprite>();
-	HPDecor->Initialize(spriteCommon, 7);
+	HPDecor->Initialize(spriteCommon, SpriteManager::HPHUDDecal1);
 	HPDecor->SetAnchorpoint({ 0.0f, 0.0f });
 
 	HPDecor2 = std::make_unique<Sprite>();
-	HPDecor2->Initialize(spriteCommon, 8);
+	HPDecor2->Initialize(spriteCommon, SpriteManager::HPHUDDecal2);
 	HPDecor2->SetAnchorpoint({ 0.0f, 0.0f });
 }
 
