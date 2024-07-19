@@ -78,11 +78,18 @@ private:
 	std::unique_ptr<Ground> ground;
 	//背景オブジェクト
 	std::unique_ptr<BackObject> coral;
-	std::unique_ptr<BackObject> box;
+	std::unique_ptr<BackObject> stone;
+	std::unique_ptr<BackObject> seaweed;
 	//泡パーティクル
 	std::unique_ptr<ParticleManager> bubble;
 
 	//天球
 	std::unique_ptr<Skydome> skydome;
+
+	//シーン切り替え演出
+	std::unique_ptr<SceneChange> sceneChange;
+
+	//ボスHPUI
+	std::unique_ptr<Sprite> bossHPSprite;
 };
 

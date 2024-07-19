@@ -1,6 +1,7 @@
 #pragma once
 #include "Object3d.h"
 #include "Model.h"
+#include"ParticleManager.h"
 
 class Item
 {
@@ -51,6 +52,9 @@ public:
 
 
 	DirectX::XMFLOAT3 GetPosition() { return position_; }
+	bool GetIsHeel() { return isHeel; }
+	bool GetIsSlow() { return isSlow; }
+	bool GetIsDamage() { return isDamageBoost; }
 
 private:
 	Object3d* ItemObj_ = nullptr;
@@ -62,6 +66,7 @@ private:
 	DirectX::XMFLOAT3 rotation_ = { 0,0,0 };
 	//アイテム移動量
 	DirectX::XMFLOAT3 move_ = { 0.2f,0,0 };
+	DirectX::XMFLOAT3 move = { 10.0f,0.0f,0.0f };
 
 	//フラグ
 	bool isHeel = false;
@@ -71,14 +76,19 @@ private:
 	
 	//移動処理関連
 	float moveLim = 10.0f;
-	float speed = 0.5f;
+	float speedLim = 1.0f;
+	float speed = 0.0f;
+	float speed2 = 0.0f;
+	float speedBoost = 0.0f;
+	int timer = 0;
 	
 	//モードチェンジ関連
 	int heelPercent = 80;
 	int slowPercent = 50;
+	int damagePercent = 50;
 
 	//定数
-	const int popCoolTime = 1000;
+	const int popCoolTime = 50;
 
 };
 

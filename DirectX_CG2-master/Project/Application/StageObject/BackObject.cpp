@@ -9,7 +9,7 @@ void BackObject::Initialize(Model* model, const float scl, const float frq, cons
 	playerMoveVal = frequency;
 }
 
-void BackObject::Update(const DirectX::XMFLOAT3& playerpos) {
+void BackObject::Update(const DirectX::XMFLOAT3& playerpos, const float rot) {
 
 	if (playerMoveVal - playerpos.x < 0) {
 		backDistance = MyMath::RandomFloat(MaxBackDistance / 2, MaxBackDistance);
@@ -22,7 +22,7 @@ void BackObject::Update(const DirectX::XMFLOAT3& playerpos) {
 		object->SetScale(scale);
 		object->SetRotation({
 			MyMath::RandomFloat(-rotRandom,rotRandom),
-			MyMath::RandomFloat(-rotRandom,rotRandom),
+			MyMath::RandomFloat(-rotRandom,rotRandom) + rot,
 			MyMath::RandomFloat(-rotRandom,rotRandom),
 			});
 
@@ -37,11 +37,13 @@ void BackObject::Update(const DirectX::XMFLOAT3& playerpos) {
 	}
 
 	for (std::unique_ptr<Object3d>& object : object_) {
+		object->SetColor(color);
 		object->Update();
 		if (object->GetPosition().x <= playerpos.x - pDistance) {
 			isDead = true;
 		}
 	}
+
 
 }
 

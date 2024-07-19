@@ -29,6 +29,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
 
+
 	spriteCommon->LoadTexture(0, "white1x1.png");
 	spriteCommon->LoadTexture(1, "GameOver.png");
 	spriteCommon->LoadTexture(2, "Clear.png");
@@ -54,9 +55,14 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	ground->Initialize(Model::LoadFromOBJ("Ground"));
 
 	coral = std::make_unique<BackObject>();
-	coral->Initialize(Model::LoadFromOBJ("Coral"), 30, 200, -20.0f);
-	box = std::make_unique<BackObject>();
-	box->Initialize(Model::LoadFromOBJ("WoodenBox"), 10, 100, -15.0f);
+	coral->Initialize(Model::LoadFromOBJ("Coral"), 30, 150, -30.0f);
+	coral->SetColor({ 1,0.5f,1,1 });
+
+	stone = std::make_unique<BackObject>();
+	stone->Initialize(Model::LoadFromOBJ("Stone"), 20, 100, -20.0f);
+
+	seaweed = std::make_unique<BackObject>();
+	seaweed->Initialize(Model::LoadFromOBJ("Seaweed"), 5, 100, -20.0f);
 
 	skydome = std::make_unique<Skydome>();
 	skydome->Initialize(Model::LoadFromOBJ("Skydome"));
@@ -66,6 +72,16 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	bubble = std::make_unique<ParticleManager>();
 	bubble->Initialize(Model::LoadFromOBJ("Particle"));
+
+	bossHPSprite = std::make_unique<Sprite>();
+	bossHPSprite->Initialize(spriteCommon_, SpriteManager::white1x1);
+	bossHPSprite->SetAnchorpoint({ 0,0 });
+	bossHPSprite->SetPosition({ WinApp::window_width / 2 - 300, 100 });
+	bossHPSprite->SetColor({ 0,1,0.5f,1 });
+
+	//シーン切り替え演出
+	sceneChange = std::make_unique<SceneChange>();
+	sceneChange->Initialize(spriteCommon_, false);
 
 }
 
@@ -83,8 +99,7 @@ void GamePlayScene::Update() {
 		clear->OnFlag();
 
 		if (input_->TriggerKey(DIK_SPACE)) {
-			BaseScene* scene = new TitleScene();
-			BaseScene::GetSceneManager()->SetNextScene(scene);
+			sceneChange->SetIsReduction(true);
 		}
 
     stageField_->Update();
@@ -98,8 +113,7 @@ void GamePlayScene::Update() {
 		gameover->OnFlag();
 
 		if (input_->TriggerKey(DIK_SPACE)) {
-			BaseScene* scene = new TitleScene();
-			BaseScene::GetSceneManager()->SetNextScene(scene);
+			sceneChange->SetIsReduction(true);
 		}
 	}
 
@@ -113,7 +127,7 @@ void GamePlayScene::Update() {
 	player->Update();
 	bossEnemy_->Update(player->GetPosition());
 
-	item_->Update(1,player->GetPosition());
+	item_->Update(player->GetHP(), player->GetPosition());
 	viewProjection->SetTarget(player->GetPosition());
 
 	viewProjection->SetEye({
@@ -136,11 +150,21 @@ void GamePlayScene::Update() {
 	gameover->Update();
 	clear->Update();
 
+	//シーン切り替え
+	sceneChange->Update();
+	if (sceneChange->GetCompleted()) {
+		BaseScene* scene = new TitleScene();
+		BaseScene::GetSceneManager()->SetNextScene(scene);
+	}
+
 	//景観オブジェクト
 	ground->Update(player->GetPosition());
-	coral->Update(player->GetPosition());
-	box->Update(player->GetPosition());
+	coral->Update(player->GetPosition(),0.0f);
+	stone->Update(player->GetPosition(),0.0f);
+	seaweed->Update(player->GetPosition(),180.0f * MyMath::RandomInt(0, 1));
 	skydome->Update(player->GetPosition());
+
+	bossHPSprite->SetSize({(float)bossEnemy_->GetHP() * 5, 30.0f});
 
 	DirectX::XMFLOAT3 bubblePos = {
 		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
@@ -178,11 +202,12 @@ void GamePlayScene::Draw() {
 
 	ground->Draw();
 	coral->Draw();
-	box->Draw();
+	stone->Draw();
+	seaweed->Draw();
 	skydome->Draw();
 	bubble->Draw();
 	
-	//item_->Draw();
+	item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
@@ -190,9 +215,11 @@ void GamePlayScene::Draw() {
 	spriteCommon_->PreDraw();
 	spriteCommon_->Update();
 
+	bossHPSprite->Draw();
 	gameover->Draw();
 	//clear->Draw();
 	player->Draw2D();
+	sceneChange->Draw();
 
 	//スプライト描画後処理
 	spriteCommon_->PostDraw();
@@ -221,7 +248,16 @@ void GamePlayScene::Collision() {
 				-5 < item_->GetPosition().y - player->GetPosition().y) {
 				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
 					-2 < item_->GetPosition().z - player->GetPosition().z) {
-					//bossEnemy_->Damage();
+					if (item_->GetIsDamage() == true) {
+						bossEnemy_->Damage();
+					}
+					else if (item_->GetIsHeel() == true) {
+						player->OnCollision(-1);
+					}
+					else if(item_->GetIsSlow()==true){
+						//player->DodgeOnHit();
+					}
+					item_->Ability(player->GetHP(), 1, player->GetPosition());
 				}
 			}
 		}

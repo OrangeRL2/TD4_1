@@ -3,7 +3,7 @@
 void DamageEffect::Initialize(SpriteCommon* spriteCommon) {
 
 	whiteSP = std::make_unique<Sprite>();
-	whiteSP->Initialize(spriteCommon, 0);
+	whiteSP->Initialize(spriteCommon, SpriteManager::white1x1);
 
 
 }

@@ -3,7 +3,7 @@
 void Gameover::Initialize(SpriteCommon* spriteCommon) {
 
 	gameoverSP = std::make_unique<Sprite>();
-	gameoverSP->Initialize(spriteCommon, 1);
+	gameoverSP->Initialize(spriteCommon, SpriteManager::GameOver);
 }
 
 void Gameover::Update() {

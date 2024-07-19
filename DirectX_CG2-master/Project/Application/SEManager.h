@@ -47,10 +47,12 @@ public:
 	void Stop(SoundData se);
 
 	//音声データ
-	
+	SoundData Decision() { return decision; }
+
 private:
 	SoundData se_;
 	SoundManager* soundManager_ = nullptr;
 
+	SoundData decision = soundManager_->SoundLoadWave("decision.wav");
 };
 

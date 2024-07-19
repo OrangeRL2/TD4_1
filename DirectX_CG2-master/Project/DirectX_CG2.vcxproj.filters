@@ -52,6 +52,8 @@
     <ClCompile Include="Application\StageObject\StageField\Skydome.cpp" />
     <ClCompile Include="Application\Player\PlayerHP.cpp" />
     <ClCompile Include="Application\Player\PlayerStamina.cpp" />
+    <ClCompile Include="Application\SpriteManager.cpp" />
+    <ClCompile Include="Application\UI\SceneChange.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
@@ -100,6 +102,8 @@
     <ClInclude Include="Application\Afterimage\DodgeEffect.h" />
     <ClInclude Include="Application\Player\PlayerHP.h" />
     <ClInclude Include="Application\Player\PlayerStamina.h" />
+    <ClInclude Include="Application\SpriteManager.h" />
+    <ClInclude Include="Application\UI\SceneChange.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitattributes" />
