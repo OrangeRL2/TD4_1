@@ -34,8 +34,10 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	spriteCommon->LoadTexture(2, "Clear.png");
 	spriteCommon->LoadTexture(3, "HP.png");
 	spriteCommon->LoadTexture(4, "stamina.png");
-	spriteCommon->LoadTexture(5, "stamina2.png");
+	spriteCommon->LoadTexture(5, "stamina2v2.png");
 	spriteCommon->LoadTexture(6, "HUD.png");
+	spriteCommon->LoadTexture(7, "HUD2.png");
+	spriteCommon->LoadTexture(8, "HUD3.png");
 
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);

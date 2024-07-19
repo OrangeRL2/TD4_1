@@ -17,6 +17,7 @@ void PlayerHP::Update() {
 
 	whiteSP2->SetPosition({ 100.0f-37.0f,60.0f-10.0f });
 	whiteSP2->SetSize({ 700,64.0f });
+
 	//whiteSP->SetColor({ 0.5f,0.0f,0.0f,transTimer });
 	whiteSP->Update();
 	//HP -= 0.2f;

@@ -9,6 +9,14 @@ void PlayerStamina::Initialize(SpriteCommon* spriteCommon) {
 	whiteSP2 = std::make_unique<Sprite>();
 	whiteSP2->Initialize(spriteCommon, 5);
 	whiteSP2->SetAnchorpoint({ 0.0f, 0.0f });
+
+	HPDecor = std::make_unique<Sprite>();
+	HPDecor->Initialize(spriteCommon, 7);
+	HPDecor->SetAnchorpoint({ 0.0f, 0.0f });
+
+	HPDecor2 = std::make_unique<Sprite>();
+	HPDecor2->Initialize(spriteCommon, 8);
+	HPDecor2->SetAnchorpoint({ 0.0f, 0.0f });
 }
 
 void PlayerStamina::Update(float playerStamina) {
@@ -16,6 +24,12 @@ void PlayerStamina::Update(float playerStamina) {
 	whiteSP2->SetSize({ 600,12.0f });
 	whiteSP->SetPosition({ 100.0f,90.0f });
 	whiteSP->SetSize({ playerStamina,12.0f });
+
+	HPDecor->SetPosition({ 100.0f - 37.0f,60.0f - 10.0f });
+	HPDecor->SetSize({ 700,64.0f });
+
+	HPDecor2->SetPosition({ 100.0f - 37.0f,60.0f - 10.0f });
+	HPDecor2->SetSize({ 700,64.0f });
 	//whiteSP->SetColor({ 0.5f,0.0f,0.0f,transTimer });
 	whiteSP2->Update();
 	whiteSP->Update();
@@ -40,6 +54,11 @@ void PlayerStamina::Update(float playerStamina) {
 			stamina = 500.0f;
 		}
 	}
+
+	invincibleTimer--;
+	if (invincibleTimer <= 0) {
+		invincibleTimer = invincibleTimerMax;
+	}
 }
 void PlayerStamina::OnUse() {
 	useFlag = true;
@@ -54,5 +73,11 @@ void PlayerStamina::OnUse() {
 void PlayerStamina::Draw() {
 	
 	whiteSP->Draw();
-	whiteSP2->Draw();
+	if ((int)invincibleTimer > 100) {
+		HPDecor->Draw();
+	}
+	if ((int)invincibleTimer <= 100) {
+		HPDecor2->Draw();
+	}
+	//whiteSP2->Draw();
 }

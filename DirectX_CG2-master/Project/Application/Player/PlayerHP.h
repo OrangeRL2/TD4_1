@@ -20,6 +20,7 @@ private:
 	//スプライト
 	std::unique_ptr<Sprite> whiteSP;
 	std::unique_ptr<Sprite> whiteSP2;
+	std::unique_ptr<Sprite> whiteSP3;
 	float HP = 600.0f;
 	float afterHP = 600;
 	//経過時間＆透明度
