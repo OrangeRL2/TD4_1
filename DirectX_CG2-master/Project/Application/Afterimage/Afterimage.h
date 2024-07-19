@@ -25,12 +25,12 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, XMFLOAT3 playerPos);
+	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, XMFLOAT3 playerPos, XMFLOAT3 pRot);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(XMFLOAT3 position);
 
 	/// <summary>
 	/// 描画(3D)

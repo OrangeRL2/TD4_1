@@ -29,6 +29,17 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
 
+
+	spriteCommon->LoadTexture(0, "white1x1.png");
+	spriteCommon->LoadTexture(1, "GameOver.png");
+	spriteCommon->LoadTexture(2, "Clear.png");
+	spriteCommon->LoadTexture(3, "HP.png");
+	spriteCommon->LoadTexture(4, "stamina.png");
+	spriteCommon->LoadTexture(5, "stamina2v2.png");
+	spriteCommon->LoadTexture(6, "HUD.png");
+	spriteCommon->LoadTexture(7, "HUD2.png");
+	spriteCommon->LoadTexture(8, "HUD3.png");
+
 	player = std::make_unique<Player>();
 	player->Initialize(spriteCommon, viewProjection);
 
@@ -171,6 +182,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("enemy pos y %f",bossEnemy_->GetPosition().y);
 	ImGui::Text("hp %d",player->GetHP());
 	ImGui::Text("boss hp %d",bossEnemy_->GetHP());
+	ImGui::Text("move %d",player->GetMove());
 	imGui.End();
 }
 
@@ -205,7 +217,7 @@ void GamePlayScene::Draw() {
 
 	bossHPSprite->Draw();
 	gameover->Draw();
-	clear->Draw();
+	//clear->Draw();
 	player->Draw2D();
 	sceneChange->Draw();
 
