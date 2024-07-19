@@ -32,6 +32,9 @@ void Framewark::Initialize() {
 	spriteCommon_ = new SpriteCommon();
 	spriteCommon_->Initialize(dxCommon_);
 
+	SPManager = new SpriteManager();
+	SPManager->Initialize(spriteCommon_);
+
 	//サウンドマネージャー初期化
 	soundManager_ = new SoundManager();
 	soundManager_->Initialize();

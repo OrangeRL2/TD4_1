@@ -138,8 +138,8 @@ void Sprite::Draw() {
 
 	float left = (0.0f - anchorpoint_.x) * size_.x;
 	float right = (1.0f - anchorpoint_.x) * size_.x;
-	float top = (0.0f - anchorpoint_.x) * size_.y;
-	float bottom = (1.0f - anchorpoint_.x) * size_.y;
+	float top = (0.0f - anchorpoint_.y) * size_.y;
+	float bottom = (1.0f - anchorpoint_.y) * size_.y;
 
 	//頂点データ
 	vertices[LB].pos = { left,	bottom,	0.0f };

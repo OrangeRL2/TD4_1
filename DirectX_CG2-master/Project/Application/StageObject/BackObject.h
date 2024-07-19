@@ -10,15 +10,18 @@ public:
 
 	void Initialize(Model* model, const float scl, const float frq, const float gdis);
 
-	void Update(const DirectX::XMFLOAT3& playerpos);
+	void Update(const DirectX::XMFLOAT3& playerpos, const float rot);
 
 	void Draw();
 
 	bool GetIsDead() { return isDead; }
+
+	void SetColor(DirectX::XMFLOAT4 col) { color = col; }
+
 private:
 
 	const float pDistance = 200.0f;
-	const float rotRandom = 30.0f;
+	const float rotRandom = 10.0f;
 	const float sclRandom = 2.0f;
 	const float MaxBackDistance = 100.0f;
 	float groundDistance = -15.0f;
@@ -30,6 +33,7 @@ private:
 
 	DirectX::XMFLOAT3 position = { 0,0,0 };
 	DirectX::XMFLOAT3 scale = { oneScale,oneScale,oneScale };
+	DirectX::XMFLOAT4 color = { 1,1,1,1 };
 
 	float frequency = 0.0f;
 	float timer = frequency;

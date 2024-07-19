@@ -5,6 +5,7 @@
 
 #pragma once
 #include "SpriteCommon.h"
+#include "SpriteManager.h"
 
 class Sprite : public SpriteCommon
 {

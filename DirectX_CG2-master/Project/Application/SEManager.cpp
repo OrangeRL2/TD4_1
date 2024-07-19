@@ -21,7 +21,7 @@ void SEManager::Finalize() {
 
 void SEManager::Play(SoundData se, float pitch, float pitchRange) {
 
-	soundManager_->SoundPlayWave(soundManager_->xAudio2.Get(), se, false, 0.1f);
+	soundManager_->SoundPlayWave(soundManager_->xAudio2.Get(), se, false, 0.2f);
 	
 	float randPitch = (float)rand() / RAND_MAX * pitchRange;
 	if (se.pSourceVoice) {
