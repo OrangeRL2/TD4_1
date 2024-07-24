@@ -22,6 +22,16 @@
 
 using namespace OogamiEngine;
 
+enum EFFECT {
+	heal,
+	maxHeal,
+	slow,
+	staminaUp,
+	staminaMax,
+	speedUp,
+	speedLimUp,
+};
+
 class Player
 {
 public:
@@ -56,6 +66,9 @@ public:
 	void DodgeActive();
 	void Dodge2();
 	void DodgeOnHit();
+
+	void ItemEffect(enum EFFECT effect);
+
 	/// <summary>
 	/// 接触時の処理
 	/// </summary>
@@ -66,6 +79,8 @@ public:
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
 	bool GetMove() { return moveFlag; }
+	bool GetEaseFlag() { return easingFlag; }
+	float GetCameraPos() { return cameraPosZ; }
 
 public:
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -84,17 +99,21 @@ private:
 	DirectX::XMFLOAT3 finalRot = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 dodgeRot = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
-
+	
 	float moveLim = 10.0f;
 	float speedLim = 1.0f;
 	float turnSpeed = 0.0f;
+	float turnDodgeUp = 0.0f;
+	float turnDodgeDown = 0.0f;
 	float speed = 0.0f;
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
+	float cameraPosZ = 0.0f;
+
 	float MoveSpeedUp = 0.0f;
 	float MaxSpeedUp = 20.0f;
-	float acceleration = 0.001f;
+	float acceleration = 0.002f;
 	float MoveSpeedDown = 0.0f;
 	float MaxSpeedDown = 20.0f;
 	float accelerationDown = 0.001f;
@@ -141,4 +160,5 @@ private:
 	std::list<std::unique_ptr<DodgeEffect>> dodgeEffect_;
 
 	std::random_device rnd;
+
 };

@@ -48,10 +48,17 @@ void Player::Update() {
 		invincibleTimer = invincibleTimerMax;
 		isInvincible = false;
 	}
-
-	if (input_->TriggerKey(DIK_D)) {
-		OnCollision(1);
+	if (spaceTimer <= 0) {
+		if (input_->TriggerKey(DIK_D)) {
+			ItemEffect(heal);
+			spaceTimer = 100;
+		}
+		if (input_->TriggerKey(DIK_E)) {
+			OnCollision(1);
+			spaceTimer = 100;
+		}
 	}
+
 
 	Dodge2();
 
@@ -90,8 +97,8 @@ void Player::Update() {
 		position.y -= MoveSpeedDown;
 		MoveSpeedUp = 0.0f;
 	}
-	else if(moveFlag==false)
-	{	
+	else if (moveFlag == false)
+	{
 		// 押してないときにスピードが落ちる
 		if (MoveSpeedUp > 0.0f) {
 			MoveSpeedUp -= acceleration;
@@ -118,7 +125,7 @@ void Player::Update() {
 			turnSpeed -= 1.5f;
 		}
 	}
-	
+
 
 
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
@@ -175,6 +182,7 @@ void Player::Move() {
 
 	//速度を決まる
 	move.x = speed + speedBoost + easingPos;
+	move.y = turnDodgeUp + turnDodgeDown;
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
@@ -194,7 +202,9 @@ void Player::Move() {
 			object0->Delete();
 		}
 	}
-
+	if (speed < 0.0f) {
+		speed = 0.0f;
+	}
 	//std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 	//newAfterimage->Initialize(spriteCommon_, viewProjection, position,rot);
 	//afterimage_.push_back(std::move(newAfterimage));
@@ -210,108 +220,40 @@ void Player::Move() {
 }
 
 void Player::OnCollision(const int dmg) {
-	speed -= 0.05f;
-	isHit = true;
-	
-	//無敵時間以外ならダメージ
-	if (!isInvincible) {
-		hp -= dmg;
-		HP->OnHit();
-		damageEffect->SetTimer();
-		particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
-		isInvincible = true;
+	if (dmg > 0) {
+		speed -= 0.05f;
+		isHit = true;
+
+		//無敵時間以外ならダメージ
+		if (!isInvincible) {
+			hp -= dmg;
+
+			HP->OnHit();
+			damageEffect->SetTimer({ 0.5f,0.0f,0.0f });
+			particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
+			isInvincible = true;
+		}
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 		{
 			object0->Delete();
 		}
 	}
+	//else if (dmg < 0) {
+	//	hp -= dmg;
+	//	HP->OnHeal();
+	//	particle->AddHit(position, 0.5f, 60.0f, 10, { 0,1,0,0.51f }, { 0.5f ,0.5f,0.5f });
+	//	//damageEffect->SetTimer({ 0.0f,0.5f,0.0f });
+	//	if (hp > 6) {
+	//		hp = 6;
+	//	}
+	//}
 }
-//
-//void Player::Dodge() {
-//	if (!isDodgeInvincible) {
-//		dodgeParticle->AddSpin(position, 0.25f, 60.0f, 0.5f, 10, false);
-//		dodgeRot = { 0.0f,0.0f,0.0f };
-//		isDodgeInvincible = true;
-//		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
-//		{
-//			object0->Delete();
-//		}
-//	}
-//
-//}
 
-//void Player::DodgeActive() {
-////#pragma region dodge
-//	if (isDodgeInvincible == true) {
-//		dodgeTimer -= 5.0f;
-//		invincibleTimer -= 0.0f;
-//
-//		//#pragma region rotate
-//
-//		const float rotationSpeed = 50.0f;
-//
-//		DirectX::XMFLOAT3 rotation = { 0 , 0 , 0 };
-//
-//		rotation.z = rotationSpeed;
-//
-//		dodgeRot.x += rotation.x;
-//		dodgeRot.y += rotation.y;
-//		dodgeRot.z += rotation.z;
-//		//#pragma endregion
-//
-//		isHitMap = false;
-//
-//		angle = dodgeRot;
-//
-//		if (moveSpeed < maxSpeed) {
-//			moveSpeed += accelaration;
-//
-//			if (maxSpeed <= moveSpeed) {
-//				moveSpeed = maxSpeed;
-//			}
-//		}
-//	}
-//
-//	if (dodgeTimer <= 0) {
-//		dodgeTimer = dodgeTimerMax;
-//		invincibleTimer = invincibleTimerMax;
-//		isDodgeInvincible = false;
-//	}
-//
-//	else {
-//		if (0 < moveSpeed) {
-//			moveSpeed -= accelaration / 2;
-//
-//			if (moveSpeed <= 0) {
-//				moveSpeed = 0;
-//			}
-//		}
-//
-//	}
-//	if (isHitMap == false) {
-//		velocity = {
-//			moveSpeed * -cosf(angle.z) ,
-//			moveSpeed * sinf(angle.z) ,
-//			0
-//		};
-//	}
-//	else {
-//		velocity = {
-//			moveSpeed * -cosf(-angle.z) ,
-//			moveSpeed * -sinf(-angle.z) ,
-//			0
-//		};
-//	}
-//
-//	position.x += velocity.x;
-//	//position.y += velocity.y;
-//	//position.z += velocity.z;
-//
-////#pragma endregion
-//}
+
 void Player::Dodge2() {
 	if (staminaTimer >= 100 && spaceTimer == 0.0f) {
 		if (input_->TriggerKey(DIK_A)) {
+			particle->AddHit(position, 0.5f, 60.0f, 20, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
 			staminaTimer -= 110;
 			spaceTimer = 10;
 			stamina->OnUse();
@@ -331,9 +273,9 @@ void Player::Dodge2() {
 		}
 	}
 	if (staminaTimer < 600.0f) {
-		staminaTimer+=0.5f;
+		staminaTimer += 0.5f;
 	}
-	
+
 	if (staminaTimer >= 600.0f) {
 		staminaTimer = 600.0f;
 	}
@@ -351,7 +293,7 @@ void Player::Dodge2() {
 			if (afterFlag[i] == 0) {
 
 				std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
-				newAfterimage->Initialize(spriteCommon_, viewProjection, position,rot);
+				newAfterimage->Initialize(spriteCommon_, viewProjection, position, rot);
 				afterimage_.push_back(std::move(newAfterimage));
 
 
@@ -360,25 +302,34 @@ void Player::Dodge2() {
 			}
 		}
 		frame++;
+		if (turnSpeed > 10.0f) {
+			turnDodgeUp = 0.3f;
+		}
+		if (turnSpeed < -10.0f) {
+			turnDodgeDown = -0.3f;
+		}
 		if (frame <= endFrame / 4) {
-			easingPos += 0.3f;
+			easingPos += 0.05f;
+			cameraPosZ += 1.0f;
+			//turnSpeed += 40.0f;
 			scale.x += 0.03f;
 			scale.y -= 0.10f;
 		}
 		if (frame >= endFrame / 4) {
+			//turnSpeed += 20.0f;
 			easingPos += 0.02f;
 			scale.x += 0.01f;
-			//scale.y -= 0.1f;
+			cameraPosZ += 1.0f;
 		}
 		if (frame >= endFrame / 2) {
 			easingPos += 0.01f;
+			//turnSpeed += 10.0f;
 			scale.x += 0.02f;
-			//scale.y -= 0.02f;
+			cameraPosZ += 0.5f;
 		}
-
-		/*std::unique_ptr<DodgeEffect>newDodgeEffect = std::make_unique<DodgeEffect>();
-		newDodgeEffect->Initialize(spriteCommon_, viewProjection, position);
-		dodgeEffect_.push_back(std::move(newDodgeEffect));*/
+		if (cameraPosZ > 25.0f) {
+			cameraPosZ = 25.0f;
+		}
 	}
 	if (frame == endFrame) {
 		easingFlag = 0;
@@ -409,6 +360,29 @@ void Player::Dodge2() {
 		if (easingPos < 0.0f) {
 			easingPos = 0.0f;
 		}
+
+
+		if (turnDodgeUp > 0.0f) {
+			turnDodgeUp -= 0.1f;
+		}
+		if (turnDodgeUp < 0.0f) {
+			turnDodgeUp = 0.0f;
+		}
+
+		if (turnDodgeDown < 0.0f) {
+			turnDodgeDown += 0.1f;
+		}
+		if (turnDodgeDown > 0.0f) {
+			turnDodgeDown = 0.0f;
+		}
+
+		if (cameraPosZ > 0.0f) {
+			cameraPosZ -= 2.0f;
+		}
+		if (cameraPosZ < 0.0f) {
+			cameraPosZ = 0.0f;
+		}
+
 	}
 }
 
@@ -424,5 +398,33 @@ void Player::DodgeOnHit() {
 				object0->Delete();
 			}
 		}
+	}
+}
+
+void Player::ItemEffect(enum EFFECT effect) {
+	switch (effect) {
+		//hp回復
+	case heal:
+		hp += 1;
+		HP->OnHeal();
+		particle->AddHit(position, 0.5f, 60.0f, 10, { 0,1,0,0.51f }, { 0.5f ,0.5f,0.5f });
+		//damageEffect->SetTimer({ 0.0f,0.5f,0.0f });
+		if (hp > 6) {
+			hp = 6;
+		}
+		break;
+
+		//stamina回復
+	case staminaUp:
+		staminaTimer = 600.0f;
+		break;
+		//制限速度が上がる
+	case speedLimUp:
+		speedLim += 0.5f;
+		break;
+		//スピードが上がる
+	case speedUp:
+		speed += 0.1f;
+		break;
 	}
 }
