@@ -59,9 +59,7 @@ void Player::Update() {
 		}
 	}
 
-
 	Dodge2();
-
 
 	if (moveSpeed <= 0) {
 		/*	if (dodgeRot.z != 0.0f) {
@@ -125,8 +123,6 @@ void Player::Update() {
 			turnSpeed -= 1.5f;
 		}
 	}
-
-
 
 	finalRot = { rot.x + dodgeRot.x,rot.y + dodgeRot.y,rot.z + dodgeRot.z };
 
@@ -238,15 +234,6 @@ void Player::OnCollision(const int dmg) {
 			object0->Delete();
 		}
 	}
-	//else if (dmg < 0) {
-	//	hp -= dmg;
-	//	HP->OnHeal();
-	//	particle->AddHit(position, 0.5f, 60.0f, 10, { 0,1,0,0.51f }, { 0.5f ,0.5f,0.5f });
-	//	//damageEffect->SetTimer({ 0.0f,0.5f,0.0f });
-	//	if (hp > 6) {
-	//		hp = 6;
-	//	}
-	//}
 }
 
 
@@ -295,7 +282,6 @@ void Player::Dodge2() {
 				std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 				newAfterimage->Initialize(spriteCommon_, viewProjection, position, rot);
 				afterimage_.push_back(std::move(newAfterimage));
-
 
 				afterFlag[i] = 1;
 				break;
