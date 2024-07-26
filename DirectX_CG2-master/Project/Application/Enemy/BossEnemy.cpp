@@ -10,7 +10,7 @@
 void BossEnemy::Initialize()
 {
 	// ===== ボスの生成 ===== //
-	bossEnemyModel_ = Model::LoadFromOBJ("Fish");
+	bossEnemyModel_ = Model::LoadFromOBJ("Boss");
 	bossEnemyObj_ = Object3d::Create();
 	bossEnemyObj_->SetModel(bossEnemyModel_);
 	bossEnemyObj_->SetPosition(position_);
@@ -100,6 +100,15 @@ void BossEnemy::Damage(int damage_)
 
 void BossEnemy::SpinAttack()
 {
-	rotation_.x += 1.0f;
+	if (spinAttackTimer_++ >= 100) {
+		isSpinAttack_ = true;
+	}
+	if (spinAttackTimer_ >= 200) {
+		spinAttackTimer_ = 0;
+		isSpinAttack_ = false;
+	}
+	if (isSpinAttack_) {
+		rotation_.x += 1.0f;
+	}
 	bossEnemyObj_->SetRotation(rotation_);
 }

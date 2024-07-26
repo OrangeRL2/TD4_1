@@ -81,6 +81,8 @@ private:
 	bool isAttack_ = false;
 	int attackTimer_ = 0;
 	int time_ = 0;
+	bool isSpinAttack_ = false;
+	int spinAttackTimer_ = 0;
 
 	// スピード
 	float speedAddition_ = 0.0f;
