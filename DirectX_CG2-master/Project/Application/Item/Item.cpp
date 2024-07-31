@@ -68,13 +68,16 @@ void Item::Slow()
 void Item::Move(const int playerHp,const DirectX::XMFLOAT3& distance)
 {
 	//上下に移動する
-	/*position_.y += speed;
-	if (position_.y >=moveLim ) {
-		speed = -1.5f;
-	}
-	if(position_.y<=-moveLim){
-		speed = +1.5f;
-	}*/
+	//moveUp += speed2;
+	//if (position_.y >=moveLim) {
+	//	speed2 = -0.1f;
+	//}
+	//if(position_.y<=-moveLim){
+	//	speed2 = +0.1f;
+	//}
+	//position_.y += speed2;
+	////
+
 
 	//速度を決まる
 	move.x = speed + speedBoost;
@@ -102,6 +105,9 @@ void Item::Move(const int playerHp,const DirectX::XMFLOAT3& distance)
 			position_.y=distance.y + r2;
 			scale_.y = 5.0f;
 		}
+		/*if (position_.y <= moveLim) {
+
+		}*/
 		ChangMode(playerHp);
 	}
 	ItemObj_->SetPosition(position_);
@@ -114,7 +120,7 @@ void Item::ChangMode(const int playerHp)
 	
 
 	//プレイヤーがの体力が少ないとき
-	if(playerHp == 5){
+	if(playerHp >= 5){
 	    heelPercent = 0;
 	}
 	else {
@@ -137,20 +143,20 @@ void Item::ChangMode(const int playerHp)
 			timer = popCoolTime * playerHp;
 		}
 		else {
-			if (slowPercent >= r2) {
+			if (slowPercent >= r2) {//スロー(ブースト回復)確率
 				isHeel = false;
 				isDamageBoost = false;
 				isSlow = true;
 				timer = popCoolTime * playerHp;
 			}
 			else {
-				if (damagePercent>= r3) {
+				if (damagePercent>= r3) {//ダメージ確率
 					isSlow = false;
 					isHeel = false;
 					isDamageBoost = true;
 					timer = popCoolTime * playerHp;
 				}
-				else {
+				else {//通常時より遅くアイテムが出現する
 					//追加があれば
 					timer = popCoolTime * playerHp * 2;
 				}

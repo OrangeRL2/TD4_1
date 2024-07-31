@@ -65,7 +65,7 @@ private:
 	DirectX::XMFLOAT3 scale_ = { 0.5f,0.5f,0.5f };
 	DirectX::XMFLOAT3 rotation_ = { 0,0,0 };
 	//アイテム移動量
-	DirectX::XMFLOAT3 move_ = { 0.2f,0,0 };
+	//DirectX::XMFLOAT3 move_ = { 0.2f,0,0 };
 	DirectX::XMFLOAT3 move = { 10.0f,0.0f,0.0f };
 
 	//フラグ
@@ -75,14 +75,17 @@ private:
 
 	
 	//移動処理関連
-	float moveLim = 10.0f;
+	float moveLim = 15.0f;//上昇の上限値
+	float moveLim2 = 10.0f;//下降の上限値
+	float moveUp = 0.0f; //
+	float moveDown = 0.0f;//
 	float speedLim = 1.0f;
 	float speed = 0.0f;
-	float speed2 = 0.0f;
+	float speed2 = 0.1f;
 	float speedBoost = 0.0f;
 	int timer = 0;
 	
-	//モードチェンジ関連
+	//モードチェンジ関連(各効果の変化率)
 	int heelPercent = 80;
 	int slowPercent = 50;
 	int damagePercent = 50;
