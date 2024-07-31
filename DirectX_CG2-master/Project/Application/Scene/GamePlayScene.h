@@ -89,6 +89,13 @@ private:
 	//シーン切り替え演出
 	std::unique_ptr<SceneChange> sceneChange;
 
+	//障害物
+	std::list<std::unique_ptr<Obstacle>> obstacles;
+	Model* obsModel = nullptr;
+	const int obsIntervalMax = 30;
+	int obsInterval = obsIntervalMax;
+	bool isObsActive = false;
+
 	//ボスHPUI
 	std::unique_ptr<Sprite> bossHPSprite;
 

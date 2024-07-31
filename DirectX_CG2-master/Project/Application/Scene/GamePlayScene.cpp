@@ -34,6 +34,8 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	player->Update();
 	player->Update();
 
+	obsModel = Model::LoadFromOBJ("Particle");
+
   stageField_->SetViewProjection(*viewProjection);
 
 	gameover = std::make_unique<Gameover>();
@@ -96,6 +98,28 @@ void GamePlayScene::Finalize() {
 
 void GamePlayScene::Update() {
 
+	//障害物の更新
+	if (obsInterval < 0) {
+		std::unique_ptr<Obstacle>obs = std::make_unique<Obstacle>();
+
+		//出現場所ランダム化
+		DirectX::XMFLOAT3 pos = {
+			player->GetPosition().x + 50,
+			MyMath::RandomFloat(-15,15),
+			0
+		};
+		obs->Initialize(obsModel,pos);
+		obstacles.push_back(std::move(obs));
+		obsInterval = obsIntervalMax;
+	}
+
+	for (std::unique_ptr<Obstacle>& obs : obstacles) {
+		obs->Update();
+	}
+	obstacles.remove_if([](std::unique_ptr<Obstacle>& obs) {
+		return obs->GetIsDead();
+		});
+
   viewProjection->CameraMoveVector({ 0,0,0.0f });
 	viewProjection->Update();
 
@@ -103,6 +127,9 @@ void GamePlayScene::Update() {
 	SE->PlayBGM(&BGM, 5.0f, 1.0f);
 
 	if (!isPause && !isTutorial) {
+		if (isObsActive) {
+			obsInterval--;
+		}
 
 		item_->Update(player->GetHP(), player->GetPosition());
 		player->Update();
@@ -148,6 +175,10 @@ void GamePlayScene::Update() {
 			SE->Stop(BGM);
 		}
 
+		isObsActive = false;
+	}
+	else {
+		isObsActive = true;
 	}
 
 	stageField_->Update();
@@ -239,6 +270,10 @@ void GamePlayScene::Draw() {
 	seaweed->Draw();
 	skydome->Draw();
 	bubble->Draw();
+
+	for (std::unique_ptr<Obstacle>& obs : obstacles) {
+		obs->Draw();
+	}
 	
 	item_->Draw();
 	//3Dオブジェクト描画後処理
@@ -254,8 +289,6 @@ void GamePlayScene::Draw() {
 	else if (isTutorial) {
 		tutorialSprite->Draw();
 	}
-
-	
 
 	bossHPSprite->Draw();
 	pressSpace->Draw();
@@ -304,13 +337,42 @@ void GamePlayScene::Collision() {
 				}
 			}
 		}
-		if (input_->TriggerKey(DIK_SPACE)) {
-			bossEnemy_->Damage(1);
-			for (int i = 0; i < 3; i++) {
 
+		//障害物と自機の当たり判定
+		for (std::unique_ptr<Obstacle>& obs : obstacles) {
+			const float x = (obs->GetPosition().x - player->GetPosition().x) * (obs->GetPosition().x - player->GetPosition().x);
+			const float y = (obs->GetPosition().y - player->GetPosition().y) * (obs->GetPosition().y - player->GetPosition().y);
+			const float r = (player->GetScale().x + obs->GetScale()) * (player->GetScale().x + obs->GetScale());
+
+			if (x + y <= r) {
+
+				if (player->GetEaseingFlag()) {
+					obs->Counter();
+					SE->Play(SE->Counter(), 1.0f, 0.0f);
+				}
+				else {
+
+					if (!obs->GetIsCounter() && isObsActive) {
+						obs->Dead();
+						player->OnCollision(1);
+					}
+				}
 			}
-			
 		}
 
-		
+		//障害物と敵の当たり判定
+		for (std::unique_ptr<Obstacle>& obs : obstacles) {
+			const float x = (obs->GetPosition().x - bossEnemy_->GetPosition().x) * (obs->GetPosition().x - bossEnemy_->GetPosition().x);
+			const float y = (obs->GetPosition().y - bossEnemy_->GetPosition().y) * (obs->GetPosition().y - bossEnemy_->GetPosition().y);
+			const float r = (bossEnemy_->GetScale().x + obs->GetScale()) * (bossEnemy_->GetScale().x + obs->GetScale());
+
+			if (x + y <= r) {
+
+				if (obs->GetIsCounter()) {
+					obs->Dead();
+					bossEnemy_->Damage(1);
+					SE->Play(SE->Hit(),1.0f,0.0f);
+				}
+			}
+		}
 }

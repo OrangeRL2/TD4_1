@@ -47,6 +47,8 @@ public:
 	void Stop(SoundData se);
 
 	//音声データ
+	SoundData Hit() { return hit; }
+	SoundData Counter() { return counter; }
 	SoundData Damage() { return damage; }
 	SoundData Decision() { return decision; }
 	SoundData Avoidance() { return avoidance; }
@@ -56,6 +58,8 @@ private:
 	SoundData se_;
 	SoundManager* soundManager_ = nullptr;
 
+	SoundData hit = soundManager_->SoundLoadWave("hit.wav");
+	SoundData counter = soundManager_->SoundLoadWave("counter.wav");
 	SoundData damage = soundManager_->SoundLoadWave("damage.wav");
 	SoundData decision = soundManager_->SoundLoadWave("decision.wav");
 	SoundData avoidance = soundManager_->SoundLoadWave("avoidance.wav");

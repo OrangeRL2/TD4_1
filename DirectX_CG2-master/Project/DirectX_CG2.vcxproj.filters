@@ -54,6 +54,8 @@
     <ClCompile Include="Application\Player\PlayerStamina.cpp" />
     <ClCompile Include="Application\SpriteManager.cpp" />
     <ClCompile Include="Application\UI\SceneChange.cpp" />
+    <ClCompile Include="Application\UI\PressSpace.cpp" />
+    <ClCompile Include="Application\StageObject\Obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Afterimage\DodgeEffect.cpp" />
@@ -104,6 +106,8 @@
     <ClInclude Include="Application\Player\PlayerStamina.h" />
     <ClInclude Include="Application\SpriteManager.h" />
     <ClInclude Include="Application\UI\SceneChange.h" />
+    <ClInclude Include="Application\UI\PressSpace.h" />
+    <ClInclude Include="Application\StageObject\Obstacle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitattributes" />

@@ -174,7 +174,7 @@ void Player::Draw2D() {
 void Player::Move() {
 
 	//速度を決まる
-	move.x = speed + speedBoost + easingPos;
+	move.x = speed + speedBoost + easingPos * 0.2f;
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
@@ -210,7 +210,7 @@ void Player::Move() {
 }
 
 void Player::OnCollision(const int dmg) {
-	speed -= 0.05f;
+	//speed -= 0.05f;
 	isHit = true;
 	
 	//無敵時間以外ならダメージ

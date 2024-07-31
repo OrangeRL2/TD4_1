@@ -64,6 +64,7 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 
 	DirectX::XMFLOAT3 GetPosition() { return position_; }
+	DirectX::XMFLOAT3 GetScale() { return scale_; }
 	int GetHP() { return bossStatus.hp; }
 private:
 	Object3d* bossEnemyObj_ = nullptr;
@@ -73,7 +74,7 @@ private:
 
 	// ボスの座標、スケール、回転、移動量
 	DirectX::XMFLOAT3 position_ = { 0.0f,0.0f,5.0f };
-	DirectX::XMFLOAT3 scale_ = { 4.0f,4.0f,4.0f };
+	DirectX::XMFLOAT3 scale_ = { 10.0f,10.0f,10.0f };
 	DirectX::XMFLOAT3 rotation_ = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 move_ = { 10.0f,0.0f,0.0f };
 
@@ -97,4 +98,6 @@ private:
 
 	// ボス
 	BossStatus bossStatus;
+
+	float color = 0.0f;
 };

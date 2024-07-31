@@ -67,6 +67,7 @@ public:
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
 	bool GetMove() { return moveFlag; }
+	bool GetEaseingFlag() { return easingFlag; }
 
 public:
 	SEManager* se = nullptr;
@@ -88,7 +89,7 @@ private:
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 
 	float moveLim = 10.0f;
-	float speedLim = 1.0f;
+	float speedLim = 0.25f;
 	float turnSpeed = 0.0f;
 	float speed = 0.0f;
 	float speedBoost = 0.0f;
