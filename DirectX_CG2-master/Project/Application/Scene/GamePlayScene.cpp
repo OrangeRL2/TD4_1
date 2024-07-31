@@ -353,8 +353,10 @@ void GamePlayScene::Collision() {
 				else {
 
 					if (!obs->GetIsCounter() && isObsActive) {
-						obs->Dead();
-						player->OnCollision(1);
+						if (player->GetHP() > 0) {
+							obs->Dead();
+							player->OnCollision(1);
+						}
 					}
 				}
 			}
