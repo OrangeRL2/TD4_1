@@ -10,6 +10,7 @@
 #include "Input.h"
 #include "Model.h"
 #include "Object3d.h"
+#include "SEManager.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
 #include "ParticleManager.h"
@@ -38,7 +39,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro);
+	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManager* SE);
 
 	/// <summary>
 	/// 更新
@@ -79,10 +80,13 @@ public:
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
 	bool GetMove() { return moveFlag; }
+
 	bool GetEaseFlag() { return easingFlag; }
 	float GetCameraPos() { return cameraPosZ; }
 
+
 public:
+	SEManager* se = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
 	Input* input_ = nullptr;
 	ViewProjection* viewProjection = nullptr;
@@ -101,7 +105,7 @@ private:
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 	
 	float moveLim = 10.0f;
-	float speedLim = 1.0f;
+	float speedLim = 0.25f;
 	float turnSpeed = 0.0f;
 	float turnDodgeUp = 0.0f;
 	float turnDodgeDown = 0.0f;

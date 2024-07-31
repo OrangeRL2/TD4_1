@@ -10,12 +10,14 @@
 void BossEnemy::Initialize()
 {
 	// ===== ボスの生成 ===== //
-	bossEnemyModel_ = Model::LoadFromOBJ("Fish");
+	bossEnemyModel_ = Model::LoadFromOBJ("Boss");
 	bossEnemyObj_ = Object3d::Create();
 	bossEnemyObj_->SetModel(bossEnemyModel_);
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetScale(scale_);
 	bossEnemyObj_->SetRotation(rotation_);
+
+	bossStatus.hp = 10;
 }
 
 void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
@@ -30,13 +32,27 @@ void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 	BossEnemy::SpinAttack();
 	
 	// ===== ボスの更新 ===== //
+
+	if (color < 1.0f) {
+		color+=0.01f;
+	}
+	bossEnemyObj_->SetColor({ 1.0f,color,color,1.0f });
+
+	position_ = {
+		playerPosition.x - 20,
+		0,
+		0,
+	};
+	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->Update();
 }
 
 void BossEnemy::Draw()
 {
 	// ===== ボスの描画 ===== //
-	bossEnemyObj_->Draw();
+	if (bossStatus.hp > 0) {
+		bossEnemyObj_->Draw();
+	}
 }
 
 void BossEnemy::Attack(const DirectX::XMFLOAT3& playerPosition)
@@ -86,13 +102,14 @@ void BossEnemy::Move()
 	position_.z += move_.z;
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetRotation(rotation_);
+
 }
 
 void BossEnemy::Damage(int damage_)
 {
 	// ボスのdethダメージ
 	const int deathHp_ = 0;
-
+	color = 0.0f;
 	if (bossStatus.hp > deathHp_) {
 		bossStatus.hp -= damage_;
 	}
@@ -100,6 +117,15 @@ void BossEnemy::Damage(int damage_)
 
 void BossEnemy::SpinAttack()
 {
-	rotation_.x += 1.0f;
+	if (spinAttackTimer_++ >= 100) {
+		isSpinAttack_ = true;
+	}
+	if (spinAttackTimer_ >= 200) {
+		spinAttackTimer_ = 0;
+		isSpinAttack_ = false;
+	}
+	if (isSpinAttack_) {
+		rotation_.x += 1.0f;
+	}
 	bossEnemyObj_->SetRotation(rotation_);
 }

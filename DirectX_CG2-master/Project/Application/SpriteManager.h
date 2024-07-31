@@ -21,6 +21,8 @@ public:
 		HPHUD,
 		HPHUDDecal1,
 		HPHUDDecal2,
+		Pause,
+		Tutorial,
 	};
 
 private:

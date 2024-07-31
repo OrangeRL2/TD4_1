@@ -9,7 +9,8 @@
 float ez(float x) {
 	return x * x * x;
 }
-void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
+void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManager* SE) {
+	se = SE;
 	input_ = Input::GetInstance();
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
@@ -48,6 +49,7 @@ void Player::Update() {
 		invincibleTimer = invincibleTimerMax;
 		isInvincible = false;
 	}
+
 	if (spaceTimer <= 0) {
 		if (input_->TriggerKey(DIK_D)) {
 			ItemEffect(heal);
@@ -57,6 +59,7 @@ void Player::Update() {
 			OnCollision(1);
 			spaceTimer = 100;
 		}
+
 	}
 
 	Dodge2();
@@ -177,8 +180,10 @@ void Player::Draw2D() {
 void Player::Move() {
 
 	//速度を決まる
+
 	move.x = speed + speedBoost + easingPos;
 	move.y = turnDodgeUp + turnDodgeDown;
+
 	//speedがspeedLimにならないように
 	if (speed > speedLim) {
 		speed = speedLim;
@@ -216,6 +221,7 @@ void Player::Move() {
 }
 
 void Player::OnCollision(const int dmg) {
+
 	if (dmg > 0) {
 		speed -= 0.05f;
 		isHit = true;
@@ -229,18 +235,23 @@ void Player::OnCollision(const int dmg) {
 			particle->AddHit(position, 0.5f, 60.0f, 10, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
 			isInvincible = true;
 		}
+
 		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
 		{
 			object0->Delete();
 		}
 	}
+
+	se->Play(se->Damage(), 1.0f, 0.0f);
 }
 
 
 void Player::Dodge2() {
 	if (staminaTimer >= 100 && spaceTimer == 0.0f) {
+
 		if (input_->TriggerKey(DIK_A)) {
 			particle->AddHit(position, 0.5f, 60.0f, 20, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
+
 			staminaTimer -= 110;
 			spaceTimer = 10;
 			stamina->OnUse();
@@ -257,6 +268,8 @@ void Player::Dodge2() {
 					object1->Delete();
 				}
 			}
+
+			se->Play(se->Avoidance(), 1.0f, 1.0f);
 		}
 	}
 	if (staminaTimer < 600.0f) {

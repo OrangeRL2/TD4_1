@@ -24,10 +24,9 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManager,
 	sceneChange = std::make_unique<SceneChange>();
 	sceneChange->Initialize(spriteCommon_, false);
 
-	spaceSprite = std::make_unique<Sprite>();
-	spaceSprite->Initialize(spriteCommon_, SpriteManager::space);
-	spaceSprite->SetPosition({ WinApp::window_width / 2, 650 });
-	spaceSprite->SetSize({ spaceSprite->GetSize().x * 0.75f,spaceSprite->GetSize().y * 0.75f});
+	pressSpace = std::make_unique<PressSpace>();
+	pressSpace->Initialize(spriteCommon_);
+	pressSpace->SetIsActive(true);
 
 	//タイトルのスプライト
 	titleSprite = std::make_unique<Sprite>();
@@ -47,6 +46,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManager,
 
 	bubble = std::make_unique<ParticleManager>();
 	bubble->Initialize(Model::LoadFromOBJ("Particle"));
+
 }
 
 void TitleScene::Finalize() {
@@ -57,6 +57,8 @@ void TitleScene::Finalize() {
 
 void TitleScene::Update() {
 
+	SE->PlayBGM(&BGM, 5.0f, 1.0f);
+
 	cameraPos.x += 0.1f;
 
 	//ビュープロジェクション
@@ -64,23 +66,13 @@ void TitleScene::Update() {
 	viewProjection->SetTarget({ cameraPos.x,cameraPos.y,0 });
 	viewProjection->Update();
 
-	//UI更新
-	UITimer--;
-	if (UITimer <= 0) {
-		if (isUIDraw) {
-			isUIDraw = false;
-		}
-		else {
-			isUIDraw = true;
-		}
-
-		UITimer = MaxUITimer;
-	}
+	pressSpace->Update();
 
 	//シーン遷移処理
 	if (input_->TriggerKey(DIK_SPACE) && !sceneChange->GetIsChange()) {
 		sceneChange->SetIsReduction(true);
 		SE->Play(SE->Decision(), 1.0f, 0.0f);
+		SE->Stop(BGM);
 	}
 
 	if (sceneChange->GetCompleted()) {
@@ -136,9 +128,7 @@ void TitleScene::Draw() {
 	spriteCommon_->Update();
 
 	titleSprite->Draw();
-	if (isUIDraw) {
-		spaceSprite->Draw();
-	}
+	pressSpace->Draw();
 	sceneChange->Draw();
 	//sprite->SetPosition(position);
 
