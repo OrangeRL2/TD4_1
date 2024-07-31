@@ -190,7 +190,7 @@ void Player::Move() {
 	}
 	if (speed < speedLim)
 	{
-		speed += 0.001f;
+		speed += 0.002f;
 	}
 	if (speed >= speedLim / 2) {
 		/*std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
