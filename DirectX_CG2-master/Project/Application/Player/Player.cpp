@@ -9,7 +9,8 @@
 float ez(float x) {
 	return x * x * x;
 }
-void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro) {
+void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManager* SE) {
+	se = SE;
 	input_ = Input::GetInstance();
 	viewProjection = viewPro;
 	spriteCommon_ = spCommon;
@@ -50,11 +51,10 @@ void Player::Update() {
 	}
 
 	if (input_->TriggerKey(DIK_D)) {
-		OnCollision(1);
+		//OnCollision(1);
 	}
 
 	Dodge2();
-
 
 	if (moveSpeed <= 0) {
 		/*	if (dodgeRot.z != 0.0f) {
@@ -225,6 +225,8 @@ void Player::OnCollision(const int dmg) {
 			object0->Delete();
 		}
 	}
+
+	se->Play(se->Damage(), 1.0f, 0.0f);
 }
 //
 //void Player::Dodge() {
@@ -311,7 +313,7 @@ void Player::OnCollision(const int dmg) {
 //}
 void Player::Dodge2() {
 	if (staminaTimer >= 100 && spaceTimer == 0.0f) {
-		if (input_->TriggerKey(DIK_A)) {
+		if (input_->TriggerKey(DIK_SPACE)) {
 			staminaTimer -= 110;
 			spaceTimer = 10;
 			stamina->OnUse();
@@ -328,6 +330,8 @@ void Player::Dodge2() {
 					object1->Delete();
 				}
 			}
+
+			se->Play(se->Avoidance(), 1.0f, 1.0f);
 		}
 	}
 	if (staminaTimer < 600.0f) {

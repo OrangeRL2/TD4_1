@@ -21,6 +21,7 @@
 #include "BackObject.h"
 #include "Skydome.h"
 #include "SceneChange.h"
+#include "PressSpace.h"
 #include <random>
 
 //前方宣言

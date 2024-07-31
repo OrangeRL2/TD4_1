@@ -47,12 +47,18 @@ public:
 	void Stop(SoundData se);
 
 	//音声データ
+	SoundData Damage() { return damage; }
 	SoundData Decision() { return decision; }
+	SoundData Avoidance() { return avoidance; }
+	SoundData Underwater() { return underwater; }
 
 private:
 	SoundData se_;
 	SoundManager* soundManager_ = nullptr;
 
+	SoundData damage = soundManager_->SoundLoadWave("damage.wav");
 	SoundData decision = soundManager_->SoundLoadWave("decision.wav");
+	SoundData avoidance = soundManager_->SoundLoadWave("avoidance.wav");
+	SoundData underwater = soundManager_->SoundLoadWave("underwater.wav");
 };
 

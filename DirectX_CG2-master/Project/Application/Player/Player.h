@@ -10,6 +10,7 @@
 #include "Input.h"
 #include "Model.h"
 #include "Object3d.h"
+#include "SEManager.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
 #include "ParticleManager.h"
@@ -28,7 +29,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro);
+	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManager* SE);
 
 	/// <summary>
 	/// 更新
@@ -68,6 +69,7 @@ public:
 	bool GetMove() { return moveFlag; }
 
 public:
+	SEManager* se = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
 	Input* input_ = nullptr;
 	ViewProjection* viewProjection = nullptr;

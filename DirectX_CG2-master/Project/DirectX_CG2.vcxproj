@@ -124,6 +124,7 @@
     <ClCompile Include="Application\UI\Button.cpp" />
     <ClCompile Include="Application\SEManager.cpp" />
     <ClCompile Include="Application\ParticleAndEffect\DamageEffect.cpp" />
+    <ClCompile Include="Application\UI\PressSpace.cpp" />
     <ClCompile Include="Application\UI\SceneChange.cpp" />
     <ClCompile Include="GameEngine\Audio\SoundManager.cpp" />
     <ClCompile Include="GameEngine\Base\BaseScene.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Application\UI\Button.h" />
     <ClInclude Include="Application\SEManager.h" />
     <ClInclude Include="Application\ParticleAndEffect\DamageEffect.h" />
+    <ClInclude Include="Application\UI\PressSpace.h" />
     <ClInclude Include="Application\UI\SceneChange.h" />
     <ClInclude Include="GameEngine\Audio\SoundManager.h" />
     <ClInclude Include="GameEngine\Base\BaseScene.h" />

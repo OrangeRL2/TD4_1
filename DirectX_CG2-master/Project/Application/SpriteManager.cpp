@@ -18,5 +18,7 @@ void SpriteManager::Initialize(SpriteCommon* spriteCommon) {
 	spriteCommon->LoadTexture(HPHUD, "HUD.png");
 	spriteCommon->LoadTexture(HPHUDDecal1, "HUD2.png");
 	spriteCommon->LoadTexture(HPHUDDecal2, "HUD3.png");
+	spriteCommon->LoadTexture(Pause, "Pause.png");
+	spriteCommon->LoadTexture(Tutorial, "Tutorial.png");
 
 }

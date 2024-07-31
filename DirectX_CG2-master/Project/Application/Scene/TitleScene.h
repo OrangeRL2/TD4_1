@@ -51,7 +51,8 @@ private:
 
 	//シーン切り替え演出
 	std::unique_ptr<SceneChange> sceneChange;
-	std::unique_ptr<Sprite> spaceSprite;
+
+	std::unique_ptr<PressSpace> pressSpace;
 	std::unique_ptr<Sprite> titleSprite;
 
 	//地面
@@ -65,8 +66,6 @@ private:
 	//天球
 	std::unique_ptr<Skydome> skydome;
 
-	bool isUIDraw = true;
-	const int MaxUITimer = 30;
-	int UITimer = MaxUITimer;
+	SoundData BGM = soundManager_->SoundLoadWave("underwater.wav");
 };
 

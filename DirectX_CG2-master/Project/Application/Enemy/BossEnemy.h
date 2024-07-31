@@ -15,7 +15,7 @@ class BossEnemy
 {
 public:
 	struct BossStatus { // ボスのスタータス
-		int hp;
+		int hp = 10;
 		int state;
 	};
 

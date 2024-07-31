@@ -91,5 +91,15 @@ private:
 
 	//ボスHPUI
 	std::unique_ptr<Sprite> bossHPSprite;
+
+	std::unique_ptr<Sprite> pauseSprite;
+	std::unique_ptr<Sprite> tutorialSprite;
+
+	std::unique_ptr<PressSpace> pressSpace;
+
+	bool isPause = false;
+	bool isTutorial = true;
+	SoundData BGM = soundManager_->SoundLoadWave("underwater.wav");
+
 };
 
