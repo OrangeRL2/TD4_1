@@ -22,10 +22,10 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	SE = SEManager::GetInstance();
 	SE->Initialize(soundManager_);
 
-  stageField_ =
-    std::make_unique<StageField>();
+	stageField_ =
+		std::make_unique<StageField>();
 
-  stageField_->Initialize();
+	stageField_->Initialize();
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
 
@@ -36,7 +36,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	obsModel = Model::LoadFromOBJ("Particle");
 
-  stageField_->SetViewProjection(*viewProjection);
+	stageField_->SetViewProjection(*viewProjection);
 
 	gameover = std::make_unique<Gameover>();
 	gameover->Initialize(spriteCommon);
@@ -121,6 +121,7 @@ void GamePlayScene::Update() {
 		});
 
   viewProjection->CameraMoveVector({ 0,0,0.0f });
+
 	viewProjection->Update();
 
 	//ループ音声
@@ -131,11 +132,15 @@ void GamePlayScene::Update() {
 			obsInterval--;
 		}
 
+
+		stageField_->Update();
+	}
+
 		item_->Update(player->GetHP(), player->GetPosition());
 		player->Update();
-		player->Update();
+	
 		bossEnemy_->Update(player->GetPosition());
-		bossEnemy_->Update(player->GetPosition());
+
 
 		DirectX::XMFLOAT3 bubblePos = {
 		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
@@ -194,9 +199,9 @@ void GamePlayScene::Update() {
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,
 		0,
-		player->GetPosition().z + cameraPosition.z
+		player->GetPosition().z + cameraPosition.z /*+ player->GetCameraPos()*/
 		});
-
+	DodgeEffect();
 	//viewProjection->SetEye({0,0,-20});
 	//viewProjection->SetTarget({0,0,0});
 
@@ -220,10 +225,21 @@ void GamePlayScene::Update() {
 
 	//景観オブジェクト
 	ground->Update(player->GetPosition());
-	coral->Update(player->GetPosition(),0.0f);
-	stone->Update(player->GetPosition(),0.0f);
-	seaweed->Update(player->GetPosition(),180.0f * MyMath::RandomInt(0, 1));
+	coral->Update(player->GetPosition(), 0.0f);
+	stone->Update(player->GetPosition(), 0.0f);
+	seaweed->Update(player->GetPosition(), 180.0f * MyMath::RandomInt(0, 1));
 	skydome->Update(player->GetPosition());
+
+
+	bossHPSprite->SetSize({ (float)bossEnemy_->GetHP() * 5, 30.0f });
+
+	DirectX::XMFLOAT3 bubblePos = {
+		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
+		MyMath::RandomFloat(player->GetPosition().y - 20.0f,player->GetPosition().y),
+		MyMath::RandomFloat(player->GetPosition().z,player->GetPosition().z + 100.0f),
+	};
+	bubble->AddAlways(bubblePos, 2.0f, 300.0f, { 1,1,1,0.51f });
+	bubble->UpdateAlways(10, true, true);
 
 	bossHPSprite->SetSize({(float)bossEnemy_->GetHP() * 50, 30.0f});
 
@@ -237,16 +253,16 @@ void GamePlayScene::Update() {
 	}
 
 	pressSpace->Update();
-	
+
 	//imGuiの更新
 	imGui.Begin();
 	ImGui::Text("GameScene");
 	ImGui::Text("test");
-	ImGui::Text("player pos y %f",player->GetPosition().y);
-	ImGui::Text("enemy pos y %f",bossEnemy_->GetPosition().y);
-	ImGui::Text("hp %d",player->GetHP());
-	ImGui::Text("boss hp %d",bossEnemy_->GetHP());
-	ImGui::Text("move %d",player->GetMove());
+	ImGui::Text("player pos y %f", player->GetPosition().y);
+	ImGui::Text("enemy pos y %f", bossEnemy_->GetPosition().y);
+	ImGui::Text("hp %d", player->GetHP());
+	ImGui::Text("boss hp %d", bossEnemy_->GetHP());
+	ImGui::Text("move %d", player->GetMove());
 	imGui.End();
 }
 
@@ -255,12 +271,12 @@ void GamePlayScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxCommon_->GetCommandList());
 
-    //for(auto& block : stageField_->GetList()) {
-    //  block->Draw();
-    //}
+	//for(auto& block : stageField_->GetList()) {
+	//  block->Draw();
+	//}
 
   //stageField_->Draw();
-	
+
 	bossEnemy_->Draw();
 	player->Draw();
 
@@ -271,10 +287,11 @@ void GamePlayScene::Draw() {
 	skydome->Draw();
 	bubble->Draw();
 
+
 	for (std::unique_ptr<Obstacle>& obs : obstacles) {
 		obs->Draw();
 	}
-	
+
 	item_->Draw();
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -306,37 +323,50 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Collision() {
-		if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
-			-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
-			if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
-				-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
-				if (bossEnemy_->GetPosition().z - player->GetPosition().z < 15 &&
-					-15 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
-					player->OnCollision(1);
-					player->DodgeOnHit();
+	if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
+		-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+		if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
+			-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
+			if (bossEnemy_->GetPosition().z - player->GetPosition().z < 15 &&
+				-15 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
+				player->OnCollision(1);
+				player->DodgeOnHit();
+			}
+		}
+	}
+
+	if (item_->GetPosition().x - player->GetPosition().x < 5 &&
+		-5 < item_->GetPosition().x - player->GetPosition().x) {
+		if (item_->GetPosition().y - player->GetPosition().y < 5 &&
+			-5 < item_->GetPosition().y - player->GetPosition().y) {
+			if (item_->GetPosition().z - player->GetPosition().z < 2 &&
+				-2 < item_->GetPosition().z - player->GetPosition().z) {
+				if (item_->GetIsDamage() == true) {
+					bossEnemy_->Damage(1);
+					player->ItemEffect(staminaUp);
 				}
+				else if (item_->GetIsHeel() == true) {
+					player->ItemEffect(heal);
+				}
+				else if (item_->GetIsSlow() == true) {
+					player->ItemEffect(staminaUp);
+				}
+				item_->Ability(player->GetHP(), 1, player->GetPosition());
 			}
 		}
 
-		if (item_->GetPosition().x - player->GetPosition().x < 5 &&
-			-5 < item_->GetPosition().x - player->GetPosition().x) {
-			if (item_->GetPosition().y - player->GetPosition().y < 5 &&
-				-5 < item_->GetPosition().y - player->GetPosition().y) {
-				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
-					-2 < item_->GetPosition().z - player->GetPosition().z) {
-					if (item_->GetIsDamage() == true) {
-						bossEnemy_->Damage(1);
-					}
-					else if (item_->GetIsHeel() == true) {
-						player->OnCollision(-1);
-					}
-					else if(item_->GetIsSlow()==true){
-						//player->DodgeOnHit();
-					}
-					item_->Ability(player->GetHP(), 1, player->GetPosition());
-				}
-			}
+	}
+	if (input_->TriggerKey(DIK_A)) {
+		for (int i = 0; i < 3; i++) {
+			bossEnemy_->Damage(1);
 		}
+
+	}
+
+
+}
+
+
 
 		//障害物と自機の当たり判定
 		for (std::unique_ptr<Obstacle>& obs : obstacles) {
@@ -375,4 +405,5 @@ void GamePlayScene::Collision() {
 				}
 			}
 		}
+
 }

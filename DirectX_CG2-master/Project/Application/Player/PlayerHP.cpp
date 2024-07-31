@@ -32,12 +32,40 @@ void PlayerHP::Update() {
 		}
 		if (HP < afterHP) {
 			HP = afterHP;
+			hitFlag = false;
+		}
+		if (HP == afterHP) {
+			hitFlag = false;
+		}
+	}
+
+	if (healFlag == true) {
+		if (HP < afterHP) {
+			HP += 1.0f;
+		}
+		if (HP > afterHP) {
+			HP = afterHP;
+			healFlag = false;
+		}
+		if (afterHP > 600) {
+			afterHP = 600;
+			healFlag = false;
+		}
+		if (HP == afterHP) {
+			healFlag = false;
 		}
 	}
 }
 void PlayerHP::OnHit() {
 	hitFlag = true;
 	afterHP -= 100;
+}
+
+void PlayerHP::OnHeal() {
+	if(afterHP<600){
+	healFlag = true;
+	afterHP += 100;
+	}
 }
 
 void PlayerHP::Draw() {
