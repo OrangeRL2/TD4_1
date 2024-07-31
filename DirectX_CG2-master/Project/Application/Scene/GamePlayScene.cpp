@@ -347,6 +347,7 @@ void GamePlayScene::Collision() {
 		if (x + y <= r) {
 
 			if (player->GetEaseFlag()) {
+				player->ItemEffect(staminaUp);
 				obs->Counter();
 				SE->Play(SE->Counter(), 1.0f, 0.0f);
 			}

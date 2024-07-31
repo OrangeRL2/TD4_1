@@ -302,13 +302,13 @@ void Player::Dodge2() {
 		}
 		frame++;
 		if (turnSpeed > 10.0f) {
-			turnDodgeUp = 0.3f;
+			turnDodgeUp = 0.1f;
 		}
 		if (turnSpeed < -10.0f) {
-			turnDodgeDown = -0.3f;
+			turnDodgeDown = -0.1f;
 		}
 		if (frame <= endFrame / 4) {
-			easingPos += 0.05f;
+			easingPos += 0.03f;
 			cameraPosZ += 1.0f;
 			//turnSpeed += 40.0f;
 			scale.x += 0.03f;
@@ -415,7 +415,7 @@ void Player::ItemEffect(enum EFFECT effect) {
 
 		//stamina回復
 	case staminaUp:
-		staminaTimer = 600.0f;
+		staminaTimer += 100.0f;
 		break;
 		//制限速度が上がる
 	case speedLimUp:
@@ -426,4 +426,5 @@ void Player::ItemEffect(enum EFFECT effect) {
 		speed += 0.1f;
 		break;
 	}
+
 }

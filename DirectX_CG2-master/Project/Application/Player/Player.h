@@ -31,6 +31,7 @@ enum EFFECT {
 	staminaMax,
 	speedUp,
 	speedLimUp,
+	invincible,
 };
 
 class Player
