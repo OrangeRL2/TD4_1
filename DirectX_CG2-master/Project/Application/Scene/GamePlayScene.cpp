@@ -28,9 +28,13 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
   stageField_->Initialize();
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize();
-	
+
 	player = std::make_unique<Player>();
-	player->Initialize(spriteCommon, viewProjection);
+	player->Initialize(spriteCommon, viewProjection,SE);
+	player->Update();
+	player->Update();
+
+	obsModel = Model::LoadFromOBJ("Particle");
 
   stageField_->SetViewProjection(*viewProjection);
 
@@ -65,12 +69,25 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	bossHPSprite = std::make_unique<Sprite>();
 	bossHPSprite->Initialize(spriteCommon_, SpriteManager::white1x1);
 	bossHPSprite->SetAnchorpoint({ 0,0 });
-	bossHPSprite->SetPosition({ WinApp::window_width / 2 - 300, 100 });
+	bossHPSprite->SetPosition({ WinApp::window_width / 2 - 300, WinApp::window_height - 100 });
 	bossHPSprite->SetColor({ 0,1,0.5f,1 });
 
+	pauseSprite = std::make_unique<Sprite>();
+	pauseSprite->Initialize(spriteCommon_, SpriteManager::Pause);
+	pauseSprite->SetPosition({ WinApp::window_width / 2, WinApp::window_height / 2 });
+
+	tutorialSprite = std::make_unique<Sprite>();
+	tutorialSprite->Initialize(spriteCommon_, SpriteManager::Tutorial);
+	tutorialSprite->SetPosition({ WinApp::window_width / 2, WinApp::window_height / 3 });
+	tutorialSprite->SetSize({ tutorialSprite->GetSize().x * 1.5f, tutorialSprite->GetSize().y * 1.5f });
+	
 	//シーン切り替え演出
 	sceneChange = std::make_unique<SceneChange>();
 	sceneChange->Initialize(spriteCommon_, false);
+
+	pressSpace = std::make_unique<PressSpace>();
+	pressSpace->Initialize(spriteCommon_);
+	pressSpace->SetIsActive(true);
 
 }
 
@@ -80,31 +97,91 @@ void GamePlayScene::Finalize() {
 }
 
 void GamePlayScene::Update() {
+
+	//障害物の更新
+	if (obsInterval < 0) {
+		std::unique_ptr<Obstacle>obs = std::make_unique<Obstacle>();
+
+		//出現場所ランダム化
+		DirectX::XMFLOAT3 pos = {
+			player->GetPosition().x + 50,
+			MyMath::RandomFloat(-15,15),
+			0
+		};
+		obs->Initialize(obsModel,pos);
+		obstacles.push_back(std::move(obs));
+		obsInterval = obsIntervalMax;
+	}
+
+	for (std::unique_ptr<Obstacle>& obs : obstacles) {
+		obs->Update();
+	}
+	obstacles.remove_if([](std::unique_ptr<Obstacle>& obs) {
+		return obs->GetIsDead();
+		});
+
   viewProjection->CameraMoveVector({ 0,0,0.0f });
 	viewProjection->Update();
 
-	//クリア処理
-	if (bossEnemy_->GetHP() <= 0) {
-		clear->OnFlag();
+	//ループ音声
+	SE->PlayBGM(&BGM, 5.0f, 1.0f);
 
-		if (input_->TriggerKey(DIK_SPACE)) {
-			sceneChange->SetIsReduction(true);
+	if (!isPause && !isTutorial) {
+		if (isObsActive) {
+			obsInterval--;
 		}
 
-    stageField_->Update();
+		item_->Update(player->GetHP(), player->GetPosition());
+		player->Update();
+		player->Update();
+		bossEnemy_->Update(player->GetPosition());
+		bossEnemy_->Update(player->GetPosition());
+
+		DirectX::XMFLOAT3 bubblePos = {
+		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
+		MyMath::RandomFloat(player->GetPosition().y - 20.0f,player->GetPosition().y),
+		MyMath::RandomFloat(player->GetPosition().z,player->GetPosition().z + 100.0f),
+		};
+		bubble->AddAlways(bubblePos, 2.0f, 300.0f, { 1,1,1,0.51f });
+		bubble->UpdateAlways(10, true, true);
+
 	}
 
-	bossEnemy_->Update(player->GetPosition());
-
-	player->Update();
+	if (input_->TriggerKey(DIK_Q)) {
+		if (isPause) {
+			isPause = false;
+		}
+		else {
+			isPause = true;
+		}
+	}
 	//HP0でゲームオーバー
 	if (player->GetHP() <= 0) {
 		gameover->OnFlag();
+		pressSpace->SetIsActive(true);
 
 		if (input_->TriggerKey(DIK_SPACE)) {
 			sceneChange->SetIsReduction(true);
+			SE->Stop(BGM);
 		}
 	}
+	//クリア処理
+	if (bossEnemy_->GetHP() <= 0) {
+		clear->OnFlag();
+		pressSpace->SetIsActive(true);
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+			sceneChange->SetIsReduction(true);
+			SE->Stop(BGM);
+		}
+
+		isObsActive = false;
+	}
+	else {
+		isObsActive = true;
+	}
+
+	stageField_->Update();
 
 	viewProjection->SetTarget({
 		player->GetPosition().x,
@@ -112,11 +189,6 @@ void GamePlayScene::Update() {
 		player->GetPosition().z,
 		});
 
-
-	player->Update();
-	bossEnemy_->Update(player->GetPosition());
-
-	item_->Update(player->GetHP(), player->GetPosition());
 	viewProjection->SetTarget(player->GetPosition());
 
 	viewProjection->SetEye({
@@ -153,15 +225,18 @@ void GamePlayScene::Update() {
 	seaweed->Update(player->GetPosition(),180.0f * MyMath::RandomInt(0, 1));
 	skydome->Update(player->GetPosition());
 
-	bossHPSprite->SetSize({(float)bossEnemy_->GetHP() * 5, 30.0f});
+	bossHPSprite->SetSize({(float)bossEnemy_->GetHP() * 50, 30.0f});
 
-	DirectX::XMFLOAT3 bubblePos = {
-		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
-		MyMath::RandomFloat(player->GetPosition().y - 20.0f,player->GetPosition().y),
-		MyMath::RandomFloat(player->GetPosition().z,player->GetPosition().z + 100.0f),
-	};
-	bubble->AddAlways(bubblePos, 2.0f, 300.0f,{1,1,1,0.51f});
-	bubble->UpdateAlways(10, true, true);
+	//チュートリアルの処理
+	if (isTutorial) {
+		pressSpace->SetIsActive(true);
+		if (input_->TriggerKey(DIK_SPACE)) {
+			isTutorial = false;
+			pressSpace->SetIsActive(false);
+		}
+	}
+
+	pressSpace->Update();
 	
 	//imGuiの更新
 	imGui.Begin();
@@ -195,6 +270,10 @@ void GamePlayScene::Draw() {
 	seaweed->Draw();
 	skydome->Draw();
 	bubble->Draw();
+
+	for (std::unique_ptr<Obstacle>& obs : obstacles) {
+		obs->Draw();
+	}
 	
 	item_->Draw();
 	//3Dオブジェクト描画後処理
@@ -204,9 +283,17 @@ void GamePlayScene::Draw() {
 	spriteCommon_->PreDraw();
 	spriteCommon_->Update();
 
+	if (isPause) {
+		pauseSprite->Draw();
+	}
+	else if (isTutorial) {
+		tutorialSprite->Draw();
+	}
+
 	bossHPSprite->Draw();
+	pressSpace->Draw();
 	gameover->Draw();
-	//clear->Draw();
+	clear->Draw();
 	player->Draw2D();
 	sceneChange->Draw();
 
@@ -250,12 +337,42 @@ void GamePlayScene::Collision() {
 				}
 			}
 		}
-		if (input_->TriggerKey(DIK_A)) {
-			for (int i = 0; i < 3; i++) {
-				bossEnemy_->Damage(1);
+
+		//障害物と自機の当たり判定
+		for (std::unique_ptr<Obstacle>& obs : obstacles) {
+			const float x = (obs->GetPosition().x - player->GetPosition().x) * (obs->GetPosition().x - player->GetPosition().x);
+			const float y = (obs->GetPosition().y - player->GetPosition().y) * (obs->GetPosition().y - player->GetPosition().y);
+			const float r = (player->GetScale().x + obs->GetScale()) * (player->GetScale().x + obs->GetScale());
+
+			if (x + y <= r) {
+
+				if (player->GetEaseingFlag()) {
+					obs->Counter();
+					SE->Play(SE->Counter(), 1.0f, 0.0f);
+				}
+				else {
+
+					if (!obs->GetIsCounter() && isObsActive) {
+						obs->Dead();
+						player->OnCollision(1);
+					}
+				}
 			}
-			
 		}
 
-		
+		//障害物と敵の当たり判定
+		for (std::unique_ptr<Obstacle>& obs : obstacles) {
+			const float x = (obs->GetPosition().x - bossEnemy_->GetPosition().x) * (obs->GetPosition().x - bossEnemy_->GetPosition().x);
+			const float y = (obs->GetPosition().y - bossEnemy_->GetPosition().y) * (obs->GetPosition().y - bossEnemy_->GetPosition().y);
+			const float r = (bossEnemy_->GetScale().x + obs->GetScale()) * (bossEnemy_->GetScale().x + obs->GetScale());
+
+			if (x + y <= r) {
+
+				if (obs->GetIsCounter()) {
+					obs->Dead();
+					bossEnemy_->Damage(1);
+					SE->Play(SE->Hit(),1.0f,0.0f);
+				}
+			}
+		}
 }
