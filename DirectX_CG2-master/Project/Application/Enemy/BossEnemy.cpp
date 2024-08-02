@@ -120,12 +120,13 @@ void BossEnemy::SpinAttack()
 	if (spinAttackTimer_++ >= 100) {
 		isSpinAttack_ = true;
 	}
-	if (spinAttackTimer_ >= 200) {
+	if (rotation_.x >= 360.0f) {
 		spinAttackTimer_ = 0;
+		rotation_.x = 0.0f;
 		isSpinAttack_ = false;
 	}
 	if (isSpinAttack_) {
-		rotation_.x += 1.0f;
+		rotation_.x += 2.0f;
 	}
 	bossEnemyObj_->SetRotation(rotation_);
 }
