@@ -53,8 +53,7 @@ void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 		speed_ += 0.07f;
 	}
 
-	//下のプレイヤーが上のプレイヤーについてくる処理
-//上のプレイヤー→下のプレイヤーのベクトル作成
+	//プレイヤーについてくる処理
 	XMFLOAT3 dire0 = { playerPosition.x - position_.x, playerPosition.y - position_.y, playerPosition.z - position_.z };
 	XMVECTOR direVec = XMLoadFloat3(&dire0);
 	direVec = XMVector3Normalize(direVec);
