@@ -208,25 +208,36 @@ void GamePlayScene::Collision() {
 			}
 		}
 
-		if (item_->GetPosition().x - player->GetPosition().x < 5 &&
-			-5 < item_->GetPosition().x - player->GetPosition().x) {
-			if (item_->GetPosition().y - player->GetPosition().y < 5 &&
-				-5 < item_->GetPosition().y - player->GetPosition().y) {
-				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
-					-2 < item_->GetPosition().z - player->GetPosition().z) {
-					if (item_->GetIsDamage() == true) {
-						bossEnemy_->Damage();
-					}
-					else if (item_->GetIsHeel() == true) {
-						player->OnCollision(-1);
-					}
-					else if(item_->GetIsSlow()==true){
-						//player->DodgeOnHit();
-					}
-					item_->Ability(player->GetHP(), 1, player->GetPosition());
-				}
-			}
-		}
+		//if (item_->GetPosition().x - player->GetPosition().x < 5 &&
+		//	-5 < item_->GetPosition().x - player->GetPosition().x) {
+		//	if (item_->GetPosition().y - player->GetPosition().y < 2 &&
+		//		-2 < item_->GetPosition().y - player->GetPosition().y) {
+		//		if (item_->GetPosition().z - player->GetPosition().z < 2 &&
+		//			-2 < item_->GetPosition().z - player->GetPosition().z) {
+		//			if (item_->GetIsDamage() == true) {
+		//				bossEnemy_->Damage(1);
+		//			}
+		//			else if (item_->GetIsHeel() == true) {
+		//				//player->OnCollision(-1);
+		//				player->ItemEffect(heal);
+		//			}
+		//			else if (item_->GetIsSlow() == true) {
+		//				//player->DodgeOnHit();
+		//			}
+		//			item_->Ability(player->GetHP(), 1, player->GetPosition());
+		//			//障害物と敵の当たり判定
+		//			for (std::unique_ptr<Obstacle>& obs : obstacles) {
+		//				const float x = (obs->GetPosition().x - item_->GetPosition().x) * (obs->GetPosition().x - item_->GetPosition().x);
+		//				const float y = (obs->GetPosition().y - item_->GetPosition().y) * (obs->GetPosition().y - item_->GetPosition().y);
+		//				const float r = (item_->GetScale().x + obs->GetScale()) * (item_->GetScale().x + obs->GetScale());
+
+		//				if (x + y <= r) {
+		//					item_->Ability(player->GetHP(), 1, player->GetPosition());
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 		if (input_->TriggerKey(DIK_A)) {
 			for (int i = 0; i < 3; i++) {
 				bossEnemy_->Damage();
