@@ -370,7 +370,7 @@ void GamePlayScene::Collision() {
 				item_->Ability(player->GetHP(), 1, player->GetPosition());
 			}
 		}
-	}
+	
 
 	//障害物と自機の当たり判定
 	for (std::unique_ptr<Obstacle>& obs : obstacles) {
@@ -397,7 +397,7 @@ void GamePlayScene::Collision() {
 				}
 			}
 		}
-	}
+	
 
 	//障害物と敵の当たり判定
 	for (std::unique_ptr<Obstacle>& obs : obstacles) {
@@ -420,4 +420,3 @@ void GamePlayScene::Collision() {
 			}
 		}
 	}
-}
