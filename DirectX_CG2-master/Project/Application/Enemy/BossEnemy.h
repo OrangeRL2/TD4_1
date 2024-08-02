@@ -99,5 +99,5 @@ private:
 	// ボス
 	BossStatus bossStatus;
 
-	float color = 0.0f;
+	float color = 1.0f;
 };

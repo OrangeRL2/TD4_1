@@ -10,14 +10,14 @@
 void BossEnemy::Initialize()
 {
 	// ===== ボスの生成 ===== //
-	bossEnemyModel_ = Model::LoadFromOBJ("Fish");
+	bossEnemyModel_ = Model::LoadFromOBJ("Boss");
 	bossEnemyObj_ = Object3d::Create();
 	bossEnemyObj_->SetModel(bossEnemyModel_);
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetScale(scale_);
 	bossEnemyObj_->SetRotation(rotation_);
 
-	bossStatus.hp = 10;
+	bossStatus.hp = 5;
 }
 
 void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
@@ -33,10 +33,10 @@ void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 	
 	// ===== ボスの更新 ===== //
 
-	if (color < 1.0f) {
-		color+=0.01f;
+	if (color >= 1.0f) {
+		color-=0.2f;
 	}
-	bossEnemyObj_->SetColor({ 1.0f,color,color,1.0f });
+	bossEnemyObj_->SetColor({ color,1.0f,1.0f,0.75f });
 
 	position_ = {
 		playerPosition.x - 20,
@@ -109,7 +109,7 @@ void BossEnemy::Damage(int damage_)
 {
 	// ボスのdethダメージ
 	const int deathHp_ = 0;
-	color = 0.0f;
+	color = 10.0f;
 	if (bossStatus.hp > deathHp_) {
 		bossStatus.hp -= damage_;
 	}

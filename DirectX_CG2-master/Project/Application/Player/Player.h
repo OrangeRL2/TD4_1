@@ -66,8 +66,8 @@ public:
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
-	bool GetMove() { return moveFlag; }
-	bool GetEaseingFlag() { return easingFlag; }
+	const bool GetMove() { return moveFlag; }
+	const bool GetEaseingFlag() { return easingFlag; }
 
 public:
 	SEManager* se = nullptr;

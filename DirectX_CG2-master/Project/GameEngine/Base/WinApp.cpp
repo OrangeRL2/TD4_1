@@ -89,6 +89,17 @@ void WinApp::Initialize()
 	//マウスカーソル非表示
 	//ShowCursor(FALSE);
 
+	GetWindowRect(hwnd, &window_rect);
+	GetClientRect(hwnd, &client_rect);
+
+	width = 1280;
+	height = 720;
+
+	int resize_width = width + ((window_rect.right - window_rect.left) - (client_rect.right - client_rect.left));
+	int resize_hight = height + ((window_rect.bottom - window_rect.top) - (client_rect.bottom - client_rect.top));
+	SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX);
+	SetWindowPos(hwnd, NULL, CW_USEDEFAULT, CW_USEDEFAULT, resize_width, resize_hight, SWP_NOMOVE);
+
 	//ウィンドウを表示状態にする
 	ShowWindow(hwnd, SW_SHOW);
 
@@ -110,16 +121,16 @@ void WinApp::ScreenMode(bool full) {
 	width = GetSystemMetrics(SM_CXSCREEN);
 	height = GetSystemMetrics(SM_CYSCREEN);
 	if (full) {
-		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
-		SetWindowPos(hwnd, HWND_TOP, r.left, r.top, width, height, SWP_NOZORDER);
-		//ウィンドウを表示状態にする
-		ShowWindow(hwnd, SW_SHOW);
-	}
-	else {
 		width = 1280;
 		height = 720;
 		SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX);
 		SetWindowPos(hwnd, HWND_TOP, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER);
+		//ウィンドウを表示状態にする
+		ShowWindow(hwnd, SW_SHOW);
+	}
+	else {
+		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP);
+		SetWindowPos(hwnd, HWND_TOP, r.left, r.top, width, height, SWP_NOZORDER);
 		//ウィンドウを表示状態にする
 		ShowWindow(hwnd, SW_SHOW);
 	}

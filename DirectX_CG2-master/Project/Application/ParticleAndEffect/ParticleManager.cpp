@@ -148,8 +148,8 @@ void ParticleManager::UpdateSpin(XMFLOAT3 position, float gamespeed) {
 		float f = p->oneGrain.frame / p->oneGrain.num_frame;
 
 		p->oneGrain.position = {
-				position.x + (float)cos((2.0f / particleAmount * p->oneGrain.num + rot) * MyMath::PI) * MyMath::easeOutCubic(f) * circleRange,
-				position.y + (float)-sin((2.0f / particleAmount * p->oneGrain.num + rot) * MyMath::PI) * MyMath::easeOutCubic(f) * circleRange,
+				spinPos.x + (float)cos((2.0f / particleAmount * p->oneGrain.num + rot) * MyMath::PI) * MyMath::easeOutCubic(f) * circleRange,
+				spinPos.y + (float)-sin((2.0f / particleAmount * p->oneGrain.num + rot) * MyMath::PI) * MyMath::easeOutCubic(f) * circleRange,
 				0,
 		};
 
@@ -183,7 +183,7 @@ void ParticleManager::AddSpin(XMFLOAT3 position, float start_scale, float life, 
 		p->Initialize(model_);
 		p->oneGrain.num = i;
 		p->oneGrain.num_frame = life;
-		p->oneGrain.position = position;
+		spinPos = position;
 		p->oneGrain.s_scale = start_scale;
 		p->oneGrain.e_scale = 0;
 		p->SetColor(randomColor);
