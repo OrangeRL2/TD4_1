@@ -64,7 +64,7 @@ private:
 
 	//アイテムの座標
 	DirectX::XMFLOAT3 position_ = { -30,0,0 };
-	DirectX::XMFLOAT3 scale_ = { 0.5f,0.5f,0.5f };
+	DirectX::XMFLOAT3 scale_ = { 1.5f,1.5f,1.5f };
 	DirectX::XMFLOAT3 rotation_ = { 0,0,0 };
 	//アイテム移動量
 	DirectX::XMFLOAT3 move_ = { 0.2f,0,0 };

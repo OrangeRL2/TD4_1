@@ -143,8 +143,11 @@ void GamePlayScene::Update() {
 		item_->Update(player->GetHP(), player->GetPosition());
 		player->Update();
 		player->Update();
-		bossEnemy_->Update(player->GetPosition());
-		bossEnemy_->Update(player->GetPosition());
+
+		if (player->GetHP() > 0) {
+			bossEnemy_->Update(player->GetPosition());
+			bossEnemy_->Update(player->GetPosition());
+		}
 
 		DirectX::XMFLOAT3 bubblePos = {
 		MyMath::RandomFloat(player->GetPosition().x - 50,player->GetPosition().x + 50.0f),
@@ -335,8 +338,10 @@ void GamePlayScene::Collision() {
 			-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
 			if (bossEnemy_->GetPosition().z - player->GetPosition().z < 15 &&
 				-15 < bossEnemy_->GetPosition().z - player->GetPosition().z) {
-				player->OnCollision(1);
-				player->DodgeOnHit();
+				if (player->GetHP() > 0 && bossEnemy_->GetHP() > 0) {
+					player->OnCollision(1);
+					player->DodgeOnHit();
+				}
 			}
 		}
 	}
@@ -362,6 +367,7 @@ void GamePlayScene::Collision() {
 						//player->DodgeOnHit();
 					}
 					item_->Ability(player->GetHP(), 1, player->GetPosition());
+					SE->Play(SE->Decision(), 1.0f, 0.0f);
 
 				}
 				else if (item_->GetIsSlow() == true) {
@@ -388,7 +394,7 @@ void GamePlayScene::Collision() {
 				else {
 
 					if (!obs->GetIsCounter() && isObsActive) {
-						if (player->GetHP() > 0) {
+						if (player->GetHP() > 0 || bossEnemy_->GetHP() > 0) {
 							player->OnCollision(1);
 							obs->Dead();
 						}
