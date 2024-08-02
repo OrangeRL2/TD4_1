@@ -80,12 +80,9 @@ public:
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
-	bool GetMove() { return moveFlag; }
-
-	bool GetEaseFlag() { return easingFlag; }
+	const bool GetMove() { return moveFlag; }
+	const bool GetEaseingFlag() { return easingFlag; }
 	float GetCameraPos() { return cameraPosZ; }
-
-
 public:
 	SEManager* se = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;

@@ -81,6 +81,7 @@ private:
 	int particleAmount = 0;
 
 	XMFLOAT4 randomColor = { 1,1,1,1 };
+	XMFLOAT3 spinPos = { 0,0,0 };
 
 };
 

@@ -33,8 +33,8 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 	player->Initialize(spriteCommon, viewProjection, SE);
 	player->Update();
 	player->Update();
-
-	obsModel = Model::LoadFromOBJ("Particle");
+	
+	obsModel = Model::LoadFromOBJ("obstacle");
 
 	stageField_->SetViewProjection(*viewProjection);
 
@@ -65,12 +65,21 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	bubble = std::make_unique<ParticleManager>();
 	bubble->Initialize(Model::LoadFromOBJ("Particle"));
+	destParticle = std::make_unique<ParticleManager>();
+	destParticle->Initialize(Model::LoadFromOBJ("Particle"));
+	hitParticle = std::make_unique<ParticleManager>();
+	hitParticle->Initialize(Model::LoadFromOBJ("Particle"));
 
 	bossHPSprite = std::make_unique<Sprite>();
 	bossHPSprite->Initialize(spriteCommon_, SpriteManager::white1x1);
 	bossHPSprite->SetAnchorpoint({ 0,0 });
-	bossHPSprite->SetPosition({ WinApp::window_width / 2 - 300, WinApp::window_height - 100 });
+	bossHPSprite->SetPosition({ WinApp::window_width / 2 - 200, WinApp::window_height - 100 });
 	bossHPSprite->SetColor({ 0,1,0.5f,1 });
+
+	bossSprite = std::make_unique<Sprite>();
+	bossSprite->Initialize(spriteCommon_, SpriteManager::Boss);
+	bossSprite->SetPosition({ WinApp::window_width / 2 - 300, WinApp::window_height - 80 });
+	bossSprite->SetSize({ bossSprite->GetSize().x / 3,bossSprite->GetSize().y / 3});
 
 	pauseSprite = std::make_unique<Sprite>();
 	pauseSprite->Initialize(spriteCommon_, SpriteManager::Pause);
@@ -138,7 +147,7 @@ void GamePlayScene::Update() {
 		bossEnemy_->Update(player->GetPosition());
 
 		DirectX::XMFLOAT3 bubblePos = {
-		MyMath::RandomFloat(player->GetPosition().x + 100.0f,player->GetPosition().x + 150.0f),
+		MyMath::RandomFloat(player->GetPosition().x - 50,player->GetPosition().x + 50.0f),
 		MyMath::RandomFloat(player->GetPosition().y - 20.0f,player->GetPosition().y),
 		MyMath::RandomFloat(player->GetPosition().z,player->GetPosition().z + 100.0f),
 		};
@@ -146,6 +155,9 @@ void GamePlayScene::Update() {
 		bubble->UpdateAlways(10, true, true);
 
 	}
+
+	destParticle->UpdateSpin(bossEnemy_->GetPosition(), 1.0f);
+	hitParticle->UpdateSpin(bossEnemy_->GetPosition(), 1.0f);
 
 	if (input_->TriggerKey(DIK_Q)) {
 		if (isPause) {
@@ -162,6 +174,7 @@ void GamePlayScene::Update() {
 
 		if (input_->TriggerKey(DIK_SPACE)) {
 			sceneChange->SetIsReduction(true);
+			SE->Play(SE->Decision(), 1.0f, 0.0f);
 			SE->Stop(BGM);
 		}
 	}
@@ -172,6 +185,7 @@ void GamePlayScene::Update() {
 
 		if (input_->TriggerKey(DIK_SPACE)) {
 			sceneChange->SetIsReduction(true);
+			SE->Play(SE->Decision(), 1.0f, 0.0f);
 			SE->Stop(BGM);
 		}
 
@@ -189,7 +203,7 @@ void GamePlayScene::Update() {
 		player->GetPosition().z,
 		});
 
-	viewProjection->SetTarget(player->GetPosition());
+	//viewProjection->SetTarget(player->GetPosition());
 
 	viewProjection->SetEye({
 		player->GetPosition().x + cameraPosition.x,
@@ -261,8 +275,14 @@ void GamePlayScene::Draw() {
 
   //stageField_->Draw();
 
+	if (!isPause && !isTutorial) {
+		bossEnemy_->Draw();
+		player->Draw();
+	}
+
 	bossEnemy_->Draw();
 	player->Draw();
+
 
 	ground->Draw();
 	coral->Draw();
@@ -270,6 +290,7 @@ void GamePlayScene::Draw() {
 	seaweed->Draw();
 	skydome->Draw();
 	bubble->Draw();
+	destParticle->Draw();
 
 	for (std::unique_ptr<Obstacle>& obs : obstacles) {
 		obs->Draw();
@@ -290,6 +311,7 @@ void GamePlayScene::Draw() {
 		tutorialSprite->Draw();
 	}
 
+	bossSprite->Draw();
 	bossHPSprite->Draw();
 	pressSpace->Draw();
 	gameover->Draw();
@@ -318,17 +340,27 @@ void GamePlayScene::Collision() {
 		}
 	}
 
-	if (item_->GetPosition().x - player->GetPosition().x < 5 &&
-		-5 < item_->GetPosition().x - player->GetPosition().x) {
-		if (item_->GetPosition().y - player->GetPosition().y < 5 &&
-			-5 < item_->GetPosition().y - player->GetPosition().y) {
-			if (item_->GetPosition().z - player->GetPosition().z < 2 &&
-				-2 < item_->GetPosition().z - player->GetPosition().z) {
-				if (item_->GetIsDamage() == true) {
-					bossEnemy_->Damage(1);
-				}
-				else if (item_->GetIsHeel() == true) {
-					player->OnCollision(-1);
+
+		if (item_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < item_->GetPosition().x - player->GetPosition().x) {
+			if (item_->GetPosition().y - player->GetPosition().y < 5 &&
+				-5 < item_->GetPosition().y - player->GetPosition().y) {
+				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
+					-2 < item_->GetPosition().z - player->GetPosition().z) {
+					if (item_->GetIsDamage() == true) {
+						bossEnemy_->Damage(1);
+						if (bossEnemy_->GetHP() <= 0) {
+							destParticle->AddSpin(bossEnemy_->GetPosition(), 2, 60, 30, 20, true);
+						}
+					}
+					else if (item_->GetIsHeel() == true) {
+						player->OnCollision(-1);
+					}
+					else if(item_->GetIsSlow()==true){
+						//player->DodgeOnHit();
+					}
+					item_->Ability(player->GetHP(), 1, player->GetPosition());
+
 				}
 				else if (item_->GetIsSlow() == true) {
 					//player->DodgeOnHit();
@@ -346,17 +378,23 @@ void GamePlayScene::Collision() {
 
 		if (x + y <= r) {
 
-			if (player->GetEaseFlag()) {
-				player->ItemEffect(staminaUp);
-				obs->Counter();
-				SE->Play(SE->Counter(), 1.0f, 0.0f);
-			}
-			else {
 
-				if (!obs->GetIsCounter() && isObsActive) {
-					obs->Dead();
-					player->OnCollision(1);
+				if (player->GetEaseingFlag() && !obs->GetIsCounter()) {
+					obs->Counter();
+					SE->Play(SE->Counter(), 1.0f, 0.0f);
+					destParticle->AddSpin(obs->GetPosition(), 1, 20, 5, 10, false);
 				}
+				else {
+
+					if (!obs->GetIsCounter() && isObsActive) {
+						if (player->GetHP() > 0) {
+							player->OnCollision(1);
+							obs->Dead();
+						}
+					}
+
+				}
+				
 			}
 		}
 	}
@@ -369,10 +407,16 @@ void GamePlayScene::Collision() {
 
 		if (x + y <= r) {
 
-			if (obs->GetIsCounter()) {
-				obs->Dead();
-				bossEnemy_->Damage(1);
-				SE->Play(SE->Hit(), 1.0f, 0.0f);
+
+				if (obs->GetIsCounter()) {
+					obs->Dead();
+					bossEnemy_->Damage(1);
+					SE->Play(SE->Hit(),1.0f,0.0f);
+					if (bossEnemy_->GetHP() <= 0) {
+						destParticle->AddSpin(bossEnemy_->GetPosition(), 2, 60, 30, 20, true);
+					}
+				}
+
 			}
 		}
 	}
