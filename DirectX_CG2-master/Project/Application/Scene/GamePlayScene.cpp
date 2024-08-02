@@ -261,6 +261,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("hp %d", player->GetHP());
 	ImGui::Text("boss hp %d", bossEnemy_->GetHP());
 	ImGui::Text("move %d", player->GetMove());
+	ImGui::Text("InvTimer %f", player->GetInvincibleTimer());
 	imGui.End();
 }
 
@@ -328,8 +329,8 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Collision() {
-	if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
-		-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+	if (bossEnemy_->GetPosition().x - player->GetPosition().x < 10 &&
+		-10 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
 		if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
 			-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
 			if (bossEnemy_->GetPosition().z - player->GetPosition().z < 15 &&
@@ -377,7 +378,6 @@ void GamePlayScene::Collision() {
 		const float r = (player->GetScale().x + obs->GetScale()) * (player->GetScale().x + obs->GetScale());
 
 		if (x + y <= r) {
-
 
 				if (player->GetEaseingFlag() && !obs->GetIsCounter()) {
 					obs->Counter();

@@ -6,6 +6,7 @@
 #pragma once
 #include <DirectXMath.h>
 #include <random>
+using namespace DirectX;
 
 class MyMath {
 
@@ -40,5 +41,7 @@ public:
 	//度数法⇔弧度法の関数
 	static float Deg2Rad(float Deg);	//度数法を弧度法に変換する関数
 	static float Rad2Deg(float rad);	//弧度法を度数法に変換する関数
+
+	XMFLOAT3 NormalizeXMFLOAT3(const XMFLOAT3& v);
 
 };

@@ -32,6 +32,7 @@ enum EFFECT {
 	speedUp,
 	speedLimUp,
 	invincible,
+	invincibleOff,
 };
 
 class Player
@@ -83,6 +84,10 @@ public:
 	const bool GetMove() { return moveFlag; }
 	const bool GetEaseingFlag() { return easingFlag; }
 	float GetCameraPos() { return cameraPosZ; }
+	float GetSpaceTimer() { return spaceTimer; }
+	float GetInvincibleTimer() { return invincibleTimer; }
+	bool GetInvincibleFlag() { return isInvincible; }
+	float GetSpeedLim() { return speedLim; }
 public:
 	SEManager* se = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -103,7 +108,7 @@ private:
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
 	
 	float moveLim = 10.0f;
-	float speedLim = 0.25f;
+	float speedLim = 0.45f;
 	float turnSpeed = 0.0f;
 	float turnDodgeUp = 0.0f;
 	float turnDodgeDown = 0.0f;
@@ -134,9 +139,9 @@ private:
 	//ヒット判定
 	bool isHit = false;
 	//無敵時間
-	const float invincibleTimerMax = 60.0f;
+	const float invincibleTimerMax = 120.0f;
 	float invincibleTimer = invincibleTimerMax;
-	bool isInvincible = false;
+	bool isInvincible = true;
 
 
 	//回避関連

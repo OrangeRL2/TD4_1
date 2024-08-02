@@ -34,7 +34,7 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManag
 	HP->Initialize(spriteCommon_);
 	stamina = std::make_unique<PlayerStamina>();
 	stamina->Initialize(spriteCommon_);
-
+	invincibleTimer = invincibleTimerMax;
 }
 
 void Player::Update() {
@@ -47,8 +47,9 @@ void Player::Update() {
 	stamina->Update(staminaTimer);
 	//DodgeActive();
 	//Dodge();
-
-	invincibleTimer--;
+	if (isInvincible==true) {
+		invincibleTimer--;
+	}
 	if (invincibleTimer <= 0) {
 		invincibleTimer = invincibleTimerMax;
 		isInvincible = false;
@@ -193,7 +194,7 @@ void Player::Move() {
 	}
 	if (speed < speedLim)
 	{
-		speed += 0.002f;
+		speed += 0.005f;
 	}
 	if (speed >= speedLim / 2) {
 		/*std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
@@ -209,6 +210,14 @@ void Player::Move() {
 	if (speed < 0.0f) {
 		speed = 0.0f;
 	}
+
+	if(position.y >= 10.0f){
+		position.y -= MoveSpeedUp;
+	}
+	else if (position.y <= -17.0f) {
+		position.y += MoveSpeedDown;
+	}
+
 	//std::unique_ptr<Afterimage>newAfterimage = std::make_unique<Afterimage>();
 	//newAfterimage->Initialize(spriteCommon_, viewProjection, position,rot);
 	//afterimage_.push_back(std::move(newAfterimage));
@@ -224,9 +233,10 @@ void Player::Move() {
 }
 
 void Player::OnCollision(const int dmg) {
+	if (isInvincible == false) {
 
 	if (dmg > 0) {
-		speed -= 0.05f;
+		speed -= 0.3f;
 		isHit = true;
 
 		//無敵時間以外ならダメージ
@@ -246,13 +256,16 @@ void Player::OnCollision(const int dmg) {
 	}
 
 	se->Play(se->Damage(), 1.0f, 0.0f);
+
+	isInvincible = true;
+	}
 }
 
 
 void Player::Dodge2() {
 	if (staminaTimer >= 100 && spaceTimer == 0.0f) {
 
-		if (input_->TriggerKey(DIK_A)) {
+		if (input_->TriggerKey(DIK_SPACE)) {
 			particle->AddHit(position, 0.5f, 60.0f, 20, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
 
 			staminaTimer -= 110;
@@ -389,18 +402,19 @@ void Player::Dodge2() {
 }
 
 void Player::DodgeOnHit() {
-	if (staminaTimer == 0) {
-		staminaTimer = 50;
-		//easingPos = 50.0f;
-		easingFlag = 1;
-		frame = 0;
-		for (int i = 0; i < 200; i++) {
-			for (std::unique_ptr<Afterimage>& object0 : afterimage_)
-			{
-				object0->Delete();
-			}
+	if(isInvincible == true) {
+	//easingPos = 50.0f;
+	easingFlag = 1;
+	easingPos += 0.5f;
+	frame = 0;
+	isInvincible = true;
+	for (int i = 0; i < 200; i++) {
+		for (std::unique_ptr<Afterimage>& object0 : afterimage_)
+		{
+			object0->Delete();
 		}
 	}
+}	
 }
 
 void Player::ItemEffect(enum EFFECT effect) {
@@ -427,6 +441,14 @@ void Player::ItemEffect(enum EFFECT effect) {
 		//スピードが上がる
 	case speedUp:
 		speed += 0.1f;
+		break;
+	case invincible:
+			isInvincible = true;
+			break;
+		
+	case invincibleOff:
+		isInvincible = false;
+		invincibleTimer = invincibleTimerMax;
 		break;
 	}
 
