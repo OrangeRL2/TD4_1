@@ -16,12 +16,13 @@ void DamageEffect::Update() {
 
 	whiteSP->SetPosition({ WinApp::window_width / 2,WinApp::window_height / 2 });
 	whiteSP->SetSize({ WinApp::window_width,WinApp::window_height });
-	whiteSP->SetColor({ 0.5f,0.0f,0.0f,transTimer });
+	whiteSP->SetColor({healColor.x,healColor.y,healColor.z,transTimer });
 	whiteSP->Update();
 }
 
-void DamageEffect::SetTimer() {
+void DamageEffect::SetTimer(DirectX::XMFLOAT3 color) {
 	transTimer = transTimerMax;
+	healColor = color;
 }
 
 void DamageEffect::Draw() {

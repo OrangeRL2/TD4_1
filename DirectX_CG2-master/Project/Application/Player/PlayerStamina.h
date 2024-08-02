@@ -15,6 +15,7 @@ public:
 
 	void SetTimer();
 	void OnUse();
+	void StaminaUp();
 
 private:
 	const float invincibleTimerMax = 200.0f;

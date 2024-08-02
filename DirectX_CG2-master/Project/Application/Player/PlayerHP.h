@@ -14,6 +14,7 @@ public:
 
 	void SetTimer();
 	void OnHit();
+	void OnHeal();
 
 private:
 
@@ -28,6 +29,7 @@ private:
 	const float transTimerVal = 0.05f;
 	float transTimer = 0.0f;
 	bool hitFlag = false;
+	bool healFlag = false;
 
 };
 

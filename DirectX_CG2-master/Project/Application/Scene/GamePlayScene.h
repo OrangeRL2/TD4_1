@@ -36,6 +36,7 @@ public:
 	void Draw() override;
 
 	void Collision();
+	void DodgeEffect();
 
 private:
 
@@ -63,7 +64,12 @@ private:
 
 	//カメラ位置
 	const XMFLOAT3 cameraPosition = { 0.0f,25.0f,-30.0f };
-
+	//カメラ位置
+	const XMFLOAT3 goCameraPosition = { 0.0f,25.0f,-5.0f };
+	//フレーム最大数
+	const float frameMax = 60.0f;
+	//ゲームオーバー時のカメライージング用フレーム
+	float goCameraFrame = 0.0f;
 	//スプライト
 	std::unique_ptr<Sprite> cursorSprite;
 
