@@ -356,10 +356,10 @@ void GamePlayScene::Collision() {
 						}
 					}
 					else if (item_->GetIsHeel() == true) {
-						player->OnCollision(-1);
+						player->ItemEffect(heal);
 					}
 					else if (item_->GetIsSlow() == true) {
-						//player->DodgeOnHit();
+						player->ItemEffect(staminaUp);
 					}
 					item_->Ability(player->GetHP(), 1, player->GetPosition());
 
@@ -379,11 +379,14 @@ void GamePlayScene::Collision() {
 		const float r = (player->GetScale().x + obs->GetScale()) * (player->GetScale().x + obs->GetScale());
 
 		if (x + y <= r) {
-
+			if (player->GetSpaceTimer() > 0 && !obs->GetIsCounter()) {
+				player->ItemEffect(staminaUp);
+				obs->Counter();
+				SE->Play(SE->Counter(), 1.0f, 0.0f);
+				destParticle->AddSpin(obs->GetPosition(), 1, 20, 5, 10, false);
+			}
 				if (player->GetEaseingFlag() && !obs->GetIsCounter()) {
-					obs->Counter();
 					SE->Play(SE->Counter(), 1.0f, 0.0f);
-					destParticle->AddSpin(obs->GetPosition(), 1, 20, 5, 10, false);
 				}
 				else {
 

@@ -55,7 +55,7 @@ void Player::Update() {
 		isInvincible = false;
 	}
 
-	if (spaceTimer <= 0) {
+	/*if (spaceTimer <= 0) {
 		if (input_->TriggerKey(DIK_D)) {
 			ItemEffect(heal);
 			spaceTimer = 100;
@@ -65,7 +65,7 @@ void Player::Update() {
 			spaceTimer = 100;
 		}
 
-	}
+	}*/
 
 
 	if (moveSpeed <= 0) {
