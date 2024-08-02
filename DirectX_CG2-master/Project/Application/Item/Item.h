@@ -47,14 +47,16 @@ public:
 
 	void ChangMode(const int playerHp);
 
-	
-	void Ability(int playerHp,int bossHp, const DirectX::XMFLOAT3& distance);
+
+	void Ability(int playerHp, int bossHp, const DirectX::XMFLOAT3& distance);
 
 
 	DirectX::XMFLOAT3 GetPosition() { return position_; }
+	DirectX::XMFLOAT3 GetScale() { return scale_; }
 	bool GetIsHeel() { return isHeel; }
 	bool GetIsSlow() { return isSlow; }
 	bool GetIsDamage() { return isDamageBoost; }
+
 
 private:
 	Object3d* ItemObj_ = nullptr;
@@ -73,15 +75,15 @@ private:
 	bool isSlow = false;
 	bool isDamageBoost = false;
 
-	
+
 	//移動処理関連
-	float moveLim = 10.0f;
+	float moveLim = 0.0f;
 	float speedLim = 1.0f;
 	float speed = 0.0f;
 	float speed2 = 0.0f;
 	float speedBoost = 0.0f;
 	int timer = 0;
-	
+
 	//モードチェンジ関連
 	int heelPercent = 80;
 	int slowPercent = 50;
@@ -91,4 +93,3 @@ private:
 	const int popCoolTime = 50;
 
 };
-

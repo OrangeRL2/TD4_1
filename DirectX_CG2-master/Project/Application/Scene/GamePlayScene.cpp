@@ -350,6 +350,7 @@ void GamePlayScene::Collision() {
 					-2 < item_->GetPosition().z - player->GetPosition().z) {
 					if (item_->GetIsDamage() == true) {
 						bossEnemy_->Damage(1);
+
 						if (bossEnemy_->GetHP() <= 0) {
 							destParticle->AddSpin(bossEnemy_->GetPosition(), 2, 60, 30, 20, true);
 						}
@@ -357,7 +358,7 @@ void GamePlayScene::Collision() {
 					else if (item_->GetIsHeel() == true) {
 						player->OnCollision(-1);
 					}
-					else if(item_->GetIsSlow()==true){
+					else if (item_->GetIsSlow() == true) {
 						//player->DodgeOnHit();
 					}
 					item_->Ability(player->GetHP(), 1, player->GetPosition());
@@ -394,7 +395,6 @@ void GamePlayScene::Collision() {
 					}
 
 				}
-				
 			}
 		}
 	}

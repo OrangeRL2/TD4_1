@@ -18,7 +18,7 @@ void Item::Initialize()
 void Item::Update(const int playerHp, const DirectX::XMFLOAT3& distance)
 {
 	//アイテム挙動
-	Move(playerHp,distance);
+	Move(playerHp, distance);
 	//各アイテムの効果
 	if (isDamageBoost == true) {
 		DamageBoost();
@@ -65,43 +65,29 @@ void Item::Slow()
 	//playerのspeedBoostを初期値にする
 }
 
-void Item::Move(const int playerHp,const DirectX::XMFLOAT3& distance)
+void Item::Move(const int playerHp, const DirectX::XMFLOAT3& distance)
 {
 	//上下に移動する
-	/*position_.y += speed;
-	if (position_.y >=moveLim ) {
-		speed = -1.5f;
-	}
-	if(position_.y<=-moveLim){
-		speed = +1.5f;
-	}*/
+	//position_.y += speed2;
+	//if (position_.y >=moveLim ) {
+	//	speed2 = -0.5f;
+	//}
+	//if(position_.y<=-moveLim){
+	//	speed2 = +0.5f;
+	//}
 
 	//速度を決まる
-	move.x = speed + speedBoost;
-	//speedがspeedLimにならないように
-	if (speed > speedLim) {
-		speed = speedLim;
-	}
-	if (speed < speedLim)
-	{
-		speed += 0.001f;
-	}
-	
-	position_.x += move.x * 1.8f;
+	position_.x += 0.2f;
+
 	timer--;
 	if (timer >= 0) {
 		position_.x = distance.x + 60;
 	}
 
 	int r = rand() % 20 - 10;
-	int r2 = rand() % 11 + 1;
 	//プレイヤーを通り過ぎると前方に移動する
-	if (position_.x <= distance.x-60 ) {
+	if (position_.x <= distance.x - 60) {
 		position_ = { distance.x + 60,distance.y + r,distance.z };
-		if (position_.y <= -20) {
-			position_.y=distance.y + r2;
-			scale_.y = 5.0f;
-		}
 		ChangMode(playerHp);
 	}
 	ItemObj_->SetPosition(position_);
@@ -110,21 +96,18 @@ void Item::Move(const int playerHp,const DirectX::XMFLOAT3& distance)
 
 void Item::ChangMode(const int playerHp)
 {
-
-	
-
 	//プレイヤーがの体力が少ないとき
-	if(playerHp == 5){
-	    heelPercent = 0;
+	if (playerHp >= 5) {
+		heelPercent = 0;
 	}
-	else {
+	else if (playerHp != 0) {
 		heelPercent = 100 / playerHp;// 体力の数値
 	}
 
 	//スピードが速いとき
 	slowPercent = 10 * playerHp;
 
-	
+
 	//回復処理優先で確率でのモードチェンジ
 	while (true) {
 		int r = rand() % 100 + 1;
@@ -144,7 +127,7 @@ void Item::ChangMode(const int playerHp)
 				timer = popCoolTime * playerHp;
 			}
 			else {
-				if (damagePercent>= r3) {
+				if (damagePercent >= r3) {
 					isSlow = false;
 					isHeel = false;
 					isDamageBoost = true;
@@ -160,7 +143,7 @@ void Item::ChangMode(const int playerHp)
 	}
 }
 
-void Item::Ability(int playerHp,int bossHp, const DirectX::XMFLOAT3& distance)
+void Item::Ability(int playerHp, int bossHp, const DirectX::XMFLOAT3& distance)
 {
 	if (isDamageBoost == true) {
 		bossHp -= 1;
