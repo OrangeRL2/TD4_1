@@ -74,7 +74,7 @@ void WinApp::Initialize()
 	//ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(
 		w.lpszClassName,//クラス名
-		L"GAME",			//タイトルバーの文字
+		L"Jet Swim",			//タイトルバーの文字
 		WS_POPUP,	//標準的なウィンドウスタイル
 		CW_USEDEFAULT,			//表示X座標(OSに任せる)
 		CW_USEDEFAULT,			//表示Y座標(OSに任せる)
