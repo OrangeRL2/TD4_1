@@ -104,7 +104,7 @@ void TitleScene::Update() {
 
 	//imGuiの更新
 	imGui.Begin();
-	ImGui::Text("TitleScene");
+	//ImGui::Text("TitleScene");
 	//ImGui::Text("MousePos : (%f,%f)", mousePos.x, mousePos.y);
 	imGui.End();
 }
@@ -137,5 +137,5 @@ void TitleScene::Draw() {
 	spriteCommon_->PostDraw();
 
 	//imGuiの描画
-	imGui.Draw();
+	//imGui.Draw();
 }

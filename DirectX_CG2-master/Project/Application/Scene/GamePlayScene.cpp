@@ -87,7 +87,7 @@ void GamePlayScene::Initialize(DirectXCommon* dxCommon, SoundManager* soundManag
 
 	tutorialSprite = std::make_unique<Sprite>();
 	tutorialSprite->Initialize(spriteCommon_, SpriteManager::Tutorial);
-	tutorialSprite->SetPosition({ WinApp::window_width / 2, WinApp::window_height / 3 });
+	tutorialSprite->SetPosition({ WinApp::window_width / 2, WinApp::window_height / 2.5f });
 	tutorialSprite->SetSize({ tutorialSprite->GetSize().x * 1.5f, tutorialSprite->GetSize().y * 1.5f });
 
 	//シーン切り替え演出
@@ -162,14 +162,14 @@ void GamePlayScene::Update() {
 	destParticle->UpdateSpin(bossEnemy_->GetPosition(), 1.0f);
 	hitParticle->UpdateSpin(bossEnemy_->GetPosition(), 1.0f);
 
-	if (input_->TriggerKey(DIK_Q)) {
+	/*if (input_->TriggerKey(DIK_P)) {
 		if (isPause) {
 			isPause = false;
 		}
 		else {
 			isPause = true;
 		}
-	}
+	}*/
 	//HP0でゲームオーバー
 	if (player->GetHP() <= 0) {
 		gameover->OnFlag();
@@ -242,7 +242,8 @@ void GamePlayScene::Update() {
 	seaweed->Update(player->GetPosition(), 180.0f * MyMath::RandomInt(0, 1));
 	skydome->Update(player->GetPosition());
 
-	bossHPSprite->SetSize({ (float)bossEnemy_->GetHP() * 50, 30.0f });
+	bossHPSprite->SetSize({ 700 - (35 - (float)bossEnemy_->GetHP()) * (700 / 35), 30.0f });
+	//bossHPSprite->SetSize({ (float)bossEnemy_->GetHP() * 50, 30.0f });
 
 	//チュートリアルの処理
 	if (isTutorial) {
@@ -257,14 +258,14 @@ void GamePlayScene::Update() {
 
 	//imGuiの更新
 	imGui.Begin();
-	ImGui::Text("GameScene");
+	/*ImGui::Text("GameScene");
 	ImGui::Text("test");
 	ImGui::Text("player pos y %f", player->GetPosition().y);
 	ImGui::Text("enemy pos y %f", bossEnemy_->GetPosition().y);
 	ImGui::Text("hp %d", player->GetHP());
 	ImGui::Text("boss hp %d", bossEnemy_->GetHP());
 	ImGui::Text("move %d", player->GetMove());
-	ImGui::Text("InvTimer %f", player->GetInvincibleTimer());
+	ImGui::Text("InvTimer %f", player->GetInvincibleTimer());*/
 	imGui.End();
 }
 
@@ -327,7 +328,7 @@ void GamePlayScene::Draw() {
 	spriteCommon_->PostDraw();
 
 	//imGuiの描画
-	imGui.Draw();
+	//imGui.Draw();
 
 }
 

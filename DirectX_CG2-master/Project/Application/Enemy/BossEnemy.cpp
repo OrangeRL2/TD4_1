@@ -17,7 +17,7 @@ void BossEnemy::Initialize()
 	bossEnemyObj_->SetScale(scale_);
 	bossEnemyObj_->SetRotation(rotation_);
 
-	bossStatus.hp = 5;
+	bossStatus.hp = 35;
 }
 
 void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)

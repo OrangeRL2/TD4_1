@@ -269,7 +269,7 @@ void Player::Dodge2() {
 			particle->AddHit(position, 0.5f, 60.0f, 20, { 1,1,1,0.51f }, { 0.5f ,0.5f,0.5f });
 
 			staminaTimer -= 110;
-			spaceTimer = 10;
+			spaceTimer = 20;
 			stamina->OnUse();
 			easingFlag = 1;
 			frame = 0;
@@ -297,7 +297,7 @@ void Player::Dodge2() {
 	}
 
 	if (spaceTimer > 0.0f) {
-		spaceTimer -= 2.0f;
+		spaceTimer -= 1.0f;
 	}
 
 	if (spaceTimer < 0.0f) {
