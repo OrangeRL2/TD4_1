@@ -10,15 +10,29 @@
 #include "Input.h"
 #include "Model.h"
 #include "Object3d.h"
+#include "SEManager.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
 #include "ParticleManager.h"
 #include "DamageEffect.h"
 #include "Afterimage.h"
 #include "DodgeEffect.h"
+#include "PlayerHP.h"
+#include "PlayerStamina.h"
 #include <DirectXMath.h>
 
 using namespace OogamiEngine;
+
+enum EFFECT {
+	heal,
+	maxHeal,
+	slow,
+	staminaUp,
+	staminaMax,
+	speedUp,
+	speedLimUp,
+	invincible,
+};
 
 class Player
 {
@@ -26,7 +40,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro);
+	void Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManager* SE);
 
 	/// <summary>
 	/// 更新
@@ -54,6 +68,9 @@ public:
 	void DodgeActive();
 	void Dodge2();
 	void DodgeOnHit();
+
+	void ItemEffect(enum EFFECT effect);
+
 	/// <summary>
 	/// 接触時の処理
 	/// </summary>
@@ -63,8 +80,11 @@ public:
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
-
+	const bool GetMove() { return moveFlag; }
+	const bool GetEaseingFlag() { return easingFlag; }
+	float GetCameraPos() { return cameraPosZ; }
 public:
+	SEManager* se = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
 	Input* input_ = nullptr;
 	ViewProjection* viewProjection = nullptr;
@@ -81,19 +101,31 @@ private:
 	DirectX::XMFLOAT3 finalRot = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 dodgeRot = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 angle = { 0.0f,0.0f,0.0f };
-
+	
 	float moveLim = 10.0f;
-	float speedLim = 1.0f;
+	float speedLim = 0.25f;
 	float turnSpeed = 0.0f;
+	float turnDodgeUp = 0.0f;
+	float turnDodgeDown = 0.0f;
 	float speed = 0.0f;
 	float speedBoost = 0.0f;
 	float gravity = 0.2f;
 
+	float cameraPosZ = 0.0f;
+
+	float MoveSpeedUp = 0.0f;
+	float MaxSpeedUp = 20.0f;
+	float acceleration = 0.002f;
+	float MoveSpeedDown = 0.0f;
+	float MaxSpeedDown = 20.0f;
+	float accelerationDown = 0.001f;
+	bool moveFlag = false;
 	//dodge2
-	int spaceTimer = 0;
+	float staminaTimer = 600.0f;
+	float spaceTimer = 0.0f;
 	float frame = 0.0f;
 	int easingFlag = 0;
-	float endFrame = 7.0f;
+	float endFrame = 20.0f;
 	float startX = 20.0f;
 	float endX = 500.0f;
 	float x = 0.0f;
@@ -118,14 +150,17 @@ private:
 	int isHitMap = false;
 
 	//HP
-	int hpMax = 5;
+	int hpMax = 6;
 	int hp = hpMax;
 
 	std::unique_ptr<ParticleManager> particle;
 	std::unique_ptr<ParticleManager> dodgeParticle;
 	std::unique_ptr<DamageEffect> damageEffect;
+	std::unique_ptr<PlayerHP> HP;
+	std::unique_ptr<PlayerStamina> stamina;
 	std::list<std::unique_ptr<Afterimage>> afterimage_;
 	std::list<std::unique_ptr<DodgeEffect>> dodgeEffect_;
 
 	std::random_device rnd;
+
 };

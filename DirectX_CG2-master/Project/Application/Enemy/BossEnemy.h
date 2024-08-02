@@ -14,6 +14,12 @@
 class BossEnemy
 {
 public:
+	struct BossStatus { // ボスのスタータス
+		int hp = 10;
+		int state;
+	};
+
+public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -42,7 +48,12 @@ public:
 	/// <summary>
 	/// ダメージ
 	/// </summary>
-	void Damage();
+	void Damage(int damage_);
+
+	/// <summary>
+	/// 回転攻撃
+	/// </summary>
+	void SpinAttack();
 
 public:
 	/// <summary>
@@ -53,7 +64,8 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 
 	DirectX::XMFLOAT3 GetPosition() { return position_; }
-	int GetHP() { return hp_; }
+	DirectX::XMFLOAT3 GetScale() { return scale_; }
+	int GetHP() { return bossStatus.hp; }
 private:
 	Object3d* bossEnemyObj_ = nullptr;
 	Model* bossEnemyModel_ = nullptr;
@@ -62,7 +74,7 @@ private:
 
 	// ボスの座標、スケール、回転、移動量
 	DirectX::XMFLOAT3 position_ = { 0.0f,0.0f,5.0f };
-	DirectX::XMFLOAT3 scale_ = { 2.0f,2.0f,2.0f };
+	DirectX::XMFLOAT3 scale_ = { 10.0f,10.0f,10.0f };
 	DirectX::XMFLOAT3 rotation_ = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 move_ = { 10.0f,0.0f,0.0f };
 
@@ -70,6 +82,8 @@ private:
 	bool isAttack_ = false;
 	int attackTimer_ = 0;
 	int time_ = 0;
+	bool isSpinAttack_ = false;
+	int spinAttackTimer_ = 0;
 
 	// スピード
 	float speedAddition_ = 0.0f;
@@ -84,8 +98,8 @@ private:
 	const float playerDifference_ = 10.0f;
 	const int attackCoolTime_ = 100;
 
-	// ボスのHP
-	int hp_ = 100;
-	int deathHp_ = 0;
-	int damage_ = 10;
+	// ボス
+	BossStatus bossStatus;
+
+	float color = 1.0f;
 };

@@ -36,6 +36,7 @@ public:
 	void Draw() override;
 
 	void Collision();
+	void DodgeEffect();
 
 private:
 
@@ -63,7 +64,12 @@ private:
 
 	//カメラ位置
 	const XMFLOAT3 cameraPosition = { 0.0f,25.0f,-30.0f };
-
+	//カメラ位置
+	const XMFLOAT3 goCameraPosition = { 0.0f,25.0f,-5.0f };
+	//フレーム最大数
+	const float frameMax = 60.0f;
+	//ゲームオーバー時のカメライージング用フレーム
+	float goCameraFrame = 0.0f;
 	//スプライト
 	std::unique_ptr<Sprite> cursorSprite;
 
@@ -78,11 +84,40 @@ private:
 	std::unique_ptr<Ground> ground;
 	//背景オブジェクト
 	std::unique_ptr<BackObject> coral;
-	std::unique_ptr<BackObject> box;
+	std::unique_ptr<BackObject> stone;
+	std::unique_ptr<BackObject> seaweed;
 	//泡パーティクル
 	std::unique_ptr<ParticleManager> bubble;
+	//撃破パーティクル
+	std::unique_ptr<ParticleManager> destParticle;
+	//ヒットパーティクル
+	std::unique_ptr<ParticleManager> hitParticle;
 
 	//天球
 	std::unique_ptr<Skydome> skydome;
+
+	//シーン切り替え演出
+	std::unique_ptr<SceneChange> sceneChange;
+
+	//障害物
+	std::list<std::unique_ptr<Obstacle>> obstacles;
+	Model* obsModel = nullptr;
+	const int obsIntervalMax = 30;
+	int obsInterval = obsIntervalMax;
+	bool isObsActive = false;
+
+	//ボスHPUI
+	std::unique_ptr<Sprite> bossSprite;
+	std::unique_ptr<Sprite> bossHPSprite;
+
+	std::unique_ptr<Sprite> pauseSprite;
+	std::unique_ptr<Sprite> tutorialSprite;
+
+	std::unique_ptr<PressSpace> pressSpace;
+
+	bool isPause = false;
+	bool isTutorial = true;
+	SoundData BGM = soundManager_->SoundLoadWave("underwater.wav");
+
 };
 

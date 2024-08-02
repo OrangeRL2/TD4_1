@@ -12,7 +12,7 @@ public:
 
 	void Draw();
 
-	void SetTimer();
+	void SetTimer(DirectX::XMFLOAT3 color = { 0.0f,0.0f,0.0f });
 
 private:
 
@@ -23,6 +23,7 @@ private:
 	const float transTimerMax = 1.0f;
 	const float transTimerVal = 0.05f;
 	float transTimer = 0.0f;
+	DirectX::XMFLOAT3 healColor = { 0.0f,0.0f,0.0f };
 
 };
 

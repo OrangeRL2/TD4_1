@@ -73,6 +73,9 @@ private://メンバ変数
 
 	POINT MousePos;
 
+	RECT window_rect;
+	RECT client_rect;
+
 	int width;
 	int height;
 };

@@ -8,6 +8,7 @@
 #include "FbxLoader.h"
 #include "PostEffect.h"
 #include "SpriteCommon.h"
+#include "SpriteManager.h"
 
 class Framewark
 {
@@ -73,7 +74,9 @@ private://メンバ変数
 
 	//スプライト
 	SpriteCommon* spriteCommon_ = nullptr;
+	SpriteManager* SPManager = nullptr;
 	Sprite* SP = nullptr;
+
 
 	//サウンドマネージャー
 	SoundManager* soundManager_ = nullptr;

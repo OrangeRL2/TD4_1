@@ -14,7 +14,7 @@ public:
 	/// 初期化
 	/// </summary>
 	void Initialize(DirectXCommon* dxCommon, SoundManager* soundManager, SpriteCommon* spriteCommon, ViewProjection* viewPro) override;
-
+	
 	/// <summary>
 	/// 終了処理
 	/// </summary>
@@ -49,5 +49,23 @@ private:
 	//マウスポインター
 	//XMFLOAT2 mousePos;
 
+	//シーン切り替え演出
+	std::unique_ptr<SceneChange> sceneChange;
+
+	std::unique_ptr<PressSpace> pressSpace;
+	std::unique_ptr<Sprite> titleSprite;
+
+	//地面
+	std::unique_ptr<Ground> ground;
+	//背景オブジェクト
+	std::unique_ptr<BackObject> coral;
+	std::unique_ptr<BackObject> stone;
+	//泡パーティクル
+	std::unique_ptr<ParticleManager> bubble;
+
+	//天球
+	std::unique_ptr<Skydome> skydome;
+
+	SoundData BGM = soundManager_->SoundLoadWave("underwater.wav");
 };
 
