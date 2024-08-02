@@ -63,3 +63,18 @@ float MyMath::Rad2Deg(float rad) {
 	return rad / 3.14f * 180.0f;
 
 }
+
+XMFLOAT3 MyMath::NormalizeXMFLOAT3(const XMFLOAT3& v)
+{
+	// Convert XMFLOAT3 to XMVECTOR
+	XMVECTOR vec = XMLoadFloat3(&v);
+
+	// Normalize the XMVECTOR
+	vec = XMVector3Normalize(vec);
+
+	// Store the result back in an XMFLOAT3
+	XMFLOAT3 normalizedVec;
+	XMStoreFloat3(&normalizedVec, vec);
+
+	return normalizedVec;
+}

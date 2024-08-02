@@ -4,7 +4,7 @@
 */
 
 #include "BossEnemy.h"
-
+#include "MyMath.h"
 #include "Input.h"
 
 void BossEnemy::Initialize()
@@ -26,7 +26,7 @@ void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 	BossEnemy::Attack(playerPosition);
 
 	// ボスの挙動
-	BossEnemy::Move();
+	//BossEnemy::Move();
 
 	// ボスの攻撃
 	BossEnemy::SpinAttack();
@@ -38,11 +38,43 @@ void BossEnemy::Update(const DirectX::XMFLOAT3& playerPosition)
 	}
 	bossEnemyObj_->SetColor({ 1.0f,color,color,1.0f });
 
-	position_ = {
+	/*position_ = {
 		playerPosition.x - 20,
 		0,
 		0,
-	};
+	};*/
+
+	//speedがspeedLimにならないように
+	if (speed_ > speedLim_) {
+		speed_ = speedLim_;
+	}
+	if (speed_ < speedLim_)
+	{
+		speed_ += 0.07f;
+	}
+
+	//下のプレイヤーが上のプレイヤーについてくる処理
+//上のプレイヤー→下のプレイヤーのベクトル作成
+	XMFLOAT3 dire0 = { playerPosition.x - position_.x, playerPosition.y - position_.y, playerPosition.z - position_.z };
+	XMVECTOR direVec = XMLoadFloat3(&dire0);
+	direVec = XMVector3Normalize(direVec);
+
+	XMFLOAT3 velocity;
+	XMStoreFloat3(&velocity, XMVectorScale(direVec, speed_));
+
+	position_.x += velocity.x;
+	position_.y += velocity.y;
+	position_.z += velocity.z;
+	if (position_.x >= playerPosition.x-10.0f) {
+		//position_.x -= 10.0f;
+		speed_ = 0.0f;
+		position_.y = playerPosition.y;
+	}
+	if (position_.x <= playerPosition.x - 40.0f) {
+		position_.x = playerPosition.x -20.0f;
+		//speed_ = 0.0f;
+		position_.y = playerPosition.y+25.0f;
+	}
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->Update();
 }
@@ -102,6 +134,7 @@ void BossEnemy::Move()
 	position_.z += move_.z;
 	bossEnemyObj_->SetPosition(position_);
 	bossEnemyObj_->SetRotation(rotation_);
+
 
 }
 

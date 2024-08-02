@@ -247,6 +247,7 @@ void GamePlayScene::Update() {
 	ImGui::Text("hp %d", player->GetHP());
 	ImGui::Text("boss hp %d", bossEnemy_->GetHP());
 	ImGui::Text("move %d", player->GetMove());
+	ImGui::Text("InvTimer %f", player->GetInvincibleTimer());
 	imGui.End();
 }
 
@@ -306,8 +307,8 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Collision() {
-	if (bossEnemy_->GetPosition().x - player->GetPosition().x < 5 &&
-		-5 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
+	if (bossEnemy_->GetPosition().x - player->GetPosition().x < 10 &&
+		-10 < bossEnemy_->GetPosition().x - player->GetPosition().x) {
 		if (bossEnemy_->GetPosition().y - player->GetPosition().y < 5 &&
 			-5 < bossEnemy_->GetPosition().y - player->GetPosition().y) {
 			if (bossEnemy_->GetPosition().z - player->GetPosition().z < 15 &&
@@ -346,16 +347,25 @@ void GamePlayScene::Collision() {
 
 		if (x + y <= r) {
 
-			if (player->GetEaseFlag()) {
+			if (player->GetSpaceTimer()>0) {
 				player->ItemEffect(staminaUp);
 				obs->Counter();
 				SE->Play(SE->Counter(), 1.0f, 0.0f);
+				if (player->GetInvincibleFlag()==true) {
+					player->ItemEffect(invincible);
+				}
+			}
+			else if (player->GetEaseFlag()) {
+				if (player->GetInvincibleFlag() == true) {
+					player->ItemEffect(invincible);
+				}
 			}
 			else {
 
 				if (!obs->GetIsCounter() && isObsActive) {
 					obs->Dead();
 					player->OnCollision(1);
+					player->ItemEffect(invincibleOff);
 				}
 			}
 		}
