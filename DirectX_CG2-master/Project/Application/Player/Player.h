@@ -81,16 +81,13 @@ public:
 	DirectX::XMFLOAT3 GetScale() { return scale; }
 	int GetHP() { return hp; }
 	bool GetDodge() { return isDodgeInvincible; }
-	bool GetMove() { return moveFlag; }
-
-	bool GetEaseFlag() { return easingFlag; }
+	const bool GetMove() { return moveFlag; }
+	const bool GetEaseingFlag() { return easingFlag; }
 	float GetCameraPos() { return cameraPosZ; }
 	float GetSpaceTimer() { return spaceTimer; }
 	float GetInvincibleTimer() { return invincibleTimer; }
 	bool GetInvincibleFlag() { return isInvincible; }
 	float GetSpeedLim() { return speedLim; }
-
-
 public:
 	SEManager* se = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;

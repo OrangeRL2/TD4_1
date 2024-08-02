@@ -23,6 +23,7 @@ public:
 		HPHUDDecal2,
 		Pause,
 		Tutorial,
+		Boss,
 	};
 
 private:

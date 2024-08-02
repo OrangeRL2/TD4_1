@@ -88,6 +88,10 @@ private:
 	std::unique_ptr<BackObject> seaweed;
 	//泡パーティクル
 	std::unique_ptr<ParticleManager> bubble;
+	//撃破パーティクル
+	std::unique_ptr<ParticleManager> destParticle;
+	//ヒットパーティクル
+	std::unique_ptr<ParticleManager> hitParticle;
 
 	//天球
 	std::unique_ptr<Skydome> skydome;
@@ -103,6 +107,7 @@ private:
 	bool isObsActive = false;
 
 	//ボスHPUI
+	std::unique_ptr<Sprite> bossSprite;
 	std::unique_ptr<Sprite> bossHPSprite;
 
 	std::unique_ptr<Sprite> pauseSprite;

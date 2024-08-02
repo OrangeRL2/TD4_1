@@ -38,7 +38,11 @@ void Player::Initialize(SpriteCommon* spCommon, ViewProjection* viewPro, SEManag
 }
 
 void Player::Update() {
-	Move();
+
+	if (hp > 0) {
+		Move();
+		Dodge2();
+	}
 	HP->Update();
 	stamina->Update(staminaTimer);
 	//DodgeActive();
@@ -63,7 +67,6 @@ void Player::Update() {
 
 	}
 
-	Dodge2();
 
 	if (moveSpeed <= 0) {
 		/*	if (dodgeRot.z != 0.0f) {
@@ -155,7 +158,7 @@ void Player::Update() {
 
 void Player::Draw() {
 	//オブジェクト描画
-	if ((int)invincibleTimer % 2 == 0) {
+	if ((int)invincibleTimer % 2 == 0 && hp > 0) {
 		playerObject->Draw();
 	}
 
