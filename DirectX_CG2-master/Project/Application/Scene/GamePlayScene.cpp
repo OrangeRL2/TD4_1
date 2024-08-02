@@ -208,7 +208,48 @@ void GamePlayScene::Collision() {
 			}
 		}
 
-		
+		if (item_->GetPosition().x - player->GetPosition().x < 5 &&
+			-5 < item_->GetPosition().x - player->GetPosition().x) {
+			if (item_->GetPosition().y - player->GetPosition().y < 5 &&
+				-5 < item_->GetPosition().y - player->GetPosition().y) {
+				if (item_->GetPosition().z - player->GetPosition().z < 2 &&
+					-2 < item_->GetPosition().z - player->GetPosition().z) {
+					if (item_->GetIsDamage() == true) {
+						bossEnemy_->Damage(1);
+					}
+					else if (item_->GetIsHeel() == true) {
+						player->OnCollision(-1);
+					}
+					else if (item_->GetIsSlow() == true) {
+						//player->DodgeOnHit();
+					}
+					item_->Ability(player->GetHP(), 1, player->GetPosition());
+				}
+			}
+		}
+
+		//障害物と自機の当たり判定
+		for (std::unique_ptr<Obstacle>& obs : obstacles) {
+			const float x = (obs->GetPosition().x - player->GetPosition().x) * (obs->GetPosition().x - player->GetPosition().x);
+			const float y = (obs->GetPosition().y - player->GetPosition().y) * (obs->GetPosition().y - player->GetPosition().y);
+			const float r = (player->GetScale().x + obs->GetScale()) * (player->GetScale().x + obs->GetScale());
+
+			if (x + y <= r) {
+
+				if (player->GetEaseFlag()) {
+					player->ItemEffect(staminaUp);
+					obs->Counter();
+					SE->Play(SE->Counter(), 1.0f, 0.0f);
+				}
+				else {
+
+					if (!obs->GetIsCounter() && isObsActive) {
+						obs->Dead();
+						player->OnCollision(1);
+					}
+				}
+			}
+		}
 
 		
 }
